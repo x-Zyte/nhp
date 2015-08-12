@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <title>Login</title>
 
-    <meta name="description" content="User login page" />
+    <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
     <!-- bootstrap & fontawesome -->
@@ -21,11 +21,15 @@
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="../../resources/assets/css/ace-part2.min.css" />
     <![endif]-->
+    <link rel="stylesheet" href="../../resources/assets/css/ace-skins.min.css" />
     <link rel="stylesheet" href="../../resources/assets/css/ace-rtl.min.css" />
 
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="../../resources/assets/css/ace-ie.min.css" />
     <![endif]-->
+
+    <!-- ace settings handler -->
+    <script src="../../resources/assets/js/ace-extra.min.js"></script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 
@@ -156,6 +160,13 @@
 <script type="text/javascript">
     if('ontouchstart' in document.documentElement) document.write("<script src='../../resources/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
 </script>
+<script src="../../resources/assets/js/bootstrap.min.js"></script>
+
+<!-- page specific plugin scripts -->
+
+<!-- ace scripts -->
+<script src="../../resources/assets/js/ace-elements.min.js"></script>
+<script src="../../resources/assets/js/ace.min.js"></script>
 
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
