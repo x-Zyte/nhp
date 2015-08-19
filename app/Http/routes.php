@@ -28,10 +28,6 @@ Route::post('password/email', 'Auth\PasswordController@postEmail');
 Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
 Route::post('password/reset', 'Auth\PasswordController@postReset');
 
-//Employee
-Route::get('employee', 'Settings\EmployeeController@index');
-Route::get('employee/read', 'Settings\EmployeeController@read');
-
 Route::get('/', 'WelcomeController@index');
 
 Route::get('home', 'HomeController@index');

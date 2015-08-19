@@ -56,7 +56,11 @@ class WelcomeController extends Controller {
         //echo $province->id . ' ' . $province->name . ' ' . $province->branches()->first()->name;
 
 		//return "hello world " . $province->id . ' and ' . $province2->id;
+        if (!Auth::check()) {
+            return redirect()->action('Auth\AuthController@getLogin');
+        }
 		return view('welcome');
+        //return "hello world ";
 	}
 
 }

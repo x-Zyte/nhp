@@ -32,6 +32,9 @@ class HomeController extends Controller {
 	 */
 	public function index()
 	{
+        if (!Auth::check()) {
+            return redirect()->action('Auth\AuthController@getLogin');
+        }
 		return view('home');
 	}
 
