@@ -64,12 +64,12 @@
                                 <div class="widget-main">
                                     <h4 class="header red lighter bigger">
                                         <i class="ace-icon fa fa-key"></i>
-                                        Retrieve Password
+                                        กู้คืนรหัสผ่าน
                                     </h4>
 
                                     <div class="space-6"></div>
                                     <p>
-                                        Enter your email and to receive instructions
+                                        กรอกอีเมล์ของคุณเพื่อรับข้อมูลในการกู้คืนรหัสผ่าน
                                     </p>
 
                                     @if (session('status'))
@@ -80,7 +80,7 @@
 
                                     @if (count($errors) > 0)
                                         <div class="alert alert-danger">
-                                            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                                            <strong>ขออภัย!</strong> มีปัญหาบางอย่างกับการป้อนข้อมูลของคุณ<br><br>
                                             <ul>
                                                 @foreach ($errors->all() as $error)
                                                     <li>{{ $error }}</li>
@@ -95,7 +95,7 @@
                                         <fieldset>
                                             <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="email" class="form-control" placeholder="Email" name="email" value="{{ old('email') }}"/>
+															<input type="email" class="form-control" placeholder="อีเมล์" name="email" value="{{ old('email') }}"/>
 															<i class="ace-icon fa fa-envelope"></i>
 														</span>
                                             </label>
@@ -103,7 +103,7 @@
                                             <div class="clearfix">
                                                 <button type="submit" class="width-35 pull-right btn btn-sm btn-danger">
                                                     <i class="ace-icon fa fa-lightbulb-o"></i>
-                                                    <span class="bigger-110">Send Me!</span>
+                                                    <span class="bigger-110">ส่งให้ฉัน!</span>
                                                 </button>
                                             </div>
                                         </fieldset>
@@ -113,7 +113,7 @@
                                 <div class="toolbar center">
                                     <a href="{{ url('/auth/login') }}" data-target="#login-box" class="back-to-login-link">
                                         <i class="ace-icon fa fa-arrow-left"></i>
-                                        Back to login
+                                        กลับสู่หน้าลงชื่อเข้าสู่ระบบ
                                     </a>
                                 </div>
                             </div><!-- /.widget-body -->

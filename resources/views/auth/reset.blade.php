@@ -64,17 +64,17 @@
                                 <div class="widget-main">
                                     <h4 class="header red lighter bigger">
                                         <i class="ace-icon fa fa-refresh"></i>
-                                        Reset Password
+                                        ตั้งค่ารหัสผ่านใหม่
                                     </h4>
 
                                     <div class="space-6"></div>
                                     <p>
-                                        Enter your email and new password
+                                        กรอกอีเมล์ และรหัสผ่านใหม่ของคุณ
                                     </p>
 
                                     @if (count($errors) > 0)
                                         <div class="alert alert-danger">
-                                            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                                            <strong>ขออภัย!</strong> มีปัญหาบางอย่างกับการป้อนข้อมูลของคุณ<br><br>
                                             <ul>
                                                 @foreach ($errors->all() as $error)
                                                     <li>{{ $error }}</li>
@@ -90,21 +90,21 @@
                                         <fieldset>
                                             <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="email" class="form-control" placeholder="Email" name="email" value="{{ old('email') }}"/>
+															<input type="email" class="form-control" placeholder="อีเมล์" name="email" value="{{ old('email') }}"/>
 															<i class="ace-icon fa fa-envelope"></i>
 														</span>
                                             </label>
 
                                             <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control" placeholder="Password" name="password"/>
+															<input type="password" class="form-control" placeholder="รหัสผ่าน" name="password"/>
 															<i class="ace-icon fa fa-lock"></i>
 														</span>
                                             </label>
 
                                             <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control" placeholder="Confirm Password" name="password_confirmation"/>
+															<input type="password" class="form-control" placeholder="ยืนยันรหัสผ่าน" name="password_confirmation"/>
 															<i class="ace-icon fa fa-repeat"></i>
 														</span>
                                             </label>
@@ -112,7 +112,7 @@
                                             <div class="clearfix">
                                                 <button type="submit" class="width-35 pull-right btn btn-sm btn-danger">
                                                     <i class="ace-icon fa fa-power-off"></i>
-                                                    <span class="bigger-110">Reset</span>
+                                                    <span class="bigger-110">ตั้งค่าใหม่</span>
                                                 </button>
                                             </div>
                                         </fieldset>
