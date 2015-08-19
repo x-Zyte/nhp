@@ -63,8 +63,8 @@
                             <div class="widget-body">
                                 <div class="widget-main">
                                     <h4 class="header blue lighter bigger">
-                                        <i class="ace-icon fa fa-coffee green"></i>
-                                        Please Enter Your Information
+                                        <i class="ace-icon fa fa-users green"></i>
+                                        กรุณากรอกชื่อผู้ใช้ และรหัสผ่าน
                                     </h4>
 
                                     <div class="space-6"></div>
@@ -86,14 +86,14 @@
                                         <fieldset>
                                             <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="text" class="form-control" placeholder="Username" name="username" value="{{ old('username') }}"/>
+															<input type="text" class="form-control" placeholder="ชื่อผู้ใช้" name="username" value="{{ old('username') }}"/>
 															<i class="ace-icon fa fa-user"></i>
 														</span>
                                             </label>
 
                                             <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control" placeholder="Password" name="password"/>
+															<input type="password" class="form-control" placeholder="รหัสผ่าน" name="password"/>
 															<i class="ace-icon fa fa-lock"></i>
 														</span>
                                             </label>
@@ -103,12 +103,12 @@
                                             <div class="clearfix">
                                                 <label class="inline">
                                                     <input type="checkbox" class="ace" name="remember"/>
-                                                    <span class="lbl"> Remember Me</span>
+                                                    <span class="lbl"> จดจำฉันไว้</span>
                                                 </label>
 
                                                 <button type="submit" class="width-35 pull-right btn btn-sm btn-primary">
                                                     <i class="ace-icon fa fa-key"></i>
-                                                    <span class="bigger-110">Login</span>
+                                                    <span class="bigger-110">เข้าสู่ระบบ</span>
                                                 </button>
                                             </div>
 
@@ -120,7 +120,7 @@
                                 <div class="toolbar clearfix">
                                     <div style="width: 100%; text-align: center;">
                                         <a href="{{ url('/password/email') }}" data-target="#forgot-box" class="forgot-password-link">
-                                            I forgot my password
+                                            ฉันลืมรหัสผ่านของฉัน
                                             <i class="ace-icon fa fa-arrow-right"></i>
                                         </a>
                                     </div>
