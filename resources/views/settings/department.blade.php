@@ -1,11 +1,11 @@
 @extends('app')
 
 @section('menu-settings-active-open','active open')
-@section('menu-employee-active','active')
+@section('menu-department-active','active')
 
 @section('content')
 
-    <h3 class="header smaller lighter blue"><i class="ace-icon fa fa-users"></i> พนักงาน</h3>
+    <h3 class="header smaller lighter blue"><i class="ace-icon fa fa-sitemap"></i> แผนก</h3>
 
     <table id="grid-table"></table>
 
@@ -33,28 +33,13 @@
                 }
             })
 
-            var countries = "null:None;1:Branch1;2:Branch2;3:Branch3;4:Branch4";
-
             $(grid_selector).jqGrid({
-                url:'{{ url('/employee/read') }}',
+                url:'{{ url('/department/read') }}',
                 datatype: "json",
-                colNames:[' ', 'Firstname', 'Lastname', 'Admin', 'Branch', 'Department','Team','Active'],
+                colNames:['ชื่อแผนก', 'รายละเอียด'],
                 colModel:[
-                    {name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
-                        formatter:'actions',
-                        formatoptions:{
-                            keys:true,
-                            delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback}
-                            //editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
-                        }
-                    },
-                    {name:'firstname',index:'firstname', width:200,editable: true,editoptions:{size:"20",maxlength:"50"}},
-                    {name:'lastname',index:'lastname', width:200,editable: true,editoptions:{size:"20",maxlength:"50"}},
-                    {name:'isadmin',index:'isadmin', width:70, editable: true,edittype:"checkbox",editoptions: {value:"1:Yes;0:No"},formatter: booleanFormatter,unformat: aceSwitch},
-                    {name:'branchid',index:'branchid', width:150, editable: true,edittype:"select",editoptions:{value: countries}},
-                    {name:'departmentid',index:'departmentid', width:150, editable: true,edittype:"select",editoptions:{value: countries}},
-                    {name:'teamid',index:'teamid', width:150, editable: true,edittype:"select",editoptions:{value: countries}},
-                    {name:'active',index:'active', width:70, editable: true,edittype:"checkbox",editoptions: {value:"1:Yes;0:No"},formatter: booleanFormatter,unformat: aceSwitch}
+                    {name:'name',index:'name', width:80,editable: true,editoptions:{size:"30",maxlength:"50"},editrules:{required:true},align:'left'},
+                    {name:'detail',index:'detail', width:150,editable: true,edittype:'textarea',editoptions:{rows:"2",cols:"40"},editrules:{},align:'left'}
                 ],
                 viewrecords : true,
                 rowNum:10,
@@ -75,8 +60,8 @@
                     }, 0);
                 },
 
-                editurl: "employee/update",//nothing is saved
-                caption: "ตารางข้อมูลพนักงาน"
+                editurl: "department/update",
+                caption: ""
             });
 
             $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
@@ -124,18 +109,29 @@
                     searchicon : 'ace-icon fa fa-search orange',
                     refresh: true,
                     refreshicon : 'ace-icon fa fa-refresh green',
-                    view: true,
+                    view: false,
                     viewicon : 'ace-icon fa fa-search-plus grey'
                 },
                 {
                     //edit record form
                     //closeAfterEdit: true,
-                    width: 700,
+                    width: 500,
                     recreateForm: true,
                     beforeShowForm : function(e) {
                         var form = $(e[0]);
                         form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
                         style_edit_form(form);
+
+                        var dlgDiv = $("#editmod" + jQuery(grid_selector)[0].id);
+                        var parentDiv = dlgDiv.parent(); // div#gbox_list
+                        var dlgWidth = dlgDiv.width();
+                        var parentWidth = parentDiv.width();
+                        var dlgHeight = dlgDiv.height();
+                        var parentHeight = parentDiv.height();
+                        var parentTop = parentDiv.offset().top;
+                        var parentLeft = parentDiv.offset().left;
+                        dlgDiv[0].style.top =  Math.round(  parentTop  + (parentHeight-dlgHeight)/2  ) + "px";
+                        dlgDiv[0].style.left = Math.round(  parentLeft + (parentWidth-dlgWidth  )/2 )  + "px";
                     },
                     editData: {
                         _token: "{{ csrf_token() }}"
@@ -148,15 +144,25 @@
                 },
                 {
                     //new record form
-                    width: 700,
+                    width: 500,
                     closeAfterAdd: true,
                     recreateForm: true,
                     viewPagerButtons: false,
                     beforeShowForm : function(e) {
                         var form = $(e[0]);
-                        form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
-                                .wrapInner('<div class="widget-header" />')
+                        form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
                         style_edit_form(form);
+
+                        var dlgDiv = $("#editmod" + jQuery(grid_selector)[0].id);
+                        var parentDiv = dlgDiv.parent(); // div#gbox_list
+                        var dlgWidth = dlgDiv.width();
+                        var parentWidth = parentDiv.width();
+                        var dlgHeight = dlgDiv.height();
+                        var parentHeight = parentDiv.height();
+                        var parentTop = parentDiv.offset().top;
+                        var parentLeft = parentDiv.offset().left;
+                        dlgDiv[0].style.top =  Math.round(  parentTop  + (parentHeight-dlgHeight)/2  ) + "px";
+                        dlgDiv[0].style.left = Math.round(  parentLeft + (parentWidth-dlgWidth  )/2 )  + "px";
                     },
                     editData: {
                         _token: "{{ csrf_token() }}"
@@ -173,11 +179,22 @@
                         style_delete_form(form);
 
                         form.data('styled', true);
+
+                        var dlgDiv = $("#delmod" + jQuery(grid_selector)[0].id);
+                        var parentDiv = dlgDiv.parent(); // div#gbox_list
+                        var dlgWidth = dlgDiv.width();
+                        var parentWidth = parentDiv.width();
+                        var dlgHeight = dlgDiv.height();
+                        var parentHeight = parentDiv.height();
+                        var parentTop = parentDiv.offset().top;
+                        var parentLeft = parentDiv.offset().left;
+                        dlgDiv[0].style.top =  Math.round(  parentTop  + (parentHeight-dlgHeight)/2  ) + "px";
+                        dlgDiv[0].style.left = Math.round(  parentLeft + (parentWidth-dlgWidth  )/2 )  + "px";
                     },
                     onClick : function(e) {
                         alert(1);
                     },
-                    editData: {
+                    delData: {
                         _token: "{{ csrf_token() }}"
                     }
                 },
@@ -188,6 +205,18 @@
                         var form = $(e[0]);
                         form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
                         style_search_form(form);
+
+                        var dlgDiv = $("#searchmodfbox_" + jQuery(grid_selector)[0].id);
+                        //var dlgDiv = $("#searchmodfbox_grid-table");
+                        var parentDiv = dlgDiv.parent(); // div#gbox_list
+                        var dlgWidth = dlgDiv.width();
+                        var parentWidth = parentDiv.width();
+                        var dlgHeight = dlgDiv.height();
+                        var parentHeight = parentDiv.height();
+                        var parentTop = parentDiv.offset().top;
+                        var parentLeft = parentDiv.offset().left;
+                        dlgDiv[0].style.top =  Math.round(  parentTop  + (parentHeight-dlgHeight)/2  ) + "px";
+                        dlgDiv[0].style.left = Math.round(  parentLeft + (parentWidth-dlgWidth  )/2 )  + "px";
                     },
                     afterRedraw: function(){
                         style_search_filters($(this));
@@ -208,6 +237,17 @@
                     beforeShowForm: function(e){
                         var form = $(e[0]);
                         form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
+
+                        var dlgDiv = $("#viewmod" + jQuery(grid_selector)[0].id);
+                        var parentDiv = dlgDiv.parent(); // div#gbox_list
+                        var dlgWidth = dlgDiv.width();
+                        var parentWidth = parentDiv.width();
+                        var dlgHeight = dlgDiv.height();
+                        var parentHeight = parentDiv.height();
+                        var parentTop = parentDiv.offset().top;
+                        var parentLeft = parentDiv.offset().left;
+                        dlgDiv[0].style.top =  Math.round(  parentTop  + (parentHeight-dlgHeight)/2  ) + "px";
+                        dlgDiv[0].style.left = Math.round(  parentLeft + (parentWidth-dlgWidth  )/2 )  + "px";
                     },
                     editData: {
                         _token: "{{ csrf_token() }}"

@@ -17,7 +17,6 @@ class CreateDepartmentsTable extends Migration {
             $table->increments('id');
             $table->string('name',50);
             $table->text('detail')->nullable();
-            $table->integer('sequence')->unsigned()->default(0);
             $table->boolean('active')->default(true);
 
             $table->integer('createdby')->unsigned();

@@ -15,11 +15,13 @@ class CreateBranchesTable extends Migration {
 		Schema::create('branches', function(Blueprint $table)
 		{
             $table->increments('id');
-            $table->integer('provinceid')->unsigned();
-            $table->foreign('provinceid')->references('id')->on('provinces');
+
             $table->string('name',50);
-            $table->text('detail')->nullable();
-            $table->integer('sequence')->unsigned()->default(0);
+            $table->text('address');
+            $table->string('district',50);
+            $table->string('amphur',50);
+            $table->string('province',50);
+            $table->integer('zipcode');
             $table->boolean('active')->default(true);
 
             $table->integer('createdby')->unsigned();

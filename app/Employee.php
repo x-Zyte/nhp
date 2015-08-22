@@ -11,7 +11,7 @@ class Employee extends User {
     protected $guarded = ['id'];
 
     protected $fillable = ['firstname', 'lastname', 'phone', 'email', 'username', 'password', 'isadmin', 'branchid',
-        'departmentid', 'roleid', 'teamid', 'active', 'remember_token',
+        'departmentid', 'teamid', 'active', 'remember_token',
         'createdby', 'createddate', 'modifiedby', 'modifieddate'];
 
     protected $hidden = ['password', 'remember_token'];
@@ -26,24 +26,8 @@ class Employee extends User {
         return $this->belongsTo('App\Department', 'departmentid', 'id');
     }
 
-    public function role()
-    {
-        return $this->belongsTo('App\Role', 'roleid', 'id');
-    }
-
     public function team()
     {
         return $this->belongsTo('App\Team', 'teamid', 'id');
     }
-
-    public function employeeCreated()
-    {
-        return $this->belongsTo('App\Employee', 'createdby', 'id');
-    }
-
-    public function employeMmodified()
-    {
-        return $this->belongsTo('App\Employee', 'modifiedby', 'id');
-    }
-
 }

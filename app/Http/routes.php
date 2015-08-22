@@ -31,8 +31,24 @@ Route::post('password/reset', 'Auth\PasswordController@postReset');
 //Employee
 Route::get('employee', 'Settings\EmployeeController@index');
 Route::get('employee/read', 'Settings\EmployeeController@read');
+Route::post('employee/update', 'Settings\EmployeeController@update');
 
-Route::get('/', 'WelcomeController@index');
+//Branch
+Route::get('branch', 'Settings\BranchController@index');
+Route::get('branch/read', 'Settings\BranchController@read');
+Route::post('branch/update', 'Settings\BranchController@update');
+
+//Department
+Route::get('department', 'Settings\DepartmentController@index');
+Route::get('department/read', 'Settings\DepartmentController@read');
+Route::post('department/update', 'Settings\DepartmentController@update');
+
+//Team
+Route::get('team', 'Settings\TeamController@index');
+Route::get('team/read', 'Settings\TeamController@read');
+Route::post('team/update', 'Settings\TeamController@update');
+
+Route::get('/', 'HomeController@index');
 
 Route::get('home', 'HomeController@index');
 

@@ -2093,7 +2093,7 @@ trait AuthenticatesAndRegistersUsers
     }
     protected function getFailedLoginMessage()
     {
-        return 'These credentials do not match our records.';
+        return 'ชื่อผู้ใช้ หรือรหัสผ่านไม่ถูกต้อง';
     }
     public function getLogout()
     {
@@ -13072,7 +13072,8 @@ class LineFormatter extends NormalizerFormatter
             return $str;
         }
         return strtr($str, array('
-' => ' ', '' => ' ', '
+' => ' ', '
+' => ' ', '
 ' => ' '));
     }
 }

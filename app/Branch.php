@@ -1,6 +1,8 @@
 <?php namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use App\Log;
 
 class Branch extends Model {
 
@@ -10,8 +12,42 @@ class Branch extends Model {
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['provinceid', 'name', 'detail', 'sequence', 'active',
+    protected $fillable = ['name', 'address', 'district', 'amphur', 'province', 'zipcode', 'active',
         'createdby', 'createddate', 'modifiedby', 'modifieddate'];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function($model)
+        {
+            $model->createdby = Auth::user()->id;
+            $model->createddate = date("Y-m-d H:i:s");
+            $model->modifiedby = Auth::user()->id;
+            $model->modifieddate = date("Y-m-d H:i:s");
+        });
+
+        static::created(function($model)
+        {
+            Log::create(['employeeid' => Auth::user()->id,'operation' => 'Add','date' => date("Y-m-d H:i:s"),'model' => class_basename(get_class($model)),'detail' => $model->toJson()]);
+        });
+
+        static::updating(function($model)
+        {
+            $model->modifiedby = Auth::user()->id;
+            $model->modifieddate = date("Y-m-d H:i:s");
+        });
+
+        static::updated(function($model)
+        {
+            Log::create(['employeeid' => Auth::user()->id,'operation' => 'Update','date' => date("Y-m-d H:i:s"),'model' => class_basename(get_class($model)),'detail' => $model->toJson()]);
+        });
+
+        static::deleted(function($model)
+        {
+            Log::create(['employeeid' => Auth::user()->id,'operation' => 'Delete','date' => date("Y-m-d H:i:s"),'model' => class_basename(get_class($model)),'detail' => $model->toJson()]);
+        });
+    }
 
     public function employees()
     {
@@ -27,20 +63,4 @@ class Branch extends Model {
     {
         return $this->hasMany('App\Car', 'branchid', 'id');
     }
-
-    public function province()
-    {
-        return $this->belongsTo('App\Province', 'provinceid', 'id');
-    }
-
-    public function employeeCreated()
-    {
-        return $this->belongsTo('App\Employee', 'createdby', 'id');
-    }
-
-    public function employeMmodified()
-    {
-        return $this->belongsTo('App\Employee', 'modifiedby', 'id');
-    }
-
 }

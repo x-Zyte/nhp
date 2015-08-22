@@ -93,7 +93,7 @@
         <div class="navbar-header pull-left">
             <a href="{{ url('/') }}" class="navbar-brand">
                 <small>
-                    <i class="fa fa-leaf"></i>
+                    {{--<i class="fa fa-leaf"></i>--}}
                     Nissan Hippo Power
                 </small>
             </a>
@@ -104,8 +104,8 @@
                 <li class="light-blue">
                     <a data-toggle="dropdown" href="javascript:void(0)" class="dropdown-toggle">
 								<span class="user-info">
-									<small>Welcome,</small>
-                                    <b>{{ Auth::user()->firstname.' '.Auth::user()->lastname }}</b>
+									<small>ยินดีต้อนรับ,</small>
+                                    <b>{{ 'คุณ '.Auth::user()->firstname.' '.Auth::user()->lastname }}</b>
 								</span>
 
                         <i class="ace-icon fa fa-caret-down"></i>
@@ -115,7 +115,7 @@
                         <li>
                             <a href="{{ url('/auth/logout') }}">
                                 <i class="ace-icon fa fa-power-off"></i>
-                                Logout
+                                ออกจากระบบ
                             </a>
                         </li>
                     </ul>
@@ -152,7 +152,7 @@
             <li class="@yield('menu-settings-active-open')">
                 <a href="javascript:void(0)" class="dropdown-toggle">
                     <i class="menu-icon fa fa-cogs"></i>
-                    <span class="menu-text"> Settings </span>
+                    <span class="menu-text"> การตั้งค่า </span>
 
                     <b class="arrow fa fa-angle-down"></b>
                 </a>
@@ -163,7 +163,34 @@
                     <li class="@yield('menu-employee-active')">
                         <a href="{{ url('/employee') }}">
                             <i class="menu-icon fa fa-caret-right"></i>
-                            Employee
+                            พนักงาน
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+
+                    <li class="@yield('menu-branch-active')">
+                        <a href="{{ url('/branch') }}">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            สาขา
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+
+                    <li class="@yield('menu-department-active')">
+                        <a href="{{ url('/department') }}">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            แผนก
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+
+                    <li class="@yield('menu-team-active')">
+                        <a href="{{ url('/team') }}">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            ทีม
                         </a>
 
                         <b class="arrow"></b>
@@ -241,13 +268,13 @@
                             {{--<label class="lbl" for="ace-settings-rtl"> Right To Left (rtl)</label>--}}
                         {{--</div>--}}
 
-                        <div class="ace-settings-item">
+                        {{--<div class="ace-settings-item">
                             <input type="checkbox" class="ace ace-checkbox-2" id="ace-settings-add-container" />
                             <label class="lbl" for="ace-settings-add-container">
                                 Inside
                                 <b>.container</b>
                             </label>
-                        </div>
+                        </div>--}}
                     </div><!-- /.pull-left -->
 
                     <div class="pull-left width-50">
@@ -318,7 +345,7 @@
 <!-- page specific plugin scripts -->
 <script src="../resources/assets/js/date-time/bootstrap-datepicker.min.js"></script>
 <script src="../resources/assets/js/jqGrid/jquery.jqGrid.min.js"></script>
-<script src="../resources/assets/js/jqGrid/i18n/grid.locale-en.js"></script>
+<script src="../resources/assets/js/jqGrid/i18n/grid.locale-th.js"></script>
 
 <!-- ace scripts -->
 <script src="../resources/assets/js/ace-elements.min.js"></script>

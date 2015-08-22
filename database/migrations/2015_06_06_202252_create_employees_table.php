@@ -26,8 +26,6 @@ class CreateEmployeesTable extends Migration {
             $table->foreign('branchid')->references('id')->on('branches');
             $table->integer('departmentid')->unsigned()->nullable();
             $table->foreign('departmentid')->references('id')->on('departments');
-            $table->integer('roleid')->unsigned()->nullable();
-            $table->foreign('roleid')->references('id')->on('roles');
             $table->integer('teamid')->unsigned()->nullable();
             $table->foreign('teamid')->references('id')->on('teams');
             $table->boolean('active')->default(true);
@@ -41,10 +39,9 @@ class CreateEmployeesTable extends Migration {
             $table->engine = 'InnoDB';
 		});
 
-        Schema::table('provinces', function($table)
+        Schema::table('logs', function($table)
         {
-            $table->foreign('createdby')->references('id')->on('employees');
-            $table->foreign('modifiedby')->references('id')->on('employees');
+            $table->foreign('employeeid')->references('id')->on('employees');
         });
         Schema::table('branches', function($table)
         {
@@ -52,11 +49,6 @@ class CreateEmployeesTable extends Migration {
             $table->foreign('modifiedby')->references('id')->on('employees');
         });
         Schema::table('departments', function($table)
-        {
-            $table->foreign('createdby')->references('id')->on('employees');
-            $table->foreign('modifiedby')->references('id')->on('employees');
-        });
-        Schema::table('roles', function($table)
         {
             $table->foreign('createdby')->references('id')->on('employees');
             $table->foreign('modifiedby')->references('id')->on('employees');
