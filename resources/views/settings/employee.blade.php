@@ -1,7 +1,6 @@
 @extends('app')
 
-@section('menu-settings-active-open','active open')
-@section('menu-employee-active','active')
+@section('menu-employee-class','active')
 
 @section('content')
 
@@ -76,7 +75,8 @@
                 },
 
                 editurl: "employee/update",//nothing is saved
-                caption: "ตารางข้อมูลพนักงาน"
+                caption: "",
+                height:'100%'
             });
 
             $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size

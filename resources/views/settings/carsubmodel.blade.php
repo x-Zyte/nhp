@@ -4,11 +4,11 @@
 @section('menu-settingcore-class','active hsub open')
 @section('menu-subsettingcore-class','nav-show')
 @section('menu-subsettingcore-style','display: block;')
-@section('menu-settingteam-class','active')
+@section('menu-settingcarsubmodel-class','active')
 
 @section('content')
 
-    <h3 class="header smaller lighter blue"><i class="ace-icon fa fa-users"></i> ทีมการขาย</h3>
+    <h3 class="header smaller lighter blue"><i class="ace-icon fa fa-tag"></i> รุ่นรถ</h3>
 
     <table id="grid-table"></table>
 
@@ -37,10 +37,11 @@
             })
 
             $(grid_selector).jqGrid({
-                url:'{{ url('/team/read') }}',
+                url:'{{ url('/carsubmodel/read') }}',
                 datatype: "json",
-                colNames:['ชื่อทีม', 'รายละเอียด'],
+                colNames:['แบบรถ', 'ชื่อรุ่น', 'รายละเอียด'],
                 colModel:[
+                    {name:'carmodelid',index:'carmodelid', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value:"{{$carmodelselectlist}}"},align:'left'},
                     {name:'name',index:'name', width:150,editable: true,editoptions:{size:"30",maxlength:"50"},editrules:{required:true},align:'left'},
                     {name:'detail',index:'detail', width:300,editable: true,edittype:'textarea',editoptions:{rows:"2",cols:"40"},editrules:{},align:'left'}
                 ],
@@ -63,7 +64,7 @@
                     }, 0);
                 },
 
-                editurl: "team/update",
+                editurl: "carsubmodel/update",
                 caption: "",
                 height:'100%'
             });

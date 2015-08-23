@@ -48,6 +48,36 @@ Route::get('team', 'Settings\TeamController@index');
 Route::get('team/read', 'Settings\TeamController@read');
 Route::post('team/update', 'Settings\TeamController@update');
 
+//Cartype
+Route::get('cartype', 'Settings\CarTypeController@index');
+Route::get('cartype/read', 'Settings\CarTypeController@read');
+Route::post('cartype/update', 'Settings\CarTypeController@update');
+
+//Carmodel
+Route::get('carmodel', 'Settings\CarModelController@index');
+Route::get('carmodel/read', 'Settings\CarModelController@read');
+Route::post('carmodel/update', 'Settings\CarModelController@update');
+
+//Carsubmodel
+Route::get('carsubmodel', 'Settings\CarSubModelController@index');
+Route::get('carsubmodel/read', 'Settings\CarSubModelController@read');
+Route::post('carsubmodel/update', 'Settings\CarSubModelController@update');
+
+//Bank
+Route::get('bank', 'Settings\BankController@index');
+Route::get('bank/read', 'Settings\BankController@read');
+Route::post('bank/update', 'Settings\BankController@update');
+
+//InsuranceCompany
+Route::get('insurancecompany', 'Settings\InsuranceCompanyController@index');
+Route::get('insurancecompany/read', 'Settings\InsuranceCompanyController@read');
+Route::post('insurancecompany/update', 'Settings\InsuranceCompanyController@update');
+
+//Pricelist
+Route::get('pricelist', 'Settings\PricelistController@index');
+Route::get('pricelist/read', 'Settings\PricelistController@read');
+Route::post('pricelist/update', 'Settings\PricelistController@update');
+
 Route::get('/', 'HomeController@index');
 
 Route::get('home', 'HomeController@index');

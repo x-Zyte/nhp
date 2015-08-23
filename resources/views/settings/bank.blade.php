@@ -4,11 +4,11 @@
 @section('menu-settingcore-class','active hsub open')
 @section('menu-subsettingcore-class','nav-show')
 @section('menu-subsettingcore-style','display: block;')
-@section('menu-settingteam-class','active')
+@section('menu-settingbank-class','active')
 
 @section('content')
 
-    <h3 class="header smaller lighter blue"><i class="ace-icon fa fa-users"></i> ทีมการขาย</h3>
+    <h3 class="header smaller lighter blue"><i class="ace-icon fa fa-money"></i> ธนาคาร-บัญชี</h3>
 
     <table id="grid-table"></table>
 
@@ -37,9 +37,9 @@
             })
 
             $(grid_selector).jqGrid({
-                url:'{{ url('/team/read') }}',
+                url:'{{ url('/bank/read') }}',
                 datatype: "json",
-                colNames:['ชื่อทีม', 'รายละเอียด'],
+                colNames:['ชื่อธนาคาร-บัญชี', 'รายละเอียด'],
                 colModel:[
                     {name:'name',index:'name', width:150,editable: true,editoptions:{size:"30",maxlength:"50"},editrules:{required:true},align:'left'},
                     {name:'detail',index:'detail', width:300,editable: true,edittype:'textarea',editoptions:{rows:"2",cols:"40"},editrules:{},align:'left'}
@@ -63,7 +63,7 @@
                     }, 0);
                 },
 
-                editurl: "team/update",
+                editurl: "bank/update",
                 caption: "",
                 height:'100%'
             });

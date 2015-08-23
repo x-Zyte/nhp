@@ -1,11 +1,14 @@
 @extends('app')
 
-@section('menu-settings-active-open','active open')
-@section('menu-department-active','active')
+@section('menu-settings-class','active hsub open')
+@section('menu-settingcore-class','active hsub open')
+@section('menu-subsettingcore-class','nav-show')
+@section('menu-subsettingcore-style','display: block;')
+@section('menu-settingdepartment-class','active')
 
 @section('content')
 
-    <h3 class="header smaller lighter blue"><i class="ace-icon fa fa-sitemap"></i> แผนก</h3>
+    <h3 class="header smaller lighter blue"><i class="ace-icon fa fa-users"></i> แผนกพนักงาน</h3>
 
     <table id="grid-table"></table>
 
@@ -38,8 +41,8 @@
                 datatype: "json",
                 colNames:['ชื่อแผนก', 'รายละเอียด'],
                 colModel:[
-                    {name:'name',index:'name', width:80,editable: true,editoptions:{size:"30",maxlength:"50"},editrules:{required:true},align:'left'},
-                    {name:'detail',index:'detail', width:150,editable: true,edittype:'textarea',editoptions:{rows:"2",cols:"40"},editrules:{},align:'left'}
+                    {name:'name',index:'name', width:150,editable: true,editoptions:{size:"30",maxlength:"50"},editrules:{required:true},align:'left'},
+                    {name:'detail',index:'detail', width:300,editable: true,edittype:'textarea',editoptions:{rows:"2",cols:"40"},editrules:{},align:'left'}
                 ],
                 viewrecords : true,
                 rowNum:10,
@@ -61,7 +64,8 @@
                 },
 
                 editurl: "department/update",
-                caption: ""
+                caption: "",
+                height:'100%'
             });
 
             $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size

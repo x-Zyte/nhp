@@ -12,6 +12,7 @@ namespace App\Http\Controllers\Settings;
 use App\Employee;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeeController extends Controller {
 
@@ -22,6 +23,10 @@ class EmployeeController extends Controller {
 
     public function index()
     {
+        if(Auth::user()->isadmin == 1){
+
+        }
+
         return view('settings.employee');
     }
 

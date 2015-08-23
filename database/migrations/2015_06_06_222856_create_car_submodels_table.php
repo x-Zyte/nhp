@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBanksTable extends Migration {
+class CreateCarSubModelsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,9 +12,11 @@ class CreateBanksTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('banks', function(Blueprint $table)
+		Schema::create('car_submodels', function(Blueprint $table)
 		{
             $table->increments('id');
+            $table->integer('carmodelid')->unsigned();
+            $table->foreign('carmodelid')->references('id')->on('car_models');
             $table->string('name',50);
             $table->text('detail')->nullable();
             $table->boolean('active')->default(true);
@@ -37,7 +39,7 @@ class CreateBanksTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('banks');
+		Schema::drop('car_submodels');
 	}
 
 }

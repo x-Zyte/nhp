@@ -149,7 +149,43 @@
                 <b class="arrow"></b>
             </li>
 
-            <li class="@yield('menu-settings-active-open')">
+            <li class="@yield('menu-customer-class')">
+                <a href="javascript:void(0)">
+                    <i class="menu-icon fa fa-archive"></i>
+                    <span class="menu-text"> การคลัง </span>
+                </a>
+
+                <b class="arrow"></b>
+            </li>
+
+            <li class="@yield('menu-selling-class')">
+                <a href="javascript:void(0)">
+                    <i class="menu-icon fa fa-barcode"></i>
+                    <span class="menu-text"> การขาย </span>
+                </a>
+
+                <b class="arrow"></b>
+            </li>
+
+            <li class="@yield('menu-registration-class')">
+                <a href="javascript:void(0)">
+                    <i class="menu-icon fa fa-pencil-square-o"></i>
+                    <span class="menu-text"> การเงินและบัญชี </span>
+                </a>
+
+                <b class="arrow"></b>
+            </li>
+
+            <li class="@yield('menu-employee-class')">
+                <a href="{{ url('/employee') }}">
+                    <i class="menu-icon fa fa-male"></i>
+                    <span class="menu-text"> พนักงาน </span>
+                </a>
+
+                <b class="arrow"></b>
+            </li>
+
+            <li class="@yield('menu-settings-class')">
                 <a href="javascript:void(0)" class="dropdown-toggle">
                     <i class="menu-icon fa fa-cogs"></i>
                     <span class="menu-text"> การตั้งค่า </span>
@@ -160,40 +196,111 @@
                 <b class="arrow"></b>
 
                 <ul class="submenu">
-                    <li class="@yield('menu-employee-active')">
-                        <a href="{{ url('/employee') }}">
+                    <li class="@yield('menu-settingcore-class')">
+                        <a href="javascript:void(0)" class="dropdown-toggle">
                             <i class="menu-icon fa fa-caret-right"></i>
-                            พนักงาน
+                            <span class="menu-text"> ข้อมูลหลัก/ส่วนกลาง </span>
+
+                            <b class="arrow fa fa-angle-down"></b>
                         </a>
 
                         <b class="arrow"></b>
+
+                        <ul class="submenu @yield('menu-subsettingcore-class')" style="@yield('menu-subsettingcore-style')">
+                            <li class="@yield('menu-settingbranch-class')">
+                                <a href="{{ url('/branch') }}">
+                                    <i class="menu-icon fa fa-minus"></i>
+                                    สาขาโชว์รูม
+                                </a>
+
+                                <b class="arrow"></b>
+                            </li>
+
+                            <li class="@yield('menu-settingdepartment-class')">
+                                <a href="{{ url('/department') }}">
+                                    <i class="menu-icon fa fa-minus"></i>
+                                    แผนกพนักงาน
+                                </a>
+
+                                <b class="arrow"></b>
+                            </li>
+
+                            <li class="@yield('menu-settingteam-class')">
+                                <a href="{{ url('/team') }}">
+                                    <i class="menu-icon fa fa-minus"></i>
+                                    ทีมการขาย
+                                </a>
+
+                                <b class="arrow"></b>
+                            </li>
+
+                            <li class="@yield('menu-settingcartype-class')">
+                                <a href="{{ url('/cartype') }}">
+                                    <i class="menu-icon fa fa-minus"></i>
+                                    ประเภทรถ
+                                </a>
+
+                                <b class="arrow"></b>
+                            </li>
+
+                            <li class="@yield('menu-settingcarmodel-class')">
+                                <a href="{{ url('/carmodel') }}">
+                                    <i class="menu-icon fa fa-minus"></i>
+                                    แบบรถ
+                                </a>
+
+                                <b class="arrow"></b>
+                            </li>
+
+                            <li class="@yield('menu-settingcarsubmodel-class')">
+                                <a href="{{ url('/carsubmodel') }}">
+                                    <i class="menu-icon fa fa-minus"></i>
+                                    รุ่นรถ
+                                </a>
+
+                                <b class="arrow"></b>
+                            </li>
+
+                            <li class="@yield('menu-settingbank-class')">
+                                <a href="{{ url('/bank') }}">
+                                    <i class="menu-icon fa fa-minus"></i>
+                                    ธนาคาร-บัญชี
+                                </a>
+
+                                <b class="arrow"></b>
+                            </li>
+
+                            <li class="@yield('menu-settinginsurancecompany-class')">
+                                <a href="{{ url('/insurancecompany') }}">
+                                    <i class="menu-icon fa fa-minus"></i>
+                                    บริษัทประกัน
+                                </a>
+
+                                <b class="arrow"></b>
+                            </li>
+                        </ul>
                     </li>
 
-                    <li class="@yield('menu-branch-active')">
-                        <a href="{{ url('/branch') }}">
+                    <li class="@yield('menu-settingcar-class')">
+                        <a href="javascript:void(0)" class="dropdown-toggle">
                             <i class="menu-icon fa fa-caret-right"></i>
-                            สาขา
+                            <span class="menu-text"> รถ </span>
+
+                            <b class="arrow fa fa-angle-down"></b>
                         </a>
 
                         <b class="arrow"></b>
-                    </li>
 
-                    <li class="@yield('menu-department-active')">
-                        <a href="{{ url('/department') }}">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            แผนก
-                        </a>
+                        <ul class="submenu @yield('menu-subsettingcar-class')" style="@yield('menu-subsettingcar-style')">
+                            <li class="@yield('menu-settingpricelist-class')">
+                                <a href="{{ url('/pricelist') }}">
+                                    <i class="menu-icon fa fa-minus"></i>
+                                    ราคา
+                                </a>
 
-                        <b class="arrow"></b>
-                    </li>
-
-                    <li class="@yield('menu-team-active')">
-                        <a href="{{ url('/team') }}">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            ทีม
-                        </a>
-
-                        <b class="arrow"></b>
+                                <b class="arrow"></b>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </li>

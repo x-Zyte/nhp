@@ -1,11 +1,14 @@
 @extends('app')
 
-@section('menu-settings-active-open','active open')
-@section('menu-branch-active','active')
+@section('menu-settings-class','active hsub open')
+@section('menu-settingcore-class','active hsub open')
+@section('menu-subsettingcore-class','nav-show')
+@section('menu-subsettingcore-style','display: block;')
+@section('menu-settingbranch-class','active')
 
 @section('content')
 
-    <h3 class="header smaller lighter blue"><i class="ace-icon fa fa-sitemap"></i> สาขา</h3>
+    <h3 class="header smaller lighter blue"><i class="ace-icon fa fa-sitemap"></i> สาขาโชว์รูม</h3>
 
     <table id="grid-table"></table>
 
@@ -46,12 +49,12 @@
                             //editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
                         }
                     },*/
-                    {name:'name',index:'name', width:80,editable: true,editoptions:{size:"30",maxlength:"50"},editrules:{required:true},align:'left'},
-                    {name:'address',index:'address', width:100,editable: true,editoptions:{size:"50",maxlength:"200"},editrules:{required:true},align:'left'},
-                    {name:'district',index:'district', width:80,editable: true,editoptions:{size:"30",maxlength:"50"},editrules:{required:true},align:'left'},
-                    {name:'amphur',index:'amphur', width:80,editable: true,editoptions:{size:"30",maxlength:"50"},editrules:{required:true},align:'left'},
-                    {name:'province',index:'province', width:80,editable: true,editoptions:{size:"30",maxlength:"50"},editrules:{required:true},align:'left'},
-                    {name:'zipcode',index:'zipcode', width:50,editable: true,editoptions:{size:"5",maxlength:"5"},editrules:{required:true, number:true},align:'left'}
+                    {name:'name',index:'name', width:150,editable: true,editoptions:{size:"30",maxlength:"50"},editrules:{required:true},align:'left'},
+                    {name:'address',index:'address', width:200,editable: true,editoptions:{size:"50",maxlength:"200"},editrules:{required:true},align:'left'},
+                    {name:'district',index:'district', width:150,editable: true,editoptions:{size:"30",maxlength:"50"},editrules:{required:true},align:'left'},
+                    {name:'amphur',index:'amphur', width:150,editable: true,editoptions:{size:"30",maxlength:"50"},editrules:{required:true},align:'left'},
+                    {name:'province',index:'province', width:150,editable: true,editoptions:{size:"30",maxlength:"50"},editrules:{required:true},align:'left'},
+                    {name:'zipcode',index:'zipcode', width:100,editable: true,editoptions:{size:"5",maxlength:"5"},editrules:{required:true, number:true},align:'left'}
                     /*{name:'active',index:'active', width:50, editable: true,edittype:"checkbox",editoptions: {value:"1:0", defaultValue: "1"},formatter: booleanFormatter,unformat: aceSwitch}*/
                 ],
                 viewrecords : true,
@@ -74,7 +77,8 @@
                 },
 
                 editurl: "branch/update",
-                caption: ""
+                caption: "",
+                height:'100%'
             });
 
             $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
