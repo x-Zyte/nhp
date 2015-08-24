@@ -93,7 +93,7 @@
         <div class="navbar-header pull-left">
             <a href="{{ url('/') }}" class="navbar-brand">
                 <small>
-                    {{--<i class="fa fa-leaf"></i>--}}
+                    <i class="fa fa-car"></i>
                     Nissan Hippo Power
                 </small>
             </a>

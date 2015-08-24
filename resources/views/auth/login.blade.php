@@ -47,7 +47,7 @@
                 <div class="login-container">
                     <div class="center">
                         <h1>
-                            {{--<i class="ace-icon fa fa-leaf green"></i>--}}
+                            <i class="ace-icon fa fa-car green"></i>
                             <span class="red">Nissan</span>
                             <span class="grey" id="id-text2">Hippo</span>
                             <span class="blue" id="id-company-text">Power</span>
@@ -82,7 +82,7 @@
 
                                     <form method="POST" action="{{ url('/auth/login') }}">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
+                                        <input type="hidden" name="active" value=1>
                                         <fieldset>
                                             <label class="block clearfix">
 														<span class="block input-icon input-icon-right">

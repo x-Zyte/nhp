@@ -32,6 +32,8 @@ Route::post('password/reset', 'Auth\PasswordController@postReset');
 Route::get('employee', 'Settings\EmployeeController@index');
 Route::get('employee/read', 'Settings\EmployeeController@read');
 Route::post('employee/update', 'Settings\EmployeeController@update');
+Route::post('employee/check_username', 'Settings\EmployeeController@check_username');
+Route::post('employee/check_email', 'Settings\EmployeeController@check_email');
 
 //Branch
 Route::get('branch', 'Settings\BranchController@index');

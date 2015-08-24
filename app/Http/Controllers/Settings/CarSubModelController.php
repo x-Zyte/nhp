@@ -4,8 +4,12 @@ namespace App\Http\Controllers\Settings;
 
 use App\CarModel;
 use App\CarSubModel;
+use App\Facades\GridEncoder;
 use App\Http\Controllers\Controller;
+use App\Repositories\CarSubModelRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use Psy\Util\Json;
 
 class CarSubModelController extends Controller {
 
@@ -25,10 +29,11 @@ class CarSubModelController extends Controller {
         return view('settings.carsubmodel', ['carmodelselectlist' => implode(";",$carmodelselectlist)]);
     }
 
-    public function read()
+    public function read(Request $request)
     {
-        $models = CarSubModel::all();
-        return $models->toJson();
+        GridEncoder::encodeRequestedData(new CarSubModelRepository(), Input::all());
+        //$models = CarSubModel::all();
+        //return json_encode(array('page' => 1, 'total' => 2, 'records' => 11, 'rows' => $models));
     }
 
     public function update(Request $request)

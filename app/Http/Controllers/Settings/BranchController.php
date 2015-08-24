@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Branch;
+use App\Facades\GridEncoder;
 use App\Http\Controllers\Controller;
+use App\Repositories\BranchRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class BranchController extends Controller {
 
@@ -20,8 +23,7 @@ class BranchController extends Controller {
 
     public function read()
     {
-        $models = Branch::all();
-        return $models->toJson();
+        GridEncoder::encodeRequestedData(new BranchRepository(), Input::all());
     }
 
     public function update(Request $request)

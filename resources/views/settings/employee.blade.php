@@ -32,28 +32,30 @@
                 }
             })
 
-            var countries = "null:None;1:Branch1;2:Branch2;3:Branch3;4:Branch4";
-
             $(grid_selector).jqGrid({
                 url:'{{ url('/employee/read') }}',
                 datatype: "json",
-                colNames:[' ', 'Firstname', 'Lastname', 'Admin', 'Branch', 'Department','Team','Active'],
+                colNames:['','ชื่อจริง', 'นามสกุล', 'ชื่อเข้าใช้ระบบ', 'อีเมล์', 'เป็นผู้ดูแล', 'สาขา', 'แผนก','ทีมขาย', 'เปิดใช้งาน'],
                 colModel:[
-                    {name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
+                    /*{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
                         formatter:'actions',
                         formatoptions:{
                             keys:true,
                             delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback}
                             //editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
                         }
-                    },
-                    {name:'firstname',index:'firstname', width:200,editable: true,editoptions:{size:"20",maxlength:"50"}},
-                    {name:'lastname',index:'lastname', width:200,editable: true,editoptions:{size:"20",maxlength:"50"}},
-                    {name:'isadmin',index:'isadmin', width:70, editable: true,edittype:"checkbox",editoptions: {value:"1:Yes;0:No"},formatter: booleanFormatter,unformat: aceSwitch},
-                    {name:'branchid',index:'branchid', width:150, editable: true,edittype:"select",editoptions:{value: countries}},
-                    {name:'departmentid',index:'departmentid', width:150, editable: true,edittype:"select",editoptions:{value: countries}},
-                    {name:'teamid',index:'teamid', width:150, editable: true,edittype:"select",editoptions:{value: countries}},
-                    {name:'active',index:'active', width:70, editable: true,edittype:"checkbox",editoptions: {value:"1:Yes;0:No"},formatter: booleanFormatter,unformat: aceSwitch}
+                    },*/
+                    {hidden: true},
+                    {name:'firstname',index:'firstname', width:150,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
+                    {name:'lastname',index:'lastname', width:150,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
+//                    {name:'lastname',index:'lastname', width:150, hidden: true,editable: true,editrules: {edithidden:true},editoptions:{size:"20",maxlength:"50"}},
+                    {name:'username',index:'username', width:150,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true, custom: true, custom_func: check_username},align:'left'},
+                    {name:'email',index:'email', width:150,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true,email:true, custom: true, custom_func: check_email},align:'left'},
+                    {name:'isadmin',index:'isadmin', width:70, editable: true,edittype:"checkbox",editoptions: {value:"1:0"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'},
+                    {name:'branchid',index:'branchid', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$branchselectlist}}"},formoptions:{elmsuffix:'(ผู้ดูแลไม่ต้องเลือก)'}},
+                    {name:'departmentid',index:'departmentid', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$departmentselectlist}}"},formoptions:{elmsuffix:'(ผู้ดูแลไม่ต้องเลือก)'}},
+                    {name:'teamid',index:'teamid', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$teamselectlist}}"},formoptions:{elmsuffix:'(ผู้ดูแลไม่ต้องเลือก)'}},
+                    {name:'active',index:'active', width:70, editable: true,edittype:"checkbox",editoptions: {value:"1:0"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'}
                 ],
                 viewrecords : true,
                 rowNum:10,
@@ -80,6 +82,40 @@
             });
 
             $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
+
+            function check_username(value, colname) {
+                var selRowId = $(grid_selector).jqGrid ('getGridParam', 'selrow');
+                if(selRowId == null) selRowId = 0;
+                $.ajax({
+                    url: 'employee/check_username',
+                    data: { id:selRowId, username: value, _token: "{{ csrf_token() }}" },
+                    type: 'POST',
+                    async: false,
+                    datatype: 'text',
+                    success: function (data) {
+                        if (!data) result = [true, ""];
+                        else result = [false, colname + ": ชื่อเข้าใช้ระบบนี้ถูกใช้ไปแล้ว"];
+                    }
+                })
+                return result;
+            }
+
+            function check_email(value, colname) {
+                var selRowId = $(grid_selector).jqGrid ('getGridParam', 'selrow');
+                if(selRowId == null) selRowId = 0;
+                $.ajax({
+                    url: 'employee/check_email',
+                    data: { id:selRowId, email: value, _token: "{{ csrf_token() }}" },
+                    type: 'POST',
+                    async: false,
+                    datatype: 'text',
+                    success: function (data) {
+                        if (!data) result = [true, ""];
+                        else result = [false, colname + ": อีเมล์นี้ถูกใช้ไปแล้ว"];
+                    }
+                })
+                return result;
+            }
 
             function booleanFormatter( cellvalue, options, cell ) {
                 if (cellvalue == '1') {
@@ -129,34 +165,52 @@
                 },
                 {
                     //edit record form
-                    //closeAfterEdit: true,
-                    width: 700,
+                    closeAfterEdit: true,
+                    width: 500,
                     recreateForm: true,
                     beforeShowForm : function(e) {
                         var form = $(e[0]);
                         form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
                         style_edit_form(form);
+
+                        var dlgDiv = $("#editmod" + jQuery(grid_selector)[0].id);
+                        var parentDiv = dlgDiv.parent(); // div#gbox_list
+                        var dlgWidth = dlgDiv.width();
+                        var parentWidth = parentDiv.width();
+                        //var dlgHeight = dlgDiv.height();
+                        //var parentHeight = parentDiv.height();
+                        //var parentTop = parentDiv.offset().top;
+                        var parentLeft = parentDiv.offset().left;
+                        //dlgDiv[0].style.top =  Math.round(  (parentTop+160)  + (parentHeight-dlgHeight)/2  ) + "px";
+                        dlgDiv[0].style.left = Math.round(  parentLeft + (parentWidth-dlgWidth  )/2 )  + "px";
                     },
                     editData: {
                         _token: "{{ csrf_token() }}"
-                    },
-                    afterSubmit : function(response, postdata)
-                    {
-                        //alert('สำเร็จ');
-                        return [response.error,response.message];
                     }
                 },
                 {
                     //new record form
-                    width: 700,
+                    width: 500,
                     closeAfterAdd: true,
                     recreateForm: true,
                     viewPagerButtons: false,
                     beforeShowForm : function(e) {
+                        jQuery(grid_selector).jqGrid('resetSelection');
                         var form = $(e[0]);
                         form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
                                 .wrapInner('<div class="widget-header" />')
                         style_edit_form(form);
+
+                        var dlgDiv = $("#editmod" + jQuery(grid_selector)[0].id);
+                        var parentDiv = dlgDiv.parent(); // div#gbox_list
+                        var dlgWidth = dlgDiv.width();
+                        var parentWidth = parentDiv.width();
+                        //var dlgHeight = dlgDiv.height();
+                        //var parentHeight = parentDiv.height();
+                        //var parentTop = parentDiv.offset().top;
+                        var parentLeft = parentDiv.offset().left;
+                        //dlgDiv[0].style.top =  Math.round(  (parentTop+160)  + (parentHeight-dlgHeight)/2  ) + "px";
+                        dlgDiv[0].style.left = Math.round(  parentLeft + (parentWidth-dlgWidth  )/2 )  + "px";
                     },
                     editData: {
                         _token: "{{ csrf_token() }}"
@@ -173,6 +227,17 @@
                         style_delete_form(form);
 
                         form.data('styled', true);
+
+                        var dlgDiv = $("#delmod" + jQuery(grid_selector)[0].id);
+                        var parentDiv = dlgDiv.parent(); // div#gbox_list
+                        var dlgWidth = dlgDiv.width();
+                        var parentWidth = parentDiv.width();
+                        //var dlgHeight = dlgDiv.height();
+                        //var parentHeight = parentDiv.height();
+                        //var parentTop = parentDiv.offset().top;
+                        var parentLeft = parentDiv.offset().left;
+                        //dlgDiv[0].style.top =  Math.round(  (parentTop+160)  + (parentHeight-dlgHeight)/2  ) + "px";
+                        dlgDiv[0].style.left = Math.round(  parentLeft + (parentWidth-dlgWidth  )/2 )  + "px";
                     },
                     onClick : function(e) {
                         alert(1);
@@ -188,6 +253,17 @@
                         var form = $(e[0]);
                         form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
                         style_search_form(form);
+
+                        var dlgDiv = $("#searchmodfbox_" + jQuery(grid_selector)[0].id);
+                        var parentDiv = dlgDiv.parent(); // div#gbox_list
+                        var dlgWidth = dlgDiv.width();
+                        var parentWidth = parentDiv.width();
+                        //var dlgHeight = dlgDiv.height();
+                        //var parentHeight = parentDiv.height();
+                        //var parentTop = parentDiv.offset().top;
+                        var parentLeft = parentDiv.offset().left;
+                        //dlgDiv[0].style.top =  Math.round(  (parentTop+160)  + (parentHeight-dlgHeight)/2  ) + "px";
+                        dlgDiv[0].style.left = Math.round(  parentLeft + (parentWidth-dlgWidth  )/2 )  + "px";
                     },
                     afterRedraw: function(){
                         style_search_filters($(this));
@@ -208,6 +284,17 @@
                     beforeShowForm: function(e){
                         var form = $(e[0]);
                         form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
+
+                        var dlgDiv = $("#viewmod" + jQuery(grid_selector)[0].id);
+                        var parentDiv = dlgDiv.parent(); // div#gbox_list
+                        var dlgWidth = dlgDiv.width();
+                        var parentWidth = parentDiv.width();
+                        //var dlgHeight = dlgDiv.height();
+                        //var parentHeight = parentDiv.height();
+                        //var parentTop = parentDiv.offset().top;
+                        var parentLeft = parentDiv.offset().left;
+                        //dlgDiv[0].style.top =  Math.round(  (parentTop+160)  + (parentHeight-dlgHeight)/2  ) + "px";
+                        dlgDiv[0].style.left = Math.round(  parentLeft + (parentWidth-dlgWidth  )/2 )  + "px";
                     },
                     editData: {
                         _token: "{{ csrf_token() }}"

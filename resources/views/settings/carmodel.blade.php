@@ -8,7 +8,7 @@
 
 @section('content')
 
-    <h3 class="header smaller lighter blue"><i class="ace-icon fa fa-tag"></i> แบบรถ</h3>
+    <h3 class="header smaller lighter blue"><i class="ace-icon fa fa-car"></i> แบบรถ</h3>
 
     <table id="grid-table"></table>
 
@@ -119,7 +119,7 @@
                 },
                 {
                     //edit record form
-                    //closeAfterEdit: true,
+                    closeAfterEdit: true,
                     width: 500,
                     recreateForm: true,
                     beforeShowForm : function(e) {
@@ -131,20 +131,15 @@
                         var parentDiv = dlgDiv.parent(); // div#gbox_list
                         var dlgWidth = dlgDiv.width();
                         var parentWidth = parentDiv.width();
-                        var dlgHeight = dlgDiv.height();
-                        var parentHeight = parentDiv.height();
-                        var parentTop = parentDiv.offset().top;
+                        //var dlgHeight = dlgDiv.height();
+                        //var parentHeight = parentDiv.height();
+                        //var parentTop = parentDiv.offset().top;
                         var parentLeft = parentDiv.offset().left;
-                        dlgDiv[0].style.top =  Math.round(  parentTop  + (parentHeight-dlgHeight)/2  ) + "px";
+                        //dlgDiv[0].style.top =  Math.round(  (parentTop+160)  + (parentHeight-dlgHeight)/2  ) + "px";
                         dlgDiv[0].style.left = Math.round(  parentLeft + (parentWidth-dlgWidth  )/2 )  + "px";
                     },
                     editData: {
                         _token: "{{ csrf_token() }}"
-                    },
-                    afterSubmit : function(response, postdata)
-                    {
-                        //alert('สำเร็จ');
-                        return [response.error,response.message];
                     }
                 },
                 {
@@ -154,6 +149,7 @@
                     recreateForm: true,
                     viewPagerButtons: false,
                     beforeShowForm : function(e) {
+                        jQuery(grid_selector).jqGrid('resetSelection');
                         var form = $(e[0]);
                         form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
                         style_edit_form(form);
@@ -162,11 +158,11 @@
                         var parentDiv = dlgDiv.parent(); // div#gbox_list
                         var dlgWidth = dlgDiv.width();
                         var parentWidth = parentDiv.width();
-                        var dlgHeight = dlgDiv.height();
-                        var parentHeight = parentDiv.height();
-                        var parentTop = parentDiv.offset().top;
+                        //var dlgHeight = dlgDiv.height();
+                        //var parentHeight = parentDiv.height();
+                        //var parentTop = parentDiv.offset().top;
                         var parentLeft = parentDiv.offset().left;
-                        dlgDiv[0].style.top =  Math.round(  parentTop  + (parentHeight-dlgHeight)/2  ) + "px";
+                        //dlgDiv[0].style.top =  Math.round(  (parentTop+160)  + (parentHeight-dlgHeight)/2  ) + "px";
                         dlgDiv[0].style.left = Math.round(  parentLeft + (parentWidth-dlgWidth  )/2 )  + "px";
                     },
                     editData: {
@@ -189,11 +185,11 @@
                         var parentDiv = dlgDiv.parent(); // div#gbox_list
                         var dlgWidth = dlgDiv.width();
                         var parentWidth = parentDiv.width();
-                        var dlgHeight = dlgDiv.height();
-                        var parentHeight = parentDiv.height();
-                        var parentTop = parentDiv.offset().top;
+                        //var dlgHeight = dlgDiv.height();
+                        //var parentHeight = parentDiv.height();
+                        //var parentTop = parentDiv.offset().top;
                         var parentLeft = parentDiv.offset().left;
-                        dlgDiv[0].style.top =  Math.round(  parentTop  + (parentHeight-dlgHeight)/2  ) + "px";
+                        //dlgDiv[0].style.top =  Math.round(  (parentTop+160)  + (parentHeight-dlgHeight)/2  ) + "px";
                         dlgDiv[0].style.left = Math.round(  parentLeft + (parentWidth-dlgWidth  )/2 )  + "px";
                     },
                     onClick : function(e) {
@@ -212,15 +208,14 @@
                         style_search_form(form);
 
                         var dlgDiv = $("#searchmodfbox_" + jQuery(grid_selector)[0].id);
-                        //var dlgDiv = $("#searchmodfbox_grid-table");
                         var parentDiv = dlgDiv.parent(); // div#gbox_list
                         var dlgWidth = dlgDiv.width();
                         var parentWidth = parentDiv.width();
-                        var dlgHeight = dlgDiv.height();
-                        var parentHeight = parentDiv.height();
-                        var parentTop = parentDiv.offset().top;
+                        //var dlgHeight = dlgDiv.height();
+                        //var parentHeight = parentDiv.height();
+                        //var parentTop = parentDiv.offset().top;
                         var parentLeft = parentDiv.offset().left;
-                        dlgDiv[0].style.top =  Math.round(  parentTop  + (parentHeight-dlgHeight)/2  ) + "px";
+                        //dlgDiv[0].style.top =  Math.round(  (parentTop+160)  + (parentHeight-dlgHeight)/2  ) + "px";
                         dlgDiv[0].style.left = Math.round(  parentLeft + (parentWidth-dlgWidth  )/2 )  + "px";
                     },
                     afterRedraw: function(){
@@ -247,11 +242,11 @@
                         var parentDiv = dlgDiv.parent(); // div#gbox_list
                         var dlgWidth = dlgDiv.width();
                         var parentWidth = parentDiv.width();
-                        var dlgHeight = dlgDiv.height();
-                        var parentHeight = parentDiv.height();
-                        var parentTop = parentDiv.offset().top;
+                        //var dlgHeight = dlgDiv.height();
+                        //var parentHeight = parentDiv.height();
+                        //var parentTop = parentDiv.offset().top;
                         var parentLeft = parentDiv.offset().left;
-                        dlgDiv[0].style.top =  Math.round(  parentTop  + (parentHeight-dlgHeight)/2  ) + "px";
+                        //dlgDiv[0].style.top =  Math.round(  (parentTop+160)  + (parentHeight-dlgHeight)/2  ) + "px";
                         dlgDiv[0].style.left = Math.round(  parentLeft + (parentWidth-dlgWidth  )/2 )  + "px";
                     },
                     editData: {

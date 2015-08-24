@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Bank;
+use App\Facades\GridEncoder;
 use App\Http\Controllers\Controller;
+use App\Repositories\BankRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class BankController extends Controller {
 
@@ -20,8 +23,7 @@ class BankController extends Controller {
 
     public function read()
     {
-        $models = Bank::all();
-        return $models->toJson();
+        GridEncoder::encodeRequestedData(new BankRepository(), Input::all());
     }
 
     public function update(Request $request)

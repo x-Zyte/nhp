@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Facades\GridEncoder;
+use App\Repositories\TeamRepository;
 use App\Team;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class TeamController extends Controller {
 
@@ -20,8 +23,7 @@ class TeamController extends Controller {
 
     public function read()
     {
-        $models = Team::all();
-        return $models->toJson();
+        GridEncoder::encodeRequestedData(new TeamRepository(), Input::all());
     }
 
     public function update(Request $request)

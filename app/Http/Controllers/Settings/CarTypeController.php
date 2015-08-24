@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Settings;
 
 use App\CarType;
+use App\Facades\GridEncoder;
 use App\Http\Controllers\Controller;
+use App\Repositories\CarTypeRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class CarTypeController extends Controller {
 
@@ -18,10 +21,9 @@ class CarTypeController extends Controller {
         return view('settings.cartype');
     }
 
-    public function read()
+    public function read(Request $request)
     {
-        $models = CarType::all();
-        return $models->toJson();
+        GridEncoder::encodeRequestedData(new CarTypeRepository(), Input::all());
     }
 
     public function update(Request $request)

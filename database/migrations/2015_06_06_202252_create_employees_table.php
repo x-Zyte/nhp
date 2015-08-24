@@ -17,10 +17,12 @@ class CreateEmployeesTable extends Migration {
             $table->increments('id');
             $table->string('firstname',50);
             $table->string('lastname',50);
-            $table->string('phone',20)->nullable();
-            $table->string('email',100);
             $table->string('username',50);
+            $table->unique('username');
             $table->string('password',100);
+            $table->string('email',100);
+            $table->unique('email');
+            $table->string('phone',20)->nullable();
             $table->boolean('isadmin')->default(false);
             $table->integer('branchid')->unsigned()->nullable();
             $table->foreign('branchid')->references('id')->on('branches');
