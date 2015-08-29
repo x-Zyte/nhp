@@ -1,8 +1,7 @@
-<?php namespace App;
+<?php namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
-use App\Log;
+use Illuminate\Support\Facades\Auth;;
 
 class InsuranceCompany extends Model {
 

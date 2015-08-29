@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Facades\GridEncoder;
-use App\InsuranceCompany;
 use App\Http\Controllers\Controller;
 use App\Repositories\InsuranceCompanyRepository;
 use Illuminate\Http\Request;
@@ -28,15 +27,6 @@ class InsuranceCompanyController extends Controller {
 
     public function update(Request $request)
     {
-        $input = $request->only('oper', 'id', 'name', 'detail');
-        if($input['oper'] == 'add'){
-            InsuranceCompany::create($input);
-        }
-        elseif($input['oper'] == 'edit'){
-            InsuranceCompany::find($input['id'])->update($input);
-        }
-        elseif($input['oper'] == 'del'){
-            InsuranceCompany::destroy(explode(',',$input['id']));
-        }
+        GridEncoder::encodeRequestedData(new InsuranceCompanyRepository(), $request);
     }
 }

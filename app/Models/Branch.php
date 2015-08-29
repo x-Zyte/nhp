@@ -1,18 +1,17 @@
-<?php namespace App;
+<?php namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use App\Log;
 
-class CarModel extends Model {
+class Branch extends Model {
 
-    protected $table = 'car_models';
+    protected $table = 'branchs';
 
     public $timestamps = false;
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['name', 'cartypeid', 'detail', 'active',
+    protected $fillable = ['name', 'address', 'district', 'amphur', 'province', 'zipcode', 'active',
         'createdby', 'createddate', 'modifiedby', 'modifieddate'];
 
     public static function boot()
@@ -49,8 +48,18 @@ class CarModel extends Model {
         });
     }
 
-    public function cartype()
+    public function employees()
     {
-        return $this->belongsTo('App\CarType', 'cartypeid', 'id');
+        return $this->hasMany('App\Employee', 'branchid', 'id');
+    }
+
+    public function customers()
+    {
+        return $this->hasMany('App\Customer', 'branchid', 'id');
+    }
+
+    public function cars()
+    {
+        return $this->hasMany('App\Car', 'branchid', 'id');
     }
 }

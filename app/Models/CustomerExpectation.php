@@ -1,21 +1,21 @@
-<?php namespace App;
+<?php namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CarChecklist extends Model {
+class CustomerExpectation extends Model {
 
-    protected $table = 'car_checklists';
+    protected $table = 'customer_expectations';
 
     public $timestamps = false;
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['cartypeid', 'name', 'detail', 'sequence', 'active',
+    protected $fillable = ['customerid', 'date', 'details',
         'createdby', 'createddate', 'modifiedby', 'modifieddate'];
 
-    public function carType()
+    public function customer()
     {
-        return $this->belongsTo('App\CarType', 'cartypeid', 'id');
+        return $this->belongsTo('App\Customer', 'customerid', 'id');
     }
 
     public function employeeCreated()

@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\CarModel;
-use App\CarType;
+use App\Models\CarType;
 use App\Facades\GridEncoder;
 use App\Http\Controllers\Controller;
 use App\Repositories\CarModelRepository;
@@ -35,15 +34,6 @@ class CarModelController extends Controller {
 
     public function update(Request $request)
     {
-        $input = $request->only('oper', 'id', 'cartypeid', 'name', 'detail');
-        if($input['oper'] == 'add'){
-            CarModel::create($input);
-        }
-        elseif($input['oper'] == 'edit'){
-            CarModel::find($input['id'])->update($input);
-        }
-        elseif($input['oper'] == 'del'){
-            CarModel::destroy(explode(',',$input['id']));
-        }
+        GridEncoder::encodeRequestedData(new CarModelRepository(), $request);
     }
 }

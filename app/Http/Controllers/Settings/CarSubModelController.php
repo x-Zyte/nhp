@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\CarModel;
-use App\CarSubModel;
+use App\Models\CarModel;
 use App\Facades\GridEncoder;
 use App\Http\Controllers\Controller;
 use App\Repositories\CarSubModelRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
-use Psy\Util\Json;
 
 class CarSubModelController extends Controller {
 
@@ -32,21 +30,10 @@ class CarSubModelController extends Controller {
     public function read(Request $request)
     {
         GridEncoder::encodeRequestedData(new CarSubModelRepository(), Input::all());
-        //$models = CarSubModel::all();
-        //return json_encode(array('page' => 1, 'total' => 2, 'records' => 11, 'rows' => $models));
     }
 
     public function update(Request $request)
     {
-        $input = $request->only('oper', 'id', 'carmodelid', 'name', 'detail');
-        if($input['oper'] == 'add'){
-            CarSubModel::create($input);
-        }
-        elseif($input['oper'] == 'edit'){
-            CarSubModel::find($input['id'])->update($input);
-        }
-        elseif($input['oper'] == 'del'){
-            CarSubModel::destroy(explode(',',$input['id']));
-        }
+        GridEncoder::encodeRequestedData(new CarSubModelRepository(), $request);
     }
 }

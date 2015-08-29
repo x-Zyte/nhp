@@ -1,18 +1,17 @@
-<?php namespace App;
+<?php namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use App\Log;
 
-class CarSubModel extends Model {
+class Team extends Model {
 
-    protected $table = 'car_submodels';
+    protected $table = 'teams';
 
     public $timestamps = false;
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['name', 'carmodelid', 'detail', 'active',
+    protected $fillable = ['name', 'detail', 'active',
         'createdby', 'createddate', 'modifiedby', 'modifieddate'];
 
     public static function boot()
@@ -49,8 +48,8 @@ class CarSubModel extends Model {
         });
     }
 
-    public function carmodel()
+    public function employees()
     {
-        return $this->belongsTo('App\CarModel', 'carmodelid', 'id');
+        return $this->hasMany('App\Employee', 'teamid', 'id');
     }
 }

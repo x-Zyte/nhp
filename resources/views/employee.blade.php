@@ -1,14 +1,10 @@
 @extends('app')
 
-@section('menu-settings-class','active hsub open')
-@section('menu-settingcore-class','active hsub open')
-@section('menu-subsettingcore-class','nav-show')
-@section('menu-subsettingcore-style','display: block;')
-@section('menu-settingteam-class','active')
+@section('menu-employee-class','active')
 
 @section('content')
 
-    <h3 class="header smaller lighter blue"><i class="ace-icon fa fa-users"></i> ทีมการขาย</h3>
+    <h3 class="header smaller lighter blue"><i class="ace-icon fa fa-male"></i> พนักงาน</h3>
 
     <table id="grid-table"></table>
 
@@ -37,12 +33,30 @@
             })
 
             $(grid_selector).jqGrid({
-                url:'{{ url('/team/read') }}',
+                url:'{{ url('/employee/read') }}',
                 datatype: "json",
-                colNames:['ชื่อทีม', 'รายละเอียด'],
+                colNames:['คำนำหน้า', 'ชื่อจริง', 'นามสกุล', 'ชื่อเข้าใช้ระบบ', 'อีเมล์', 'โทรศัพท์', 'เป็นผู้ดูแล', 'สาขา', 'แผนก','ทีมขาย', 'เปิดใช้งาน'],
                 colModel:[
-                    {name:'name',index:'name', width:150,editable: true,editoptions:{size:"30",maxlength:"50"},editrules:{required:true},align:'left'},
-                    {name:'detail',index:'detail', width:300,editable: true,edittype:'textarea',editoptions:{rows:"2",cols:"40"},editrules:{},align:'left'}
+                    /*{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
+                        formatter:'actions',
+                        formatoptions:{
+                            keys:true,
+                            delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback}
+                            //editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
+                        }
+                    },*/
+                    //{hidden: true},
+                    {name:'title',index:'title', width:60, editable: true,edittype:"select",formatter:'select',editoptions:{value: "นาย:นาย;นาง:นาง;นางสาว:นางสาว"},align:'left'},
+                    {name:'firstname',index:'firstname', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
+                    {name:'lastname',index:'lastname', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
+                    {name:'username',index:'username', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true, custom: false, custom_func: check_username},align:'left'},
+                    {name:'email',index:'email', width:120,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true,email:true, custom: false, custom_func: check_email},align:'left'},
+                    {name:'phone',index:'phone', width:100,editable: true,editoptions:{size:"20",maxlength:"20"},editrules:{},align:'left'},
+                    {name:'isadmin',index:'isadmin', width:60, editable: true,edittype:"checkbox",editoptions: {value:"1:0"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'},
+                    {name:'branchid',index:'branchid', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$branchselectlist}}"},formoptions:{elmsuffix:'(เป็นผู้ดูแลไม่ต้องเลือก)'}},
+                    {name:'departmentid',index:'departmentid', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$departmentselectlist}}"},formoptions:{elmsuffix:'(เป็นผู้ดูแลไม่ต้องเลือก)'}},
+                    {name:'teamid',index:'teamid', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$teamselectlist}}"},formoptions:{elmsuffix:'(เป็นผู้ดูแลไม่ต้องเลือก)'}},
+                    {name:'active',index:'active', width:60, editable: true,edittype:"checkbox",editoptions: {value:"1:0"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'}
                 ],
                 viewrecords : true,
                 rowNum:10,
@@ -63,12 +77,46 @@
                     }, 0);
                 },
 
-                editurl: "team/update",
+                editurl: "employee/update",//nothing is saved
                 caption: "",
                 height:'100%'
             });
 
             $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
+
+            function check_username(value, colname) {
+                var selRowId = $(grid_selector).jqGrid ('getGridParam', 'selrow');
+                if(selRowId == null) selRowId = 0;
+                $.ajax({
+                    url: 'employee/check_username',
+                    data: { id:selRowId, username: value, _token: "{{ csrf_token() }}" },
+                    type: 'POST',
+                    async: false,
+                    datatype: 'text',
+                    success: function (data) {
+                        if (!data) result = [true, ""];
+                        else result = [false, colname + ": ชื่อเข้าใช้ระบบนี้ถูกใช้ไปแล้ว"];
+                    }
+                })
+                return result;
+            }
+
+            function check_email(value, colname) {
+                var selRowId = $(grid_selector).jqGrid ('getGridParam', 'selrow');
+                if(selRowId == null) selRowId = 0;
+                $.ajax({
+                    url: 'employee/check_email',
+                    data: { id:selRowId, email: value, _token: "{{ csrf_token() }}" },
+                    type: 'POST',
+                    async: false,
+                    datatype: 'text',
+                    success: function (data) {
+                        if (!data) result = [true, ""];
+                        else result = [false, colname + ": อีเมล์นี้ถูกใช้ไปแล้ว"];
+                    }
+                })
+                return result;
+            }
 
             function booleanFormatter( cellvalue, options, cell ) {
                 if (cellvalue == '1') {
@@ -113,7 +161,7 @@
                     searchicon : 'ace-icon fa fa-search orange',
                     refresh: true,
                     refreshicon : 'ace-icon fa fa-refresh green',
-                    view: false,
+                    view: true,
                     viewicon : 'ace-icon fa fa-search-plus grey'
                 },
                 {
@@ -159,7 +207,8 @@
                     beforeShowForm : function(e) {
                         jQuery(grid_selector).jqGrid('resetSelection');
                         var form = $(e[0]);
-                        form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+                        form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
+                                .wrapInner('<div class="widget-header" />')
                         style_edit_form(form);
 
                         var dlgDiv = $("#editmod" + jQuery(grid_selector)[0].id);

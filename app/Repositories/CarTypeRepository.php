@@ -8,8 +8,7 @@
 
 namespace App\Repositories;
 
-use App\CarType;
-use App\Repositories\EloquentRepositoryAbstract;
+use App\Models\CarType;
 
 class CarTypeRepository extends EloquentRepositoryAbstract
 {
@@ -17,5 +16,8 @@ class CarTypeRepository extends EloquentRepositoryAbstract
     {
         $this->Database = new CarType;
         $this->orderBy = array(array('id', 'asc'));
+        $this->crudFields = array('oper', 'id', 'name', 'detail');
+        $this->uniqueKeySingles = array(array('field'=>'name','label'=>'ชื่อประเภท'));
+        $this->uniqueKeyMultiples = array();
     }
 }

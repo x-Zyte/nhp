@@ -9,6 +9,9 @@
 
 namespace App\Repositories;
 
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Auth;
+
 abstract class EloquentRepositoryAbstract implements RepositoryInterface{
 
 
@@ -37,6 +40,11 @@ abstract class EloquentRepositoryAbstract implements RepositoryInterface{
     protected $orderBy = array(array());
 
 
+    protected $crudFields;
+    protected $uniqueKeySingles;
+    protected $uniqueKeyMultiples;
+    protected $hasBranch;
+
     /**
      * Calculate the number of rows. It's used for paging the result.
      *
@@ -53,6 +61,10 @@ abstract class EloquentRepositoryAbstract implements RepositoryInterface{
     {
         return  intval($this->Database->whereNested(function($query) use ($filters)
         {
+            if($this->hasBranch && !Auth::user()->isadmin){
+                $query->where('branchid', Auth::user()->branchid);
+            }
+
             foreach ($filters as $filter)
             {
                 if($filter['op'] == 'is in')
@@ -158,6 +170,10 @@ abstract class EloquentRepositoryAbstract implements RepositoryInterface{
 
         $rows = $this->Database->whereNested(function($query) use ($filters)
         {
+            if($this->hasBranch && !Auth::user()->isadmin){
+                $query->where('branchid', Auth::user()->branchid);
+            }
+
             foreach ($filters as $filter)
             {
                 if($filter['op'] == 'is in')
@@ -193,4 +209,86 @@ abstract class EloquentRepositoryAbstract implements RepositoryInterface{
         return $rows;
     }
 
+    public function crud($postedData){
+        $input = $postedData->only($this->crudFields);
+
+        if($input['oper'] == 'add'){
+            foreach ($this->uniqueKeySingles as $key)
+            {
+                $countDuplicate = intval($this->Database->where($key['field'], $input[$key['field']])->count());
+                if($countDuplicate > 0){
+                    return $key['label'].' '.$input[$key['field']].' มีอยู่ในระบบแล้ว';
+                }
+            }
+
+            if(!empty($this->uniqueKeyMultiples))
+            {
+                $countDuplicate = intval($this->Database->whereNested(function($query) use ($input)
+                {
+                    foreach ($this->uniqueKeyMultiples as $key)
+                    {
+                        $query->where($key['field'], $input[$key['field']]);
+                    }
+                })->count());
+
+                if($countDuplicate > 0){
+                    $msg = array();
+                    foreach ($this->uniqueKeyMultiples as $key)
+                    {
+                        if($key['showInMsg'])
+                            array_push($msg,$key['label'].' '.$input[$key['field']]);
+                    }
+                    return implode(",",$msg).' มีอยู่ในระบบแล้ว';
+                }
+            }
+
+            $this->Database->create($input);
+        }
+        elseif($input['oper'] == 'edit'){
+            foreach ($this->uniqueKeySingles as $key)
+            {
+                $countDuplicate = intval($this->Database->where('id','!=', $input['id'])->where($key['field'], $input[$key['field']])->count());
+                if($countDuplicate > 0){
+                    return $key['label'].' '.$input[$key['field']].' มีอยู่ในระบบแล้ว';
+                }
+            }
+
+            if(!empty($this->uniqueKeyMultiples))
+            {
+                $countDuplicate = intval($this->Database->whereNested(function($query) use ($input)
+                {
+                    $query->where('id','!=', $input['id']);
+                    foreach ($this->uniqueKeyMultiples as $key)
+                    {
+                        $query->where($key['field'], $input[$key['field']]);
+                    }
+                })->count());
+
+                if($countDuplicate > 0){
+                    $msg = array();
+                    foreach ($this->uniqueKeyMultiples as $key)
+                    {
+                        if($key['showInMsg'])
+                            array_push($msg,$key['label'].' '.$input[$key['field']]);
+                    }
+                    return implode(",",$msg).' มีอยู่ในระบบแล้ว';
+                }
+            }
+
+            $this->Database->find($input['id'])->update($input);
+        }
+        elseif($input['oper'] == 'del') {
+            $delIds = explode(',',$input['id']);
+            try
+            {
+                $this->Database->destroy($delIds); //->whereIn('id',$delIds)->delete();
+            }
+            catch(QueryException $exception)
+            {
+                return 'รายการที่เลือกถูกใช้งานอยู่ ไม่สามารถลบได้';
+            }
+        }
+
+        return "ok";
+    }
 }

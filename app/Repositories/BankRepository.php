@@ -8,8 +8,7 @@
 
 namespace App\Repositories;
 
-use App\Bank;
-use App\Repositories\EloquentRepositoryAbstract;
+use App\Models\Bank;
 
 class BankRepository extends EloquentRepositoryAbstract
 {
@@ -17,5 +16,8 @@ class BankRepository extends EloquentRepositoryAbstract
     {
         $this->Database = new Bank;
         $this->orderBy = array(array('id', 'asc'));
+        $this->crudFields = array('oper', 'id', 'name', 'detail');
+        $this->uniqueKeySingles = array(array('field'=>'name','label'=>'ชื่อธนาคาร-บัญชี'));
+        $this->uniqueKeyMultiples = array();
     }
 }

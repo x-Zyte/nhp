@@ -17,7 +17,7 @@ class CreateCarsTable extends Migration {
             $table->increments('id');
 
             $table->integer('branchid')->unsigned();
-            $table->foreign('branchid')->references('id')->on('branches');
+            $table->foreign('branchid')->references('id')->on('branchs');
             $table->integer('cartypeid')->unsigned();
             $table->foreign('cartypeid')->references('id')->on('car_types');
             $table->string('no',10);

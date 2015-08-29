@@ -1,18 +1,17 @@
-<?php namespace App;
+<?php namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use App\Log;
 
-class Bank extends Model {
+class CarModel extends Model {
 
-    protected $table = 'banks';
+    protected $table = 'car_models';
 
     public $timestamps = false;
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['name', 'detail', 'active',
+    protected $fillable = ['name', 'cartypeid', 'detail', 'active',
         'createdby', 'createddate', 'modifiedby', 'modifieddate'];
 
     public static function boot()
@@ -47,5 +46,15 @@ class Bank extends Model {
         {
             Log::create(['employeeid' => Auth::user()->id,'operation' => 'Delete','date' => date("Y-m-d H:i:s"),'model' => class_basename(get_class($model)),'detail' => $model->toJson()]);
         });
+    }
+
+    public function cartype()
+    {
+        return $this->belongsTo('App\CarType', 'cartypeid', 'id');
+    }
+
+    public function carSubModel()
+    {
+        return $this->hasMany('App\CarSubModel', 'carmodelid', 'id');
     }
 }

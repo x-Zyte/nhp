@@ -176,6 +176,15 @@
                 <b class="arrow"></b>
             </li>
 
+            <li class="@yield('menu-customer-class')">
+                <a href="{{ url('/customer') }}">
+                    <i class="menu-icon fa fa-users"></i>
+                    <span class="menu-text"> ลูกค้า </span>
+                </a>
+
+                <b class="arrow"></b>
+            </li>
+
             <li class="@yield('menu-employee-class')">
                 <a href="{{ url('/employee') }}">
                     <i class="menu-icon fa fa-male"></i>

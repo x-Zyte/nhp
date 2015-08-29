@@ -6,20 +6,16 @@
  * Time: 20:59
  */
 
-namespace App\Http\Controllers\Settings;
+namespace App\Http\Controllers;
 
 
-use App\Branch;
-use App\Department;
-use App\Employee;
+use App\Models\Branch;
+use App\Models\Department;
 use App\Facades\GridEncoder;
-use App\Http\Controllers\Controller;
 use App\Repositories\EmployeeRepository;
-use App\Team;
+use App\Models\Team;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Validator;
 
 class EmployeeController extends Controller {
 
@@ -51,7 +47,7 @@ class EmployeeController extends Controller {
             array_push($teamselectlist,$item->id.':'.$item->name);
         }
 
-        return view('settings.employee',
+        return view('employee',
             ['branchselectlist' => implode(";",$branchselectlist),
             'departmentselectlist' => implode(";",$departmentselectlist),
             'teamselectlist' => implode(";",$teamselectlist)]);
@@ -64,23 +60,10 @@ class EmployeeController extends Controller {
 
     public function update(Request $request)
     {
-        $input = $request->only('oper', 'id', 'firstname', 'lastname', 'username', 'email', 'isadmin', 'branchid', 'departmentid', 'teamid', 'active');
-        if($input['isadmin'] == '1'){
-            $input = $request->only('oper', 'id', 'firstname', 'lastname', 'username', 'email', 'isadmin', 'active');
-        }
-
-        if($input['oper'] == 'add'){
-            Employee::create($input);
-        }
-        elseif($input['oper'] == 'edit'){
-            Employee::find($input['id'])->update($input);
-        }
-        elseif($input['oper'] == 'del'){
-            Employee::destroy(explode(',',$input['id']));
-        }
+        GridEncoder::encodeRequestedData(new EmployeeRepository(), $request);
     }
 
-    public function check_username(Request $request)
+    /*public function check_username(Request $request)
     {
         $input = $request->only('id','username');
 
@@ -100,5 +83,5 @@ class EmployeeController extends Controller {
         if($count > 0){
             return "true";
         }
-    }
+    }*/
 }

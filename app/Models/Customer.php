@@ -1,18 +1,17 @@
-<?php namespace App;
+<?php namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use App\Log;
 
-class CarType extends Model {
+class Customer extends Model {
 
-    protected $table = 'car_types';
+    protected $table = 'customers';
 
     public $timestamps = false;
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['name', 'detail', 'active',
+    protected $fillable = ['title', 'firstname', 'lastname', 'address', 'email', 'phone', 'branchid',
         'createdby', 'createddate', 'modifiedby', 'modifieddate'];
 
     public static function boot()
@@ -49,8 +48,13 @@ class CarType extends Model {
         });
     }
 
-    /*public function carChecklists()
+    public function branch()
     {
-        return $this->hasMany('App\CarChecklist', 'cartypeid', 'id');
-    }*/
+        return $this->belongsTo('App\Branch', 'branchid', 'id');
+    }
+
+    public function customerExpectations()
+    {
+        return $this->hasMany('App\CustomerExpectation', 'customerid', 'id');
+    }
 }

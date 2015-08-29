@@ -49,4 +49,6 @@ interface RepositoryInterface {
      */
     public function getRows($limit, $offset, $orderBy = null, $sord = null, array $filters = array());
 
+    public function crud($postedData);
+
 }

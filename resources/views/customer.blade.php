@@ -1,10 +1,10 @@
 @extends('app')
 
-@section('menu-employee-class','active')
+@section('menu-customer-class','active')
 
 @section('content')
 
-    <h3 class="header smaller lighter blue"><i class="ace-icon fa fa-users"></i> พนักงาน</h3>
+    <h3 class="header smaller lighter blue"><i class="ace-icon fa fa-users"></i> ลูกค้า</h3>
 
     <table id="grid-table"></table>
 
@@ -32,30 +32,25 @@
                 }
             })
 
+            var defaultBranch = '';
+            var hiddenBranch = false;
+            if('{{Auth::user()->isadmin}}' == '0'){
+                defaultBranch = '{{Auth::user()->branchid}}';
+                hiddenBranch = true;
+            }
+
             $(grid_selector).jqGrid({
-                url:'{{ url('/employee/read') }}',
+                url:'{{ url('/customer/read') }}',
                 datatype: "json",
-                colNames:['','ชื่อจริง', 'นามสกุล', 'ชื่อเข้าใช้ระบบ', 'อีเมล์', 'เป็นผู้ดูแล', 'สาขา', 'แผนก','ทีมขาย', 'เปิดใช้งาน'],
+                colNames:['คำนำหน้า', 'ชื่อจริง', 'นามสกุล', 'ที่อยู่', 'อีเมล์', 'โทรศัพท์', 'สาขา'],
                 colModel:[
-                    /*{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
-                        formatter:'actions',
-                        formatoptions:{
-                            keys:true,
-                            delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback}
-                            //editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
-                        }
-                    },*/
-                    {hidden: true},
-                    {name:'firstname',index:'firstname', width:150,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
-                    {name:'lastname',index:'lastname', width:150,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
-//                    {name:'lastname',index:'lastname', width:150, hidden: true,editable: true,editrules: {edithidden:true},editoptions:{size:"20",maxlength:"50"}},
-                    {name:'username',index:'username', width:150,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true, custom: true, custom_func: check_username},align:'left'},
-                    {name:'email',index:'email', width:150,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true,email:true, custom: true, custom_func: check_email},align:'left'},
-                    {name:'isadmin',index:'isadmin', width:70, editable: true,edittype:"checkbox",editoptions: {value:"1:0"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'},
-                    {name:'branchid',index:'branchid', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$branchselectlist}}"},formoptions:{elmsuffix:'(ผู้ดูแลไม่ต้องเลือก)'}},
-                    {name:'departmentid',index:'departmentid', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$departmentselectlist}}"},formoptions:{elmsuffix:'(ผู้ดูแลไม่ต้องเลือก)'}},
-                    {name:'teamid',index:'teamid', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$teamselectlist}}"},formoptions:{elmsuffix:'(ผู้ดูแลไม่ต้องเลือก)'}},
-                    {name:'active',index:'active', width:70, editable: true,edittype:"checkbox",editoptions: {value:"1:0"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'}
+                    {name:'title',index:'title', width:60, editable: true,edittype:"select",formatter:'select',editoptions:{value: "นาย:นาย;นาง:นาง;นางสาว:นางสาว"},align:'left'},
+                    {name:'firstname',index:'firstname', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
+                    {name:'lastname',index:'lastname', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
+                    {name:'address',index:'address', width:300,editable: true,edittype:'textarea',editoptions:{rows:"2",cols:"40"},editrules:{},align:'left'},
+                    {name:'email',index:'email', width:120,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{email:true},align:'left'},
+                    {name:'phone',index:'phone', width:100,editable: true,editoptions:{size:"20",maxlength:"20"},editrules:{},align:'left'},
+                    {name:'branchid',index:'branchid', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$branchselectlist}}", defaultValue:defaultBranch},hidden:hiddenBranch}
                 ],
                 viewrecords : true,
                 rowNum:10,
@@ -76,46 +71,12 @@
                     }, 0);
                 },
 
-                editurl: "employee/update",//nothing is saved
+                editurl: "customer/update",//nothing is saved
                 caption: "",
                 height:'100%'
             });
 
             $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
-
-            function check_username(value, colname) {
-                var selRowId = $(grid_selector).jqGrid ('getGridParam', 'selrow');
-                if(selRowId == null) selRowId = 0;
-                $.ajax({
-                    url: 'employee/check_username',
-                    data: { id:selRowId, username: value, _token: "{{ csrf_token() }}" },
-                    type: 'POST',
-                    async: false,
-                    datatype: 'text',
-                    success: function (data) {
-                        if (!data) result = [true, ""];
-                        else result = [false, colname + ": ชื่อเข้าใช้ระบบนี้ถูกใช้ไปแล้ว"];
-                    }
-                })
-                return result;
-            }
-
-            function check_email(value, colname) {
-                var selRowId = $(grid_selector).jqGrid ('getGridParam', 'selrow');
-                if(selRowId == null) selRowId = 0;
-                $.ajax({
-                    url: 'employee/check_email',
-                    data: { id:selRowId, email: value, _token: "{{ csrf_token() }}" },
-                    type: 'POST',
-                    async: false,
-                    datatype: 'text',
-                    success: function (data) {
-                        if (!data) result = [true, ""];
-                        else result = [false, colname + ": อีเมล์นี้ถูกใช้ไปแล้ว"];
-                    }
-                })
-                return result;
-            }
 
             function booleanFormatter( cellvalue, options, cell ) {
                 if (cellvalue == '1') {
@@ -186,6 +147,15 @@
                     },
                     editData: {
                         _token: "{{ csrf_token() }}"
+                    },
+                    afterSubmit : function(response, postdata)
+                    {
+                        if(response.responseText == "ok"){
+                            alert("Succefully")
+                            return [true,""];
+                        }else{
+                            return [false,response.responseText];
+                        }
                     }
                 },
                 {
@@ -214,6 +184,15 @@
                     },
                     editData: {
                         _token: "{{ csrf_token() }}"
+                    },
+                    afterSubmit : function(response, postdata)
+                    {
+                        if(response.responseText == "ok"){
+                            alert("Succefully")
+                            return [true,""];
+                        }else{
+                            return [false,response.responseText];
+                        }
                     }
                 },
                 {
@@ -242,8 +221,17 @@
                     onClick : function(e) {
                         alert(1);
                     },
-                    editData: {
+                    delData: {
                         _token: "{{ csrf_token() }}"
+                    },
+                    afterSubmit : function(response, postdata)
+                    {
+                        if(response.responseText == "ok"){
+                            alert("Succefully")
+                            return [true,""];
+                        }else{
+                            return [false,response.responseText];
+                        }
                     }
                 },
                 {

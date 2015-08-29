@@ -8,8 +8,7 @@
 
 namespace App\Repositories;
 
-use App\Employee;
-use App\Repositories\EloquentRepositoryAbstract;
+use App\Models\Employee;
 
 class EmployeeRepository extends EloquentRepositoryAbstract
 {
@@ -17,5 +16,11 @@ class EmployeeRepository extends EloquentRepositoryAbstract
     {
         $this->Database = new Employee;
         $this->orderBy = array(array('id', 'asc'));
+        $this->crudFields = array('oper', 'id', 'title', 'firstname', 'lastname', 'username', 'email', 'phone', 'isadmin', 'branchid', 'departmentid', 'teamid', 'active');
+        $this->uniqueKeySingles = array(array('field'=>'username','label'=>'ชื่อเข้าใช้ระบบ'),
+            array('field'=>'email','label'=>'อีเมล์'));
+        $this->uniqueKeyMultiples = array(array('field'=>'firstname','showInMsg'=>true,'label'=>'ชื่อจริง'),
+            array('field'=>'lastname','showInMsg'=>true,'label'=>'นามสกุล'));
+        $this->hasBranch = true;
     }
 }

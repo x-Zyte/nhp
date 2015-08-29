@@ -46,250 +46,256 @@ class JqGridJsonEncoder implements RequestedDataInterface {
      */
     public function encodeRequestedData(RepositoryInterface $Repository,  $postedData)
     {
-        // $page = $postedData['page']; // get the requested page
-        // $limit = $postedData['rows']; // get how many rows we want to have into the grid
-        // $sidx = $postedData['sidx']; // get index row - i.e. user click to sort
-        // $sord = $postedData['sord']; // get the direction
+        if(isset($postedData['oper']))
+        {
+            echo $Repository->crud($postedData);
+        }
+        else{
+            // $page = $postedData['page']; // get the requested page
+            // $limit = $postedData['rows']; // get how many rows we want to have into the grid
+            // $sidx = $postedData['sidx']; // get index row - i.e. user click to sort
+            // $sord = $postedData['sord']; // get the direction
 
-        if(isset($postedData['page']))
-        {
-            $page = $postedData['page']; // get the requested page
-        }
-        else
-        {
-            $page = 1;
-        }
-
-        if(isset($postedData['rows']))
-        {
-            $limit = $postedData['rows']; // get how many rows we want to have into the grid
-        }
-        else
-        {
-            $limit = null;
-        }
-
-        if(isset($postedData['sidx']))
-        {
-            $sidx = $postedData['sidx']; // get index row - i.e. user click to sort
-        }
-        else
-        {
-            $sidx = null;
-        }
-
-        if(isset($postedData['sord']))
-        {
-            $sord = $postedData['sord']; // get the direction
-        }
-
-        if(isset($postedData['filters']) && !empty($postedData['filters']))
-        {
-            $filters = json_decode(str_replace('\'','"',$postedData['filters']), true);
-        }
-
-        if(!$sidx || empty($sidx))
-        {
-            $sidx = null;
-            $sord = null;
-        }
-
-        if(isset($filters['rules']) && is_array($filters['rules']))
-        {
-            foreach ($filters['rules'] as &$filter)
+            if(isset($postedData['page']))
             {
-                switch ($filter['op'])
+                $page = $postedData['page']; // get the requested page
+            }
+            else
+            {
+                $page = 1;
+            }
+
+            if(isset($postedData['rows']))
+            {
+                $limit = $postedData['rows']; // get how many rows we want to have into the grid
+            }
+            else
+            {
+                $limit = null;
+            }
+
+            if(isset($postedData['sidx']))
+            {
+                $sidx = $postedData['sidx']; // get index row - i.e. user click to sort
+            }
+            else
+            {
+                $sidx = null;
+            }
+
+            if(isset($postedData['sord']))
+            {
+                $sord = $postedData['sord']; // get the direction
+            }
+
+            if(isset($postedData['filters']) && !empty($postedData['filters']))
+            {
+                $filters = json_decode(str_replace('\'','"',$postedData['filters']), true);
+            }
+
+            if(!$sidx || empty($sidx))
+            {
+                $sidx = null;
+                $sord = null;
+            }
+
+            if(isset($filters['rules']) && is_array($filters['rules']))
+            {
+                foreach ($filters['rules'] as &$filter)
                 {
-                    case 'eq': //equal
-                        $filter['op'] = '=';
-                        break;
-                    case 'ne': //not equal
-                        $filter['op'] = '!=';
-                        break;
-                    case 'lt': //less
-                        $filter['op'] = '<';
-                        break;
-                    case 'le': //less or equal
-                        $filter['op'] = '<=';
-                        break;
-                    case 'gt': //greater
-                        $filter['op'] = '>';
-                        break;
-                    case 'ge': //greater or equal
-                        $filter['op'] = '>=';
-                        break;
-                    case 'bw': //begins with
-                        $filter['op'] = 'like';
-                        $filter['data'] = $filter['data'] . '%';
-                        break;
-                    case 'bn': //does not begin with
-                        $filter['op'] = 'not like';
-                        $filter['data'] = $filter['data'] . '%';
-                        break;
-                    case 'in': //is in
-                        $filter['op'] = 'is in';
-                        break;
-                    case 'ni': //is not in
-                        $filter['op'] = 'is not in';
-                        break;
-                    case 'ew': //ends with
-                        $filter['op'] = 'like';
-                        $filter['data'] = '%' . $filter['data'];
-                        break;
-                    case 'en': //does not end with
-                        $filter['op'] = 'not like';
-                        $filter['data'] = '%' . $filter['data'];
-                        break;
-                    case 'cn': //contains
-                        $filter['op'] = 'like';
-                        $filter['data'] = '%' . $filter['data'] . '%';
-                        break;
-                    case 'nc': //does not contains
-                        $filter['op'] = 'not like';
-                        $filter['data'] = '%' . $filter['data'] . '%';
-                        break;
+                    switch ($filter['op'])
+                    {
+                        case 'eq': //equal
+                            $filter['op'] = '=';
+                            break;
+                        case 'ne': //not equal
+                            $filter['op'] = '!=';
+                            break;
+                        case 'lt': //less
+                            $filter['op'] = '<';
+                            break;
+                        case 'le': //less or equal
+                            $filter['op'] = '<=';
+                            break;
+                        case 'gt': //greater
+                            $filter['op'] = '>';
+                            break;
+                        case 'ge': //greater or equal
+                            $filter['op'] = '>=';
+                            break;
+                        case 'bw': //begins with
+                            $filter['op'] = 'like';
+                            $filter['data'] = $filter['data'] . '%';
+                            break;
+                        case 'bn': //does not begin with
+                            $filter['op'] = 'not like';
+                            $filter['data'] = $filter['data'] . '%';
+                            break;
+                        case 'in': //is in
+                            $filter['op'] = 'is in';
+                            break;
+                        case 'ni': //is not in
+                            $filter['op'] = 'is not in';
+                            break;
+                        case 'ew': //ends with
+                            $filter['op'] = 'like';
+                            $filter['data'] = '%' . $filter['data'];
+                            break;
+                        case 'en': //does not end with
+                            $filter['op'] = 'not like';
+                            $filter['data'] = '%' . $filter['data'];
+                            break;
+                        case 'cn': //contains
+                            $filter['op'] = 'like';
+                            $filter['data'] = '%' . $filter['data'] . '%';
+                            break;
+                        case 'nc': //does not contains
+                            $filter['op'] = 'not like';
+                            $filter['data'] = '%' . $filter['data'] . '%';
+                            break;
+                    }
                 }
             }
-        }
-        else
-        {
-            $filters['rules'] = array();
-        }
-
-        $count = $Repository->getTotalNumberOfRows($filters['rules']);
-
-        if(empty($limit))
-        {
-            $limit = $count;
-        }
-
-        if(!is_int($count))
-        {
-            throw new Exception('The method getTotalNumberOfRows must return an integer');
-        }
-
-        if( $count > 0 )
-        {
-            $totalPages = ceil($count/$limit);
-        }
-        else
-        {
-            $totalPages = 0;
-        }
-
-        if ($page > $totalPages)
-        {
-            $page = $totalPages;
-        }
-
-        if ($limit < 0 )
-        {
-            $limit = 0;
-        }
-
-        $start = $limit * $page - $limit;
-
-        if ($start < 0)
-        {
-            $start = 0;
-        }
-
-        $limit = $limit * $page;
-
-        if(empty($postedData['pivotRows']))
-        {
-            $rows = $Repository->getRows($limit, $start, $sidx, $sord, $filters['rules']);
-        }
-        else
-        {
-            $rows = json_decode($postedData['pivotRows'], true);
-        }
-
-        if(!is_array($rows) || (isset($rows[0]) && !is_array($rows[0])))
-        {
-            throw new Exception('The method getRows must return an array of arrays, example: array(array("column1"  =>  "1-1", "column2" => "1-2"), array("column1" => "2-1", "column2" => "2-2"))');
-        }
-
-        echo json_encode(array('page' => $page, 'total' => $totalPages, 'records' => $count, 'rows' => $rows));
-        /*if(isset($postedData['exportFormat']))
-        {
-            $this->Excel->create($postedData['name'], function($Excel) use ($rows, $postedData)
+            else
             {
-                foreach (json_decode($postedData['fileProperties'], true) as $key => $value)
+                $filters['rules'] = array();
+            }
+
+            $count = $Repository->getTotalNumberOfRows($filters['rules']);
+
+            if(empty($limit))
+            {
+                $limit = $count;
+            }
+
+            if(!is_int($count))
+            {
+                throw new Exception('The method getTotalNumberOfRows must return an integer');
+            }
+
+            if( $count > 0 )
+            {
+                $totalPages = ceil($count/$limit);
+            }
+            else
+            {
+                $totalPages = 0;
+            }
+
+            if ($page > $totalPages)
+            {
+                $page = $totalPages;
+            }
+
+            if ($limit < 0 )
+            {
+                $limit = 0;
+            }
+
+            $start = $limit * $page - $limit;
+
+            if ($start < 0)
+            {
+                $start = 0;
+            }
+
+            $limit = $limit * $page;
+
+            if(empty($postedData['pivotRows']))
+            {
+                $rows = $Repository->getRows($limit, $start, $sidx, $sord, $filters['rules']);
+            }
+            else
+            {
+                $rows = json_decode($postedData['pivotRows'], true);
+            }
+
+            if(!is_array($rows) || (isset($rows[0]) && !is_array($rows[0])))
+            {
+                throw new Exception('The method getRows must return an array of arrays, example: array(array("column1"  =>  "1-1", "column2" => "1-2"), array("column1" => "2-1", "column2" => "2-2"))');
+            }
+
+            echo json_encode(array('page' => $page, 'total' => $totalPages, 'records' => $count, 'rows' => $rows));
+            /*if(isset($postedData['exportFormat']))
+            {
+                $this->Excel->create($postedData['name'], function($Excel) use ($rows, $postedData)
                 {
-                    $method = 'set' . ucfirst($key);
-
-                    $Excel->$method($value);
-                }
-
-                $Excel->sheet($postedData['name'], function($Sheet) use ($rows, $postedData)
-                {
-                    $columnCounter = 0;
-
-                    foreach (json_decode($postedData['model'], true) as $a => $model)
+                    foreach (json_decode($postedData['fileProperties'], true) as $key => $value)
                     {
-                        if(isset($model['hidden']) && $model['hidden'] !== true)
-                        {
-                            $columnCounter++;
-                        }
+                        $method = 'set' . ucfirst($key);
 
-                        if(isset($model['hidedlg']) && $model['hidedlg'] === true)
-                        {
-                            continue;
-                        }
+                        $Excel->$method($value);
+                    }
 
-                        if(empty($postedData['pivot']))
+                    $Excel->sheet($postedData['name'], function($Sheet) use ($rows, $postedData)
+                    {
+                        $columnCounter = 0;
+
+                        foreach (json_decode($postedData['model'], true) as $a => $model)
                         {
-                            foreach ($rows as $b => &$row)
+                            if(isset($model['hidden']) && $model['hidden'] !== true)
                             {
-                                if(isset($model['hidden']) && $model['hidden'] === true)
+                                $columnCounter++;
+                            }
+
+                            if(isset($model['hidedlg']) && $model['hidedlg'] === true)
+                            {
+                                continue;
+                            }
+
+                            if(empty($postedData['pivot']))
+                            {
+                                foreach ($rows as $b => &$row)
                                 {
-                                    unset($row[$model['name']]);
-                                }
-                                else
-                                {
-                                    if(isset($model['label']))
+                                    if(isset($model['hidden']) && $model['hidden'] === true)
                                     {
-                                        $row[$model['label']] = $row[$model['name']];
                                         unset($row[$model['name']]);
                                     }
                                     else
                                     {
-                                        $temp = $row[$model['name']];
-                                        unset($row[$model['name']]);
-                                        $row[$model['name']] = $temp;
+                                        if(isset($model['label']))
+                                        {
+                                            $row[$model['label']] = $row[$model['name']];
+                                            unset($row[$model['name']]);
+                                        }
+                                        else
+                                        {
+                                            $temp = $row[$model['name']];
+                                            unset($row[$model['name']]);
+                                            $row[$model['name']] = $temp;
+                                        }
                                     }
                                 }
                             }
+
+                            if(isset($model['align']) && isset($model['hidden']) && $model['hidden'] !== true)
+                            {
+                                $Sheet->getStyle($this->num_to_letter($columnCounter, true))->getAlignment()->applyFromArray(
+                                    array('horizontal' => $model['align'])
+                                );
+                            }
                         }
 
-                        if(isset($model['align']) && isset($model['hidden']) && $model['hidden'] !== true)
+                        foreach (json_decode($postedData['sheetProperties'], true) as $key => $value)
                         {
-                            $Sheet->getStyle($this->num_to_letter($columnCounter, true))->getAlignment()->applyFromArray(
-                                array('horizontal' => $model['align'])
-                            );
+                            $method = 'set' . ucfirst($key);
+
+                            $Sheet->$method($value);
                         }
-                    }
 
-                    foreach (json_decode($postedData['sheetProperties'], true) as $key => $value)
-                    {
-                        $method = 'set' . ucfirst($key);
+                        $Sheet->fromArray($rows);
 
-                        $Sheet->$method($value);
-                    }
-
-                    $Sheet->fromArray($rows);
-
-                    $Sheet->row(1, function($Row) {
-                        $Row->setFontWeight('bold');
+                        $Sheet->row(1, function($Row) {
+                            $Row->setFontWeight('bold');
+                        });
                     });
-                });
-            })->export($postedData['exportFormat']);
+                })->export($postedData['exportFormat']);
+            }
+            else
+            {
+                echo json_encode(array('page' => $page, 'total' => $totalPages, 'records' => $count, 'rows' => $rows));
+            }*/
         }
-        else
-        {
-            echo json_encode(array('page' => $page, 'total' => $totalPages, 'records' => $count, 'rows' => $rows));
-        }*/
     }
 
     /**

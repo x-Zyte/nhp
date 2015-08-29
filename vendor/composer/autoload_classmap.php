@@ -7,7 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'CreateBanksTable' => $baseDir . '/database/migrations/2015_06_06_221547_create_banks_table.php',
-    'CreateBranchesTable' => $baseDir . '/database/migrations/2015_06_06_155415_create_branches_table.php',
+    'CreateBranchesTable' => $baseDir . '/database/migrations/2015_06_06_155415_create_branchs_table.php',
     'CreateCarChecklistsTable' => $baseDir . '/database/migrations/2015_06_06_224221_create_car_checklists_table.php',
     'CreateCarInspectionDetailsTable' => $baseDir . '/database/migrations/2015_06_06_234521_create_car_inspection_details_table.php',
     'CreateCarInspectionsTable' => $baseDir . '/database/migrations/2015_06_06_233252_create_car_inspections_table.php',

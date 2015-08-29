@@ -15,6 +15,7 @@ class CreateEmployeesTable extends Migration {
 		Schema::create('employees', function(Blueprint $table)
 		{
             $table->increments('id');
+            $table->string('title',10);
             $table->string('firstname',50);
             $table->string('lastname',50);
             $table->string('username',50);
@@ -25,7 +26,7 @@ class CreateEmployeesTable extends Migration {
             $table->string('phone',20)->nullable();
             $table->boolean('isadmin')->default(false);
             $table->integer('branchid')->unsigned()->nullable();
-            $table->foreign('branchid')->references('id')->on('branches');
+            $table->foreign('branchid')->references('id')->on('branchs');
             $table->integer('departmentid')->unsigned()->nullable();
             $table->foreign('departmentid')->references('id')->on('departments');
             $table->integer('teamid')->unsigned()->nullable();
@@ -45,7 +46,7 @@ class CreateEmployeesTable extends Migration {
         {
             $table->foreign('employeeid')->references('id')->on('employees');
         });
-        Schema::table('branches', function($table)
+        Schema::table('branchs', function($table)
         {
             $table->foreign('createdby')->references('id')->on('employees');
             $table->foreign('modifiedby')->references('id')->on('employees');

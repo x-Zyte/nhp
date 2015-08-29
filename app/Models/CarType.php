@@ -1,22 +1,18 @@
-<?php namespace App;
+<?php namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use App\Log;
 
-class Employee extends User {
+class CarType extends Model {
 
-    protected $table = 'employees';
+    protected $table = 'car_types';
 
     public $timestamps = false;
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['firstname', 'lastname', 'username', 'password', 'email', 'phone', 'isadmin', 'branchid',
-        'departmentid', 'teamid', 'active', 'remember_token',
+    protected $fillable = ['name', 'detail', 'active',
         'createdby', 'createddate', 'modifiedby', 'modifieddate'];
-
-    protected $hidden = ['password', 'remember_token'];
 
     public static function boot()
     {
@@ -24,7 +20,6 @@ class Employee extends User {
 
         static::creating(function($model)
         {
-            $model->password = bcrypt("nissanhippo");
             $model->createdby = Auth::user()->id;
             $model->createddate = date("Y-m-d H:i:s");
             $model->modifiedby = Auth::user()->id;
@@ -53,18 +48,8 @@ class Employee extends User {
         });
     }
 
-    public function branch()
+    public function carModel()
     {
-        return $this->belongsTo('App\Branch', 'branchid', 'id');
-    }
-
-    public function department()
-    {
-        return $this->belongsTo('App\Department', 'departmentid', 'id');
-    }
-
-    public function team()
-    {
-        return $this->belongsTo('App\Team', 'teamid', 'id');
+        return $this->hasMany('App\CarModel', 'cartypeid', 'id');
     }
 }

@@ -1,18 +1,17 @@
-<?php namespace App;
+<?php namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use App\Log;
 
-class Branch extends Model {
+class Bank extends Model {
 
-    protected $table = 'branches';
+    protected $table = 'banks';
 
     public $timestamps = false;
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['name', 'address', 'district', 'amphur', 'province', 'zipcode', 'active',
+    protected $fillable = ['name', 'detail', 'active',
         'createdby', 'createddate', 'modifiedby', 'modifieddate'];
 
     public static function boot()
@@ -47,20 +46,5 @@ class Branch extends Model {
         {
             Log::create(['employeeid' => Auth::user()->id,'operation' => 'Delete','date' => date("Y-m-d H:i:s"),'model' => class_basename(get_class($model)),'detail' => $model->toJson()]);
         });
-    }
-
-    public function employees()
-    {
-        return $this->hasMany('App\Employee', 'branchid', 'id');
-    }
-
-    public function customers()
-    {
-        return $this->hasMany('App\Customer', 'branchid', 'id');
-    }
-
-    public function cars()
-    {
-        return $this->hasMany('App\Car', 'branchid', 'id');
     }
 }

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBranchesTable extends Migration {
+class CreateBranchsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,7 +12,7 @@ class CreateBranchesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('branches', function(Blueprint $table)
+		Schema::create('branchs', function(Blueprint $table)
 		{
             $table->increments('id');
 
@@ -40,7 +40,7 @@ class CreateBranchesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('branches');
+		Schema::drop('branchs');
 	}
 
 }

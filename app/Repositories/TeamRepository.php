@@ -8,8 +8,7 @@
 
 namespace App\Repositories;
 
-use App\Team;
-use App\Repositories\EloquentRepositoryAbstract;
+use App\Models\Team;
 
 class TeamRepository extends EloquentRepositoryAbstract
 {
@@ -17,5 +16,8 @@ class TeamRepository extends EloquentRepositoryAbstract
     {
         $this->Database = new Team;
         $this->orderBy = array(array('id', 'asc'));
+        $this->crudFields = array('oper', 'id', 'name', 'detail');
+        $this->uniqueKeySingles = array(array('field'=>'name','label'=>'ชื่อทีม'));
+        $this->uniqueKeyMultiples = array();
     }
 }

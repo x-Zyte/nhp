@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\Bank;
 use App\Facades\GridEncoder;
 use App\Http\Controllers\Controller;
 use App\Repositories\BankRepository;
@@ -28,15 +27,6 @@ class BankController extends Controller {
 
     public function update(Request $request)
     {
-        $input = $request->only('oper', 'id', 'name', 'detail');
-        if($input['oper'] == 'add'){
-            Bank::create($input);
-        }
-        elseif($input['oper'] == 'edit'){
-            Bank::find($input['id'])->update($input);
-        }
-        elseif($input['oper'] == 'del'){
-            Bank::destroy(explode(',',$input['id']));
-        }
+        GridEncoder::encodeRequestedData(new BankRepository(), $request);
     }
 }

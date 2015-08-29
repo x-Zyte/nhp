@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\Branch;
 use App\Facades\GridEncoder;
 use App\Http\Controllers\Controller;
 use App\Repositories\BranchRepository;
@@ -28,15 +27,6 @@ class BranchController extends Controller {
 
     public function update(Request $request)
     {
-        $input = $request->only('oper', 'id', 'name', 'address', 'district', 'amphur', 'province', 'zipcode');
-        if($input['oper'] == 'add'){
-            Branch::create($input);
-        }
-        elseif($input['oper'] == 'edit'){
-            Branch::find($input['id'])->update($input);
-        }
-        elseif($input['oper'] == 'del'){
-            Branch::destroy(explode(',',$input['id']));
-        }
+        GridEncoder::encodeRequestedData(new BranchRepository(), $request);
     }
 }

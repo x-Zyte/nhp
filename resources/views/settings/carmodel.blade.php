@@ -140,6 +140,15 @@
                     },
                     editData: {
                         _token: "{{ csrf_token() }}"
+                    },
+                    afterSubmit : function(response, postdata)
+                    {
+                        if(response.responseText == "ok"){
+                            alert("Succefully")
+                            return [true,""];
+                        }else{
+                            return [false,response.responseText];
+                        }
                     }
                 },
                 {
@@ -167,6 +176,15 @@
                     },
                     editData: {
                         _token: "{{ csrf_token() }}"
+                    },
+                    afterSubmit : function(response, postdata)
+                    {
+                        if(response.responseText == "ok"){
+                            alert("Succefully")
+                            return [true,""];
+                        }else{
+                            return [false,response.responseText];
+                        }
                     }
                 },
                 {
@@ -197,6 +215,15 @@
                     },
                     delData: {
                         _token: "{{ csrf_token() }}"
+                    },
+                    afterSubmit : function(response, postdata)
+                    {
+                        if(response.responseText == "ok"){
+                            alert("Succefully")
+                            return [true,""];
+                        }else{
+                            return [false,response.responseText];
+                        }
                     }
                 },
                 {

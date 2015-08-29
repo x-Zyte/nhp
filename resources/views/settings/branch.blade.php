@@ -126,7 +126,7 @@
                     searchicon : 'ace-icon fa fa-search orange',
                     refresh: true,
                     refreshicon : 'ace-icon fa fa-refresh green',
-                    view: true,
+                    view: false,
                     viewicon : 'ace-icon fa fa-search-plus grey'
                 },
                 {
@@ -152,6 +152,15 @@
                     },
                     editData: {
                         _token: "{{ csrf_token() }}"
+                    },
+                    afterSubmit : function(response, postdata)
+                    {
+                        if(response.responseText == "ok"){
+                            alert("Succefully")
+                            return [true,""];
+                        }else{
+                            return [false,response.responseText];
+                        }
                     }
                 },
                 {
@@ -179,6 +188,15 @@
                     },
                     editData: {
                         _token: "{{ csrf_token() }}"
+                    },
+                    afterSubmit : function(response, postdata)
+                    {
+                        if(response.responseText == "ok"){
+                            alert("Succefully")
+                            return [true,""];
+                        }else{
+                            return [false,response.responseText];
+                        }
                     }
                 },
                 {
@@ -209,6 +227,15 @@
                     },
                     delData: {
                         _token: "{{ csrf_token() }}"
+                    },
+                    afterSubmit : function(response, postdata)
+                    {
+                        if(response.responseText == "ok"){
+                            alert("Succefully")
+                            return [true,""];
+                        }else{
+                            return [false,response.responseText];
+                        }
                     }
                 },
                 {

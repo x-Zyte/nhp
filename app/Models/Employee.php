@@ -1,19 +1,20 @@
-<?php namespace App;
+<?php namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-use App\Log;
 
-class Team extends Model {
+class Employee extends User {
 
-    protected $table = 'teams';
+    protected $table = 'employees';
 
     public $timestamps = false;
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['name', 'detail', 'active',
+    protected $fillable = ['title', 'firstname', 'lastname', 'username', 'password', 'email', 'phone', 'isadmin', 'branchid',
+        'departmentid', 'teamid', 'active', 'remember_token',
         'createdby', 'createddate', 'modifiedby', 'modifieddate'];
+
+    protected $hidden = ['password', 'remember_token'];
 
     public static function boot()
     {
@@ -21,6 +22,12 @@ class Team extends Model {
 
         static::creating(function($model)
         {
+            if($model->isadmin){
+                $model->branchid = null;
+                $model->departmentid = null;
+                $model->teamid = null;
+            }
+            $model->password = bcrypt("nissanhippo");
             $model->createdby = Auth::user()->id;
             $model->createddate = date("Y-m-d H:i:s");
             $model->modifiedby = Auth::user()->id;
@@ -34,6 +41,11 @@ class Team extends Model {
 
         static::updating(function($model)
         {
+            if($model->isadmin){
+                $model->branchid = null;
+                $model->departmentid = null;
+                $model->teamid = null;
+            }
             $model->modifiedby = Auth::user()->id;
             $model->modifieddate = date("Y-m-d H:i:s");
         });
@@ -49,8 +61,18 @@ class Team extends Model {
         });
     }
 
-    public function employees()
+    public function branch()
     {
-        return $this->hasMany('App\Employee', 'teamid', 'id');
+        return $this->belongsTo('App\Branch', 'branchid', 'id');
+    }
+
+    public function department()
+    {
+        return $this->belongsTo('App\Department', 'departmentid', 'id');
+    }
+
+    public function team()
+    {
+        return $this->belongsTo('App\Team', 'teamid', 'id');
     }
 }

@@ -8,8 +8,7 @@
 
 namespace App\Repositories;
 
-use App\CarSubModel;
-use App\Repositories\EloquentRepositoryAbstract;
+use App\Models\CarSubModel;
 
 class CarSubModelRepository extends EloquentRepositoryAbstract
 {
@@ -17,8 +16,9 @@ class CarSubModelRepository extends EloquentRepositoryAbstract
     {
         $this->Database = new CarSubModel;
         $this->orderBy = array(array('id', 'asc'));
-        /*$this->orderBy = array(array('carmodelid', 'asc'), array('name','asc'));*/
-        /*$this->visibleColumns = array('name', 'carmodelid', 'detail', 'active',
-            'createdby', 'createddate', 'modifiedby', 'modifieddate');*/
+        $this->crudFields = array('oper', 'id', 'carmodelid', 'name', 'detail');
+        $this->uniqueKeySingles = array();
+        $this->uniqueKeyMultiples = array(array('field'=>'carmodelid','showInMsg'=>false,'label'=>'แบบรถ'),
+            array('field'=>'name','showInMsg'=>true,'label'=>'แบบรถนี้ รุ่น'));
     }
 }

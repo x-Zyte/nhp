@@ -29,11 +29,11 @@ Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
 Route::post('password/reset', 'Auth\PasswordController@postReset');
 
 //Employee
-Route::get('employee', 'Settings\EmployeeController@index');
-Route::get('employee/read', 'Settings\EmployeeController@read');
-Route::post('employee/update', 'Settings\EmployeeController@update');
-Route::post('employee/check_username', 'Settings\EmployeeController@check_username');
-Route::post('employee/check_email', 'Settings\EmployeeController@check_email');
+Route::get('employee', 'EmployeeController@index');
+Route::get('employee/read', 'EmployeeController@read');
+Route::post('employee/update', 'EmployeeController@update');
+Route::post('employee/check_username', 'EmployeeController@check_username');
+Route::post('employee/check_email', 'EmployeeController@check_email');
 
 //Branch
 Route::get('branch', 'Settings\BranchController@index');
@@ -74,6 +74,11 @@ Route::post('bank/update', 'Settings\BankController@update');
 Route::get('insurancecompany', 'Settings\InsuranceCompanyController@index');
 Route::get('insurancecompany/read', 'Settings\InsuranceCompanyController@read');
 Route::post('insurancecompany/update', 'Settings\InsuranceCompanyController@update');
+
+//Customer
+Route::get('customer', 'CustomerController@index');
+Route::get('customer/read', 'CustomerController@read');
+Route::post('customer/update', 'CustomerController@update');
 
 //Pricelist
 Route::get('pricelist', 'Settings\PricelistController@index');
