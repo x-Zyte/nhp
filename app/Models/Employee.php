@@ -27,6 +27,11 @@ class Employee extends User {
                 $model->departmentid = null;
                 $model->teamid = null;
             }
+            else{
+                if($model->branchid == '') $model->branchid = null;
+                if($model->departmentid == '') $model->departmentid = null;
+                if($model->teamid == '') $model->teamid = null;
+            }
             $model->password = bcrypt("nissanhippo");
             $model->createdby = Auth::user()->id;
             $model->createddate = date("Y-m-d H:i:s");
@@ -45,6 +50,11 @@ class Employee extends User {
                 $model->branchid = null;
                 $model->departmentid = null;
                 $model->teamid = null;
+            }
+            else{
+                if($model->branchid == '') $model->branchid = null;
+                if($model->departmentid == '') $model->departmentid = null;
+                if($model->teamid == '') $model->teamid = null;
             }
             $model->modifiedby = Auth::user()->id;
             $model->modifieddate = date("Y-m-d H:i:s");

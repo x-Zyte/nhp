@@ -60,6 +60,7 @@ class EmployeeController extends Controller {
 
     public function update(Request $request)
     {
+        $input = $request->only('isadmin','branchid','departmentid');
         GridEncoder::encodeRequestedData(new EmployeeRepository(), $request);
     }
 

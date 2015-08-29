@@ -35,7 +35,7 @@
             $(grid_selector).jqGrid({
                 url:'{{ url('/employee/read') }}',
                 datatype: "json",
-                colNames:['คำนำหน้า', 'ชื่อจริง', 'นามสกุล', 'ชื่อเข้าใช้ระบบ', 'อีเมล์', 'โทรศัพท์', 'เป็นผู้ดูแล', 'สาขา', 'แผนก','ทีมขาย', 'เปิดใช้งาน'],
+                colNames:['คำนำหน้า', 'ชื่อจริง', 'นามสกุล', 'ชื่อเข้าใช้ระบบ', 'อีเมล์', 'โทรศัพท์', 'เป็นผู้ดูแล', 'สาขา', 'แผนก','ทีม', 'เปิดใช้งาน'],
                 colModel:[
                     /*{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
                         formatter:'actions',
@@ -56,7 +56,7 @@
                     {name:'branchid',index:'branchid', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$branchselectlist}}"},formoptions:{elmsuffix:'(เป็นผู้ดูแลไม่ต้องเลือก)'}},
                     {name:'departmentid',index:'departmentid', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$departmentselectlist}}"},formoptions:{elmsuffix:'(เป็นผู้ดูแลไม่ต้องเลือก)'}},
                     {name:'teamid',index:'teamid', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$teamselectlist}}"},formoptions:{elmsuffix:'(เป็นผู้ดูแลไม่ต้องเลือก)'}},
-                    {name:'active',index:'active', width:60, editable: true,edittype:"checkbox",editoptions: {value:"1:0"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'}
+                    {name:'active',index:'active', width:60, editable: true,edittype:"checkbox",editoptions: {value:"1:0", defaultValue:"1"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'}
                 ],
                 viewrecords : true,
                 rowNum:10,
