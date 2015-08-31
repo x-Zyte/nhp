@@ -21,17 +21,14 @@ class BranchController extends Controller {
 
     public function index()
     {
-        $provinceids = Branch::distinct()->lists('provinceid');
-        $amphurids = Branch::distinct()->lists('amphurid');
-        $districtids = Branch::distinct()->lists('districtid');
-
-        $provinces = Province::whereIn('id', $provinceids)->orderBy('name', 'asc')->get(['id', 'name']);
+        $provinces = Province::orderBy('name', 'asc')->get(['id', 'name']);
         $provinceselectlist = array();
         array_push($provinceselectlist,':เลือกจังหวัด');
         foreach($provinces as $item){
             array_push($provinceselectlist,$item->id.':'.$item->name);
         }
 
+        $amphurids = Branch::distinct()->lists('amphurid');
         $amphurs = Amphur::whereIn('id', $amphurids)->orderBy('name', 'asc')->get(['id', 'name']);
         $amphurselectlist = array();
         array_push($amphurselectlist,':เลือกเขต/อำเภอ');
@@ -39,6 +36,7 @@ class BranchController extends Controller {
             array_push($amphurselectlist,$item->id.':'.$item->name);
         }
 
+        $districtids = Branch::distinct()->lists('districtid');
         $districts = District::whereIn('id', $districtids)->orderBy('name', 'asc')->get(['id', 'name']);
         $districtselectlist = array();
         array_push($districtselectlist,':เลือกตำบล/แขวง');

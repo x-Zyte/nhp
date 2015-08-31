@@ -95,7 +95,7 @@
                         }
                     },
                     {name:'zipcode',index:'zipcode', width:60,editable: true,editoptions:{size:"5",maxlength:"5"},align:'left'},
-                    {name:'email',index:'email', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},align:'left'},
+                    {name:'email',index:'email', width:100,editable: true,editoptions:{size:"40",maxlength:"50"},align:'left'},
                     {name:'phone',index:'phone', width:70,editable: true,editoptions:{size:"20",maxlength:"20"},align:'left'}
                 ],
                 viewrecords : true,
