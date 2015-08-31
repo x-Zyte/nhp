@@ -60,7 +60,7 @@
                         }
                     },
                     {name:'amphurid',index:'amphurid', width:100, editable: true,edittype:"select",formatter:'select',editrules:{required:true},align:'left',
-                        editoptions:{value: ":เลือกเขต/อำเภอ",
+                        editoptions:{value: "{{$amphurselectlist}}",
                             dataEvents :[{type: 'change', fn: function(e){
                                 var thisval = $(e.target).val();
                                 $.get('district/read/'+thisval, function(data){
@@ -75,7 +75,7 @@
                         }
                     },
                     {name:'districtid',index:'districtid', width:100, editable: true,edittype:"select",formatter:'select',editrules:{required:true},align:'left',
-                        editoptions:{value: ":เลือกตำบล/แขวง",
+                        editoptions:{value: "{{$districtselectlist}}",
                             dataEvents :[{type: 'change', fn: function(e){
                                 var thisval = $(e.target).val();
                                 $.get('zipcode/read/'+thisval, function(data){

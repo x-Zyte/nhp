@@ -11,6 +11,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Branch;
 use App\Facades\GridEncoder;
+use App\Models\Customer;
+use App\Models\SystemDatas\Amphur;
+use App\Models\SystemDatas\District;
 use App\Models\SystemDatas\Province;
 use App\Repositories\CustomerRepository;
 use Illuminate\Http\Request;
@@ -26,22 +29,44 @@ class CustomerController extends Controller {
 
     public function index()
     {
-        $branchs = Branch::all(['id','name']);
+        $branchids = Customer::distinct()->lists('branchid');
+        $provinceids = Customer::distinct()->lists('provinceid');
+        $amphurids = Customer::distinct()->lists('amphurid');
+        $districtids = Customer::distinct()->lists('districtid');
+
+        $branchs = Branch::whereIn('id', $branchids)->orderBy('name', 'asc')->get(['id', 'name']);
         $branchselectlist = array();
         array_push($branchselectlist,':เลือกสาขา');
         foreach($branchs as $item){
             array_push($branchselectlist,$item->id.':'.$item->name);
         }
 
-        $provinces = Province::all(['id','name']);
+        $provinces = Province::whereIn('id', $provinceids)->orderBy('name', 'asc')->get(['id', 'name']);
         $provinceselectlist = array();
         array_push($provinceselectlist,':เลือกจังหวัด');
         foreach($provinces as $item){
             array_push($provinceselectlist,$item->id.':'.$item->name);
         }
 
+        $amphurs = Amphur::whereIn('id', $amphurids)->orderBy('name', 'asc')->get(['id', 'name']);
+        $amphurselectlist = array();
+        array_push($amphurselectlist,':เลือกเขต/อำเภอ');
+        foreach($amphurs as $item){
+            array_push($amphurselectlist,$item->id.':'.$item->name);
+        }
+
+        $districts = District::whereIn('id', $districtids)->orderBy('name', 'asc')->get(['id', 'name']);
+        $districtselectlist = array();
+        array_push($districtselectlist,':เลือกตำบล/แขวง');
+        foreach($districts as $item){
+            array_push($districtselectlist,$item->id.':'.$item->name);
+        }
+
         return view('customer',
-            ['branchselectlist' => implode(";",$branchselectlist), 'provinceselectlist' => implode(";",$provinceselectlist)]);
+            ['branchselectlist' => implode(";",$branchselectlist),
+                'provinceselectlist' => implode(";",$provinceselectlist),
+                'amphurselectlist' => implode(";",$amphurselectlist),
+                'districtselectlist' => implode(";",$districtselectlist)]);
     }
 
     public function read()

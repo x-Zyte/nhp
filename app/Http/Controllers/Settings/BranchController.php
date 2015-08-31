@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Settings;
 
 use App\Facades\GridEncoder;
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
+use App\Models\SystemDatas\Amphur;
+use App\Models\SystemDatas\District;
 use App\Models\SystemDatas\Province;
 use App\Repositories\BranchRepository;
 use Illuminate\Http\Request;
@@ -18,14 +21,34 @@ class BranchController extends Controller {
 
     public function index()
     {
-        $provinces = Province::all(['id','name']);
+        $provinceids = Branch::distinct()->lists('provinceid');
+        $amphurids = Branch::distinct()->lists('amphurid');
+        $districtids = Branch::distinct()->lists('districtid');
+
+        $provinces = Province::whereIn('id', $provinceids)->orderBy('name', 'asc')->get(['id', 'name']);
         $provinceselectlist = array();
         array_push($provinceselectlist,':เลือกจังหวัด');
         foreach($provinces as $item){
             array_push($provinceselectlist,$item->id.':'.$item->name);
         }
 
-        return view('settings.branch',['provinceselectlist' => implode(";",$provinceselectlist)]);
+        $amphurs = Amphur::whereIn('id', $amphurids)->orderBy('name', 'asc')->get(['id', 'name']);
+        $amphurselectlist = array();
+        array_push($amphurselectlist,':เลือกเขต/อำเภอ');
+        foreach($amphurs as $item){
+            array_push($amphurselectlist,$item->id.':'.$item->name);
+        }
+
+        $districts = District::whereIn('id', $districtids)->orderBy('name', 'asc')->get(['id', 'name']);
+        $districtselectlist = array();
+        array_push($districtselectlist,':เลือกตำบล/แขวง');
+        foreach($districts as $item){
+            array_push($districtselectlist,$item->id.':'.$item->name);
+        }
+
+        return view('settings.branch',['provinceselectlist' => implode(";",$provinceselectlist),
+            'amphurselectlist' => implode(";",$amphurselectlist),
+            'districtselectlist' => implode(";",$districtselectlist)]);
     }
 
     public function read()
