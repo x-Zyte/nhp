@@ -80,6 +80,15 @@ Route::get('customer', 'CustomerController@index');
 Route::get('customer/read', 'CustomerController@read');
 Route::post('customer/update', 'CustomerController@update');
 
+//CustomerExpectation
+Route::get('customerexpectation/read', 'CustomerExpectationController@read');
+Route::post('customerexpectation/update', 'CustomerExpectationController@update');
+
+//Car
+Route::get('car', 'CarController@index');
+Route::get('car/read', 'CarController@read');
+Route::post('car/update', 'CarController@update');
+
 //Pricelist
 Route::get('pricelist', 'Settings\PricelistController@index');
 Route::get('pricelist/read', 'Settings\PricelistController@read');

@@ -18,18 +18,26 @@ class CreateCarsTable extends Migration {
 
             $table->integer('branchid')->unsigned();
             $table->foreign('branchid')->references('id')->on('branchs');
-            $table->integer('cartypeid')->unsigned();
-            $table->foreign('cartypeid')->references('id')->on('car_types');
+            $table->integer('carmodelid')->unsigned();
+            $table->foreign('carmodelid')->references('id')->on('car_models');
+            $table->integer('carsubmodelid')->unsigned();
+            $table->foreign('carsubmodelid')->references('id')->on('car_submodels');
             $table->string('no',10);
             $table->dateTime('dodate');
             $table->dateTime('receiveddate');
             $table->string('engineno',50);
+            $table->unique('engineno');
             $table->string('chassisno',50);
+            $table->unique('chassisno');
             $table->integer('keyno')->unsigned();
-            $table->string('model',50);
-            $table->string('submodel',50);
             $table->string('colour',10);
-            $table->boolean('iscompanycar')->default(false);
+            $table->integer('objective')->comment('0:ขาย, 1:ใช้งาน, 2:ทดสอบ');
+            $table->integer('receivetype')->comment('0:ปกติ, 1:ประมูล');;
+            $table->string('receivecarfilepath',2083)->nullable();
+            $table->string('deliverycarfilepath',2083)->nullable();
+            $table->boolean('issold')->default(false);
+            $table->boolean('isregistered')->default(false);
+            $table->boolean('isdelivered')->default(false);
 
             $table->integer('createdby')->unsigned();
             $table->foreign('createdby')->references('id')->on('employees');

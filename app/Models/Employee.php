@@ -73,16 +73,16 @@ class Employee extends User {
 
     public function branch()
     {
-        return $this->belongsTo('App\Branch', 'branchid', 'id');
+        return $this->belongsTo('App\Models\Branch', 'branchid', 'id');
     }
 
     public function department()
     {
-        return $this->belongsTo('App\Department', 'departmentid', 'id');
+        return $this->belongsTo('App\Models\Department', 'departmentid', 'id');
     }
 
     public function team()
     {
-        return $this->belongsTo('App\Team', 'teamid', 'id');
+        return $this->belongsTo('App\Models\Team', 'teamid', 'id');
     }
 }

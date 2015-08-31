@@ -50,6 +50,6 @@ class CarType extends Model {
 
     public function carModel()
     {
-        return $this->hasMany('App\CarModel', 'cartypeid', 'id');
+        return $this->hasMany('App\Models\CarModel', 'cartypeid', 'id');
     }
 }

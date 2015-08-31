@@ -149,7 +149,7 @@
                 <b class="arrow"></b>
             </li>
 
-            <li class="@yield('menu-customer-class')">
+            <li class="@yield('menu-stock-class')" style="display: none">
                 <a href="javascript:void(0)">
                     <i class="menu-icon fa fa-archive"></i>
                     <span class="menu-text"> การคลัง </span>
@@ -158,7 +158,7 @@
                 <b class="arrow"></b>
             </li>
 
-            <li class="@yield('menu-selling-class')">
+            <li class="@yield('menu-selling-class')"  style="display: none">
                 <a href="javascript:void(0)">
                     <i class="menu-icon fa fa-barcode"></i>
                     <span class="menu-text"> การขาย </span>
@@ -167,10 +167,19 @@
                 <b class="arrow"></b>
             </li>
 
-            <li class="@yield('menu-registration-class')">
+            <li class="@yield('menu-registration-class')"  style="display: none">
                 <a href="javascript:void(0)">
                     <i class="menu-icon fa fa-pencil-square-o"></i>
                     <span class="menu-text"> การเงินและบัญชี </span>
+                </a>
+
+                <b class="arrow"></b>
+            </li>
+
+            <li class="@yield('menu-car-class')">
+                <a href="{{ url('/car') }}">
+                    <i class="menu-icon fa fa-car"></i>
+                    <span class="menu-text"> รถ </span>
                 </a>
 
                 <b class="arrow"></b>

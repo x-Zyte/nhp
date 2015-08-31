@@ -19,5 +19,6 @@ class InsuranceCompanyRepository extends EloquentRepositoryAbstract
         $this->crudFields = array('oper', 'id', 'name', 'detail');
         $this->uniqueKeySingles = array(array('field'=>'name','label'=>'ชื่อบริษัทประกัน'));
         $this->uniqueKeyMultiples = array();
+        $this->hasBranch = false;
     }
 }

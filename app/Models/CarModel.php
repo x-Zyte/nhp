@@ -50,11 +50,11 @@ class CarModel extends Model {
 
     public function cartype()
     {
-        return $this->belongsTo('App\CarType', 'cartypeid', 'id');
+        return $this->belongsTo('App\Models\CarType', 'cartypeid', 'id');
     }
 
     public function carSubModel()
     {
-        return $this->hasMany('App\CarSubModel', 'carmodelid', 'id');
+        return $this->hasMany('App\Models\CarSubModel', 'carmodelid', 'id');
     }
 }

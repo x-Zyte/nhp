@@ -50,16 +50,16 @@ class Branch extends Model {
 
     public function employees()
     {
-        return $this->hasMany('App\Employee', 'branchid', 'id');
+        return $this->hasMany('App\Models\Employee', 'branchid', 'id');
     }
 
     public function customers()
     {
-        return $this->hasMany('App\Customer', 'branchid', 'id');
+        return $this->hasMany('App\Models\Customer', 'branchid', 'id');
     }
 
     public function cars()
     {
-        return $this->hasMany('App\Car', 'branchid', 'id');
+        return $this->hasMany('App\Models\Car', 'branchid', 'id');
     }
 }
