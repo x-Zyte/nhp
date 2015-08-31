@@ -11,7 +11,7 @@ class Customer extends Model {
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['title', 'firstname', 'lastname', 'address', 'district', 'amphur', 'province', 'zipcode',
+    protected $fillable = ['title', 'firstname', 'lastname', 'address', 'districtid', 'amphurid', 'provinceid', 'zipcode',
         'email', 'phone', 'branchid',
         'createdby', 'createddate', 'modifiedby', 'modifieddate'];
 

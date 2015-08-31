@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Branch;
 use App\Facades\GridEncoder;
+use App\Models\SystemDatas\Province;
 use App\Repositories\CustomerRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -32,8 +33,15 @@ class CustomerController extends Controller {
             array_push($branchselectlist,$item->id.':'.$item->name);
         }
 
+        $provinces = Province::all(['id','name']);
+        $provinceselectlist = array();
+        array_push($provinceselectlist,':เลือกจังหวัด');
+        foreach($provinces as $item){
+            array_push($provinceselectlist,$item->id.':'.$item->name);
+        }
+
         return view('customer',
-            ['branchselectlist' => implode(";",$branchselectlist)]);
+            ['branchselectlist' => implode(";",$branchselectlist), 'provinceselectlist' => implode(";",$provinceselectlist)]);
     }
 
     public function read()

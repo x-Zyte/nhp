@@ -18,10 +18,13 @@ class CreateBranchsTable extends Migration {
 
             $table->string('name',50);
             $table->text('address');
-            $table->string('district',50);
-            $table->string('amphur',50);
-            $table->string('province',50);
-            $table->integer('zipcode');
+            $table->integer('districtid')->unsigned();
+            $table->foreign('districtid')->references('id')->on('districts');
+            $table->integer('amphurid')->unsigned();
+            $table->foreign('amphurid')->references('id')->on('amphurs');
+            $table->integer('provinceid')->unsigned();
+            $table->foreign('provinceid')->references('id')->on('provinces');
+            $table->string('zipcode',5);
             $table->boolean('active')->default(true);
 
             $table->integer('createdby')->unsigned();

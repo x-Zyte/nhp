@@ -28,6 +28,13 @@ Route::post('password/email', 'Auth\PasswordController@postEmail');
 Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
 Route::post('password/reset', 'Auth\PasswordController@postReset');
 
+//Amphur
+Route::get('amphur/read/{provinceid}', 'SystemDatas\AmphurController@read');
+//District
+Route::get('district/read/{amphurid}', 'SystemDatas\DistrictController@read');
+//Zipcode
+Route::get('zipcode/read/{districtid}', 'SystemDatas\ZipcodeController@read');
+
 //Employee
 Route::get('employee', 'EmployeeController@index');
 Route::get('employee/read', 'EmployeeController@read');
