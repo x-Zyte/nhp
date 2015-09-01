@@ -66,7 +66,7 @@
                         }
                     },
                     {name:'amphurid',index:'amphurid', width:80, editable: true,edittype:"select",formatter:'select',align:'left',
-                        editoptions:{value: ":เลือกเขต/อำเภอ",
+                        editoptions:{value: "{{$amphurselectlist}}",
                             dataEvents :[{type: 'change', fn: function(e){
                                 var thisval = $(e.target).val();
                                 $.get('district/read/'+thisval, function(data){
@@ -81,7 +81,7 @@
                         }
                     },
                     {name:'districtid',index:'districtid', width:80, editable: true,edittype:"select",formatter:'select',align:'left',
-                        editoptions:{value: ":เลือกตำบล/แขวง",
+                        editoptions:{value: "{{$districtselectlist}}",
                             dataEvents :[{type: 'change', fn: function(e){
                                 var thisval = $(e.target).val();
                                 $.get('zipcode/read/'+thisval, function(data){
@@ -424,6 +424,26 @@
                         form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
                         style_edit_form(form);
 
+                        var provinceid = $('#provinceid').val();
+                        var amphurid = $('#amphurid').val();
+                        var districtid = $('#districtid').val();
+
+                        $.get('amphur/read/'+provinceid, function(data){
+                            $('#amphurid').children('option:not(:first)').remove();
+                            $.each(data, function(i, option) {
+                                $('#amphurid').append($('<option/>').attr("value", option.id).text(option.name));
+                            });
+                            $('#amphurid').val(amphurid);
+                        });
+
+                        $.get('district/read/'+amphurid, function(data){
+                            $('#districtid').children('option:not(:first)').remove();
+                            $.each(data, function(i, option) {
+                                $('#districtid').append($('<option/>').attr("value", option.id).text(option.name));
+                            });
+                            $('#districtid').val(districtid);
+                        });
+
                         var dlgDiv = $("#editmod" + jQuery(grid_selector)[0].id);
                         var parentDiv = dlgDiv.parent(); // div#gbox_list
                         var dlgWidth = dlgDiv.width();
@@ -460,6 +480,9 @@
                         form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
                                 .wrapInner('<div class="widget-header" />')
                         style_edit_form(form);
+
+                        $('#amphurid').children('option:not(:first)').remove();
+                        $('#districtid').children('option:not(:first)').remove();
 
                         var dlgDiv = $("#editmod" + jQuery(grid_selector)[0].id);
                         var parentDiv = dlgDiv.parent(); // div#gbox_list
