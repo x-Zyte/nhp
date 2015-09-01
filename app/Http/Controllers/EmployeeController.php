@@ -8,7 +8,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Models\Branch;
 use App\Models\Department;
 use App\Facades\GridEncoder;

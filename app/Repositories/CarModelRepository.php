@@ -20,5 +20,6 @@ class CarModelRepository extends EloquentRepositoryAbstract
         $this->uniqueKeySingles = array();
         $this->uniqueKeyMultiples = array(array('field'=>'cartypeid','showInMsg'=>false,'label'=>'ประเภทรถ'),
             array('field'=>'name','showInMsg'=>true,'label'=>'ประเภทรถนี้ แบบ'));
+        $this->hasBranch = false;
     }
 }

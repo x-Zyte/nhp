@@ -1,10 +1,10 @@
 @extends('app')
 
-@section('menu-employee-class','active')
+@section('menu-car-class','active')
 
 @section('content')
 
-    <h3 class="header smaller lighter blue"><i class="ace-icon fa fa-male"></i> พนักงาน</h3>
+    <h3 class="header smaller lighter blue"><i class="ace-icon fa fa-car"></i> รถ</h3>
 
     <table id="grid-table"></table>
 
@@ -33,30 +33,27 @@
             })
 
             $(grid_selector).jqGrid({
-                url:'employee/read',
+                url:'car/read',
                 datatype: "json",
-                colNames:['คำนำหน้า', 'ชื่อจริง', 'นามสกุล', 'ชื่อเข้าใช้ระบบ', 'อีเมล์', 'โทรศัพท์', 'เป็นผู้ดูแล', 'สาขา', 'แผนก','ทีม', 'เปิดใช้งาน'],
+                colNames:['สาขา','แบบ','รุ่น','คันที่', 'วันที่ออก Do', 'วันที่รับรถเข้า', 'เลขเครื่อง', 'เลขตัวถัง', 'กุญแจ', 'สี', 'รถสำหรับ', 'ประเภทรับรถเข้า', 'ขายแล้ว', 'จดทะเบียนแล้ว', 'ส่งมอบแล้ว','ใบรับรถเข้า', 'ใบส่งรถให้ลูกค้า'],
                 colModel:[
-                    /*{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
-                        formatter:'actions',
-                        formatoptions:{
-                            keys:true,
-                            delOptions:{recreateForm: true, beforeShowForm:beforeDeleteCallback}
-                            //editformbutton:true, editOptions:{recreateForm: true, beforeShowForm:beforeEditCallback}
-                        }
-                    },*/
-                    //{hidden: true},
-                    {name:'title',index:'title', width:60, editable: true,edittype:"select",formatter:'select',editoptions:{value: "นาย:นาย;นาง:นาง;นางสาว:นางสาว"},align:'left'},
-                    {name:'firstname',index:'firstname', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
-                    {name:'lastname',index:'lastname', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
-                    {name:'username',index:'username', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true, custom: false, custom_func: check_username},align:'left'},
-                    {name:'email',index:'email', width:120,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true,email:true, custom: false, custom_func: check_email},align:'left'},
-                    {name:'phone',index:'phone', width:100,editable: true,editoptions:{size:"20",maxlength:"20"},editrules:{},align:'left'},
-                    {name:'isadmin',index:'isadmin', width:60, editable: true,edittype:"checkbox",editoptions: {value:"1:0"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'},
-                    {name:'branchid',index:'branchid', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$branchselectlist}}"},formoptions:{elmsuffix:'(เป็นผู้ดูแลไม่ต้องเลือก)'}},
-                    {name:'departmentid',index:'departmentid', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$departmentselectlist}}"},formoptions:{elmsuffix:'(เป็นผู้ดูแลไม่ต้องเลือก)'}},
-                    {name:'teamid',index:'teamid', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$teamselectlist}}"},formoptions:{elmsuffix:'(เป็นผู้ดูแลไม่ต้องเลือก)'}},
-                    {name:'active',index:'active', width:60, editable: true,edittype:"checkbox",editoptions: {value:"1:0", defaultValue:"1"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'}
+                    {name:'branchid',index:'branchid', width:80, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$branchselectlist}}"}},
+                    {name:'carmodelid',index:'carmodelid', width:80, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$carmodelselectlist}}"}},
+                    {name:'carsubmodelid',index:'carsubmodelid', width:80, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$carsubmodelselectlist}}"}},
+                    {name:'no',index:'no', width:50,editable: true,editoptions:{size:"5"},editrules:{required:true},align:'left'},
+                    {name:'dodate',index:'dodate',width:80, editable:true, sorttype:"date", formatter: "date", unformat: pickDate, editoptions:{size:"10",dataInit:function(elem){$(elem).datepicker({format:'dd-mm-yyyy', autoclose:true});}}, editrules:{required:true}, align:'center'},
+                    {name:'receiveddate',index:'receiveddate',width:80, editable:true, sorttype:"date", formatter: "date", unformat: pickDate, editoptions:{size:"10",dataInit:function(elem){$(elem).datepicker({format:'dd-mm-yyyy', autoclose:true});}}, editrules:{required:true}, align:'center'},
+                    {name:'engineno',index:'engineno', width:80,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
+                    {name:'chassisno',index:'chassisno', width:80,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
+                    {name:'keyno',index:'keyno', width:50,editable: true,editoptions:{size:"5"},editrules:{required:true, number:true},align:'center'},
+                    {name:'colour',index:'colour', width:50,editable: true,editoptions:{size:"10",maxlength:"10"},editrules:{required:true},align:'left'},
+                    {name:'objective',index:'objective', width:50, editable: true,edittype:"select",formatter:'select',editoptions:{value: "0:ขาย;1:ใช้งาน;2:ทดสอบ"},align:'left'},
+                    {name:'receivetype',index:'receivetype', width:50, editable: true,edittype:"select",formatter:'select',editoptions:{value: "0:ปกติ;1:ประมูล"},align:'left'},
+                    {name:'issold',index:'issold', width:50, editable: true,edittype:"checkbox",editoptions: {value:"1:0", defaultValue:"0"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'},
+                    {name:'isregistered',index:'isregistered', width:50, editable: true,edittype:"checkbox",editoptions: {value:"1:0", defaultValue:"0"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'},
+                    {name:'isdelivered',index:'isdelivered', width:50, editable: true,edittype:"checkbox",editoptions: {value:"1:0", defaultValue:"0"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'},
+                    {name:'receivecarfilepath',index:'receivecarfilepath',width:100,editable: true,edittype:'file',editoptions:{enctype:"multipart/form-data"},search:false,align:'left'},
+                    {name:'deliverycarfilepath',index:'receivecarfilepath',width:100,editable: true,edittype:'file',editoptions:{enctype:"multipart/form-data"},search:false,align:'left'}
                 ],
                 viewrecords : true,
                 rowNum:10,
@@ -77,46 +74,12 @@
                     }, 0);
                 },
 
-                editurl: "employee/update",//nothing is saved
+                editurl: "car/update",
                 caption: "",
                 height:'100%'
             });
 
             $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
-
-            function check_username(value, colname) {
-                var selRowId = $(grid_selector).jqGrid ('getGridParam', 'selrow');
-                if(selRowId == null) selRowId = 0;
-                $.ajax({
-                    url: 'employee/check_username',
-                    data: { id:selRowId, username: value, _token: "{{ csrf_token() }}" },
-                    type: 'POST',
-                    async: false,
-                    datatype: 'text',
-                    success: function (data) {
-                        if (!data) result = [true, ""];
-                        else result = [false, colname + ": ชื่อเข้าใช้ระบบนี้ถูกใช้ไปแล้ว"];
-                    }
-                })
-                return result;
-            }
-
-            function check_email(value, colname) {
-                var selRowId = $(grid_selector).jqGrid ('getGridParam', 'selrow');
-                if(selRowId == null) selRowId = 0;
-                $.ajax({
-                    url: 'employee/check_email',
-                    data: { id:selRowId, email: value, _token: "{{ csrf_token() }}" },
-                    type: 'POST',
-                    async: false,
-                    datatype: 'text',
-                    success: function (data) {
-                        if (!data) result = [true, ""];
-                        else result = [false, colname + ": อีเมล์นี้ถูกใช้ไปแล้ว"];
-                    }
-                })
-                return result;
-            }
 
             function booleanFormatter( cellvalue, options, cell ) {
                 if (cellvalue == '1') {
@@ -224,6 +187,12 @@
                     },
                     editData: {
                         _token: "{{ csrf_token() }}"
+                    },
+                    beforeSubmit : function(postdata, formid) {
+                        var filename = $( "#receivecarfilepath" ).val();
+                        alert(filename);
+                        alert(postdata);
+                        alert(formid);
                     },
                     afterSubmit : function(response, postdata)
                     {

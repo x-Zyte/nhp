@@ -42,15 +42,61 @@
             $(grid_selector).jqGrid({
                 url:'{{ url('/customer/read') }}',
                 datatype: "json",
-                colNames:['คำนำหน้า', 'ชื่อจริง', 'นามสกุล', 'ที่อยู่', 'อีเมล์', 'โทรศัพท์', 'สาขา'],
+                colNames:['สาขา', 'คำนำหน้า', 'ชื่อจริง', 'นามสกุล', 'ที่อยู่', 'จังหวัด', 'เขต/อำเภอ', 'แขวง/ตำบล', 'รหัสไปรษณีย์', 'อีเมล์', 'โทรศัพท์'],
                 colModel:[
-                    {name:'title',index:'title', width:60, editable: true,edittype:"select",formatter:'select',editoptions:{value: "นาย:นาย;นาง:นาง;นางสาว:นางสาว"},align:'left'},
+                    {name:'branchid',index:'branchid', width:70, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$branchselectlist}}", defaultValue:defaultBranch},editrules:{required:true},hidden:hiddenBranch},
+                    {name:'title',index:'title', width:50, editable: true,edittype:"select",formatter:'select',editoptions:{value: "นาย:นาย;นาง:นาง;นางสาว:นางสาว"},align:'left'},
                     {name:'firstname',index:'firstname', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
                     {name:'lastname',index:'lastname', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
-                    {name:'address',index:'address', width:300,editable: true,edittype:'textarea',editoptions:{rows:"2",cols:"40"},editrules:{},align:'left'},
-                    {name:'email',index:'email', width:120,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{email:true},align:'left'},
-                    {name:'phone',index:'phone', width:100,editable: true,editoptions:{size:"20",maxlength:"20"},editrules:{},align:'left'},
-                    {name:'branchid',index:'branchid', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$branchselectlist}}", defaultValue:defaultBranch},hidden:hiddenBranch}
+                    {name:'address',index:'address', width:100,editable: true,editoptions:{size:"50",maxlength:"200"},align:'left'},
+                    {name:'provinceid',index:'provinceid', width:80, editable: true,edittype:"select",formatter:'select',align:'left',
+                        editoptions:{value: "{{$provinceselectlist}}",
+                            dataEvents :[{type: 'change', fn: function(e){
+                                var thisval = $(e.target).val();
+                                $.get('amphur/read/'+thisval, function(data){
+                                    $('#amphurid').children('option:not(:first)').remove();
+                                    $('#districtid').children('option:not(:first)').remove();
+                                    //$('#zipcodeid').children('option:not(:first)').remove();
+                                    $('#zipcode').val('');
+                                    $.each(data, function(i, option) {
+                                        $('#amphurid').append($('<option/>').attr("value", option.id).text(option.name));
+                                    });
+                                });
+                            }}]
+                        }
+                    },
+                    {name:'amphurid',index:'amphurid', width:80, editable: true,edittype:"select",formatter:'select',align:'left',
+                        editoptions:{value: "{{$amphurselectlist}}",
+                            dataEvents :[{type: 'change', fn: function(e){
+                                var thisval = $(e.target).val();
+                                $.get('district/read/'+thisval, function(data){
+                                    $('#districtid').children('option:not(:first)').remove();
+                                    //$('#zipcodeid').children('option:not(:first)').remove();
+                                    $('#zipcode').val('');
+                                    $.each(data, function(i, option) {
+                                        $('#districtid').append($('<option/>').attr("value", option.id).text(option.name));
+                                    });
+                                });
+                            }}]
+                        }
+                    },
+                    {name:'districtid',index:'districtid', width:80, editable: true,edittype:"select",formatter:'select',align:'left',
+                        editoptions:{value: "{{$districtselectlist}}",
+                            dataEvents :[{type: 'change', fn: function(e){
+                                var thisval = $(e.target).val();
+                                $.get('zipcode/read/'+thisval, function(data){
+                                    $('#zipcode').val(data.code);
+                                    //$('#zipcodeid').children('option:not(:first)').remove();
+                                    //$.each(data, function(i, option) {
+                                    //$('#zipcodeid').append($('<option/>').attr("value", option.id).text(option.code));
+                                    //});
+                                });
+                            }}]
+                        }
+                    },
+                    {name:'zipcode',index:'zipcode', width:60,editable: true,editoptions:{size:"5",maxlength:"5"},align:'left'},
+                    {name:'email',index:'email', width:100,editable: true,editoptions:{size:"40",maxlength:"50"},align:'left'},
+                    {name:'phone',index:'phone', width:70,editable: true,editoptions:{size:"20",maxlength:"20"},align:'left'}
                 ],
                 viewrecords : true,
                 rowNum:10,
@@ -71,9 +117,253 @@
                     }, 0);
                 },
 
-                editurl: "customer/update",//nothing is saved
+                editurl: "customer/update",
                 caption: "",
-                height:'100%'
+                height:'100%',
+                subGrid: true,
+                subGridOptions : {
+                    plusicon : "ace-icon fa fa-plus center bigger-110 blue",
+                    minusicon  : "ace-icon fa fa-minus center bigger-110 blue",
+                    openicon : "ace-icon fa fa-chevron-right center orange"
+                },
+                subGridRowExpanded: function(subgrid_id, row_id) {
+                    var subgrid_table_id, pager_id;
+                    subgrid_table_id = subgrid_id+"_t";
+                    pager_id = "p_"+subgrid_table_id;
+
+                    //resize to fit page size
+                    $(window).on('resize.jqGridSubGrid', function () {
+                        $("#"+subgrid_table_id).jqGrid( 'setGridWidth', $(grid_selector).width() - 55);
+                    })
+                    //resize on sidebar collapse/expand
+                    var parent_column = $("#"+subgrid_table_id).closest('[class*="col-"]');
+                    $(document).on('settings.ace.jqGrid' , function(ev, event_name, collapsed) {
+                        if( event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed' ) {
+                            $("#"+subgrid_table_id).jqGrid( 'setGridWidth', parent_column.width() );
+                        }
+                    })
+
+                    //desired_width = $(grid_selector).width();
+                    //desired_width -= 55;
+                    $("#"+subgrid_id).html("<table id='"+subgrid_table_id+"' class='scroll'></table><div id='"+pager_id+"' class='scroll'></div>");
+                    jQuery("#"+subgrid_table_id).jqGrid({
+                        url:'customerexpectation/read?customerid='+row_id,
+                        datatype: "json",
+                        colNames:['วันที่', 'รายละเอียด'],
+                        colModel:[
+                            {name:'date',index:'date',width:90, editable:true, sorttype:"date", formatter: "date", unformat: pickDate, editoptions:{dataInit:function(elem){$(elem).datepicker({format:'dd-mm-yyyy', autoclose:true});}}, editrules:{required:true}, align:'center'},
+                            {name:'details',index:'details', width:300,editable: true,edittype:'textarea',editoptions:{rows:"2",cols:"40"},editrules:{required:true},align:'left'}
+                        ],
+                        viewrecords : true,
+                        rowNum:10,
+                        rowList:[10,20,30],
+                        pager : pager_id,
+                        altRows: true,
+                        multiselect: true,
+                        multiboxonly: true,
+
+                        loadComplete : function() {
+                            var table = this;
+                            setTimeout(function(){
+                                styleCheckbox(table);
+
+                                updateActionIcons(table);
+                                updatePagerIcons(table);
+                                enableTooltips(table);
+                            }, 0);
+                        },
+
+                        editurl: "customerexpectation/update",
+                        caption: "ความคาดหวัง",
+                        height:'100%'
+                        //width:desired_width
+                    });
+
+                    $(window).triggerHandler('resize.jqGridSubGrid');
+
+                    jQuery("#"+subgrid_table_id).jqGrid('navGrid',"#"+pager_id,
+                            { 	//navbar options
+                                edit: true,
+                                editicon : 'ace-icon fa fa-pencil blue',
+                                add: true,
+                                addicon : 'ace-icon fa fa-plus-circle purple',
+                                del: true,
+                                delicon : 'ace-icon fa fa-trash-o red',
+                                search: true,
+                                searchicon : 'ace-icon fa fa-search orange',
+                                refresh: true,
+                                refreshicon : 'ace-icon fa fa-refresh green',
+                                view: false,
+                                viewicon : 'ace-icon fa fa-search-plus grey'
+                            },
+                            {
+                                //edit record form
+                                closeAfterEdit: true,
+                                width: 500,
+                                recreateForm: true,
+                                beforeShowForm : function(e) {
+                                    var form = $(e[0]);
+                                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+                                    style_edit_form(form);
+
+                                    var dlgDiv = $("#editmod" + jQuery("#"+subgrid_table_id)[0].id);
+                                    var parentDiv = dlgDiv.parent(); // div#gbox_list
+                                    var dlgWidth = dlgDiv.width();
+                                    var parentWidth = parentDiv.width();
+                                    //var dlgHeight = dlgDiv.height();
+                                    //var parentHeight = parentDiv.height();
+                                    //var parentTop = parentDiv.offset().top;
+                                    var parentLeft = parentDiv.offset().left;
+                                    //dlgDiv[0].style.top =  Math.round(  (parentTop+160)  + (parentHeight-dlgHeight)/2  ) + "px";
+                                    dlgDiv[0].style.left = Math.round(  parentLeft + (parentWidth-dlgWidth  )/2 )  + "px";
+                                },
+                                editData: {
+                                    _token: "{{ csrf_token() }}",
+                                    customerid: row_id
+                                },
+                                afterSubmit : function(response, postdata)
+                                {
+                                    if(response.responseText == "ok"){
+                                        alert("Succefully")
+                                        return [true,""];
+                                    }else{
+                                        return [false,response.responseText];
+                                    }
+                                }
+                            },
+                            {
+                                //new record form
+                                width: 500,
+                                closeAfterAdd: true,
+                                recreateForm: true,
+                                viewPagerButtons: false,
+                                beforeShowForm : function(e) {
+                                    jQuery("#"+subgrid_table_id).jqGrid('resetSelection');
+                                    var form = $(e[0]);
+                                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
+                                            .wrapInner('<div class="widget-header" />')
+                                    style_edit_form(form);
+
+                                    var dlgDiv = $("#editmod" + jQuery("#"+subgrid_table_id)[0].id);
+                                    var parentDiv = dlgDiv.parent(); // div#gbox_list
+                                    var dlgWidth = dlgDiv.width();
+                                    var parentWidth = parentDiv.width();
+                                    //var dlgHeight = dlgDiv.height();
+                                    //var parentHeight = parentDiv.height();
+                                    //var parentTop = parentDiv.offset().top;
+                                    var parentLeft = parentDiv.offset().left;
+                                    //dlgDiv[0].style.top =  Math.round(  (parentTop+160)  + (parentHeight-dlgHeight)/2  ) + "px";
+                                    dlgDiv[0].style.left = Math.round(  parentLeft + (parentWidth-dlgWidth  )/2 )  + "px";
+                                },
+                                editData: {
+                                    _token: "{{ csrf_token() }}",
+                                    customerid: row_id
+                                },
+                                afterSubmit : function(response, postdata)
+                                {
+                                    if(response.responseText == "ok"){
+                                        alert("Succefully")
+                                        return [true,""];
+                                    }else{
+                                        return [false,response.responseText];
+                                    }
+                                }
+                            },
+                            {
+                                //delete record form
+                                recreateForm: true,
+                                beforeShowForm : function(e) {
+                                    var form = $(e[0]);
+                                    if(form.data('styled')) return false;
+
+                                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+                                    style_delete_form(form);
+
+                                    form.data('styled', true);
+
+                                    var dlgDiv = $("#delmod" + jQuery(grid_selector)[0].id);
+                                    var parentDiv = dlgDiv.parent(); // div#gbox_list
+                                    var dlgWidth = dlgDiv.width();
+                                    var parentWidth = parentDiv.width();
+                                    //var dlgHeight = dlgDiv.height();
+                                    //var parentHeight = parentDiv.height();
+                                    //var parentTop = parentDiv.offset().top;
+                                    var parentLeft = parentDiv.offset().left;
+                                    //dlgDiv[0].style.top =  Math.round(  (parentTop+160)  + (parentHeight-dlgHeight)/2  ) + "px";
+                                    dlgDiv[0].style.left = Math.round(  parentLeft + (parentWidth-dlgWidth  )/2 )  + "px";
+                                },
+                                onClick : function(e) {
+                                    alert(1);
+                                },
+                                delData: {
+                                    _token: "{{ csrf_token() }}"
+                                },
+                                afterSubmit : function(response, postdata)
+                                {
+                                    if(response.responseText == "ok"){
+                                        alert("Succefully")
+                                        return [true,""];
+                                    }else{
+                                        return [false,response.responseText];
+                                    }
+                                }
+                            },
+                            {
+                                //search form
+                                recreateForm: true,
+                                afterShowSearch: function(e){
+                                    var form = $(e[0]);
+                                    form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
+                                    style_search_form(form);
+
+                                    var dlgDiv = $("#searchmodfbox_" + jQuery(grid_selector)[0].id);
+                                    var parentDiv = dlgDiv.parent(); // div#gbox_list
+                                    var dlgWidth = dlgDiv.width();
+                                    var parentWidth = parentDiv.width();
+                                    //var dlgHeight = dlgDiv.height();
+                                    //var parentHeight = parentDiv.height();
+                                    //var parentTop = parentDiv.offset().top;
+                                    var parentLeft = parentDiv.offset().left;
+                                    //dlgDiv[0].style.top =  Math.round(  (parentTop+160)  + (parentHeight-dlgHeight)/2  ) + "px";
+                                    dlgDiv[0].style.left = Math.round(  parentLeft + (parentWidth-dlgWidth  )/2 )  + "px";
+                                },
+                                afterRedraw: function(){
+                                    style_search_filters($(this));
+                                }
+                                ,
+                                multipleSearch: true,
+                                editData: {
+                                    _token: "{{ csrf_token() }}"
+                                }
+                                /**
+                                 multipleGroup:true,
+                                 showQuery: true
+                                 */
+                            },
+                            {
+                                //view record form
+                                recreateForm: true,
+                                beforeShowForm: function(e){
+                                    var form = $(e[0]);
+                                    form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
+
+                                    var dlgDiv = $("#viewmod" + jQuery(grid_selector)[0].id);
+                                    var parentDiv = dlgDiv.parent(); // div#gbox_list
+                                    var dlgWidth = dlgDiv.width();
+                                    var parentWidth = parentDiv.width();
+                                    //var dlgHeight = dlgDiv.height();
+                                    //var parentHeight = parentDiv.height();
+                                    //var parentTop = parentDiv.offset().top;
+                                    var parentLeft = parentDiv.offset().left;
+                                    //dlgDiv[0].style.top =  Math.round(  (parentTop+160)  + (parentHeight-dlgHeight)/2  ) + "px";
+                                    dlgDiv[0].style.left = Math.round(  parentLeft + (parentWidth-dlgWidth  )/2 )  + "px";
+                                },
+                                editData: {
+                                    _token: "{{ csrf_token() }}"
+                                }
+                            }
+                    )
+                }
             });
 
             $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
@@ -121,7 +411,7 @@
                     searchicon : 'ace-icon fa fa-search orange',
                     refresh: true,
                     refreshicon : 'ace-icon fa fa-refresh green',
-                    view: true,
+                    view: false,
                     viewicon : 'ace-icon fa fa-search-plus grey'
                 },
                 {
@@ -133,6 +423,26 @@
                         var form = $(e[0]);
                         form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
                         style_edit_form(form);
+
+                        var provinceid = $('#provinceid').val();
+                        var amphurid = $('#amphurid').val();
+                        var districtid = $('#districtid').val();
+
+                        $.get('amphur/read/'+provinceid, function(data){
+                            $('#amphurid').children('option:not(:first)').remove();
+                            $.each(data, function(i, option) {
+                                $('#amphurid').append($('<option/>').attr("value", option.id).text(option.name));
+                            });
+                            $('#amphurid').val(amphurid);
+                        });
+
+                        $.get('district/read/'+amphurid, function(data){
+                            $('#districtid').children('option:not(:first)').remove();
+                            $.each(data, function(i, option) {
+                                $('#districtid').append($('<option/>').attr("value", option.id).text(option.name));
+                            });
+                            $('#districtid').val(districtid);
+                        });
 
                         var dlgDiv = $("#editmod" + jQuery(grid_selector)[0].id);
                         var parentDiv = dlgDiv.parent(); // div#gbox_list
@@ -170,6 +480,9 @@
                         form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
                                 .wrapInner('<div class="widget-header" />')
                         style_edit_form(form);
+
+                        $('#amphurid').children('option:not(:first)').remove();
+                        $('#districtid').children('option:not(:first)').remove();
 
                         var dlgDiv = $("#editmod" + jQuery(grid_selector)[0].id);
                         var parentDiv = dlgDiv.parent(); // div#gbox_list

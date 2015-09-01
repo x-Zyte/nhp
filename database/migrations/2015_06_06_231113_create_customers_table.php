@@ -19,6 +19,13 @@ class CreateCustomersTable extends Migration {
             $table->string('firstname',50);
             $table->string('lastname',50)->nullable();
             $table->text('address')->nullable();
+            $table->integer('districtid')->unsigned()->nullable();
+            $table->foreign('districtid')->references('id')->on('districts');
+            $table->integer('amphurid')->unsigned()->nullable();
+            $table->foreign('amphurid')->references('id')->on('amphurs');
+            $table->integer('provinceid')->unsigned()->nullable();
+            $table->foreign('provinceid')->references('id')->on('provinces');
+            $table->string('zipcode',5)->nullable();
             $table->string('email',100)->nullable();
             $table->string('phone',20)->nullable();
             $table->integer('branchid')->unsigned();

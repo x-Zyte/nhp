@@ -11,7 +11,8 @@ class Customer extends Model {
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['title', 'firstname', 'lastname', 'address', 'email', 'phone', 'branchid',
+    protected $fillable = ['title', 'firstname', 'lastname', 'address', 'districtid', 'amphurid', 'provinceid', 'zipcode',
+        'email', 'phone', 'branchid',
         'createdby', 'createddate', 'modifiedby', 'modifieddate'];
 
     public static function boot()
@@ -50,11 +51,11 @@ class Customer extends Model {
 
     public function branch()
     {
-        return $this->belongsTo('App\Branch', 'branchid', 'id');
+        return $this->belongsTo('App\Models\Branch', 'branchid', 'id');
     }
 
     public function customerExpectations()
     {
-        return $this->hasMany('App\CustomerExpectation', 'customerid', 'id');
+        return $this->hasMany('App\Models\CustomerExpectation', 'customerid', 'id');
     }
 }

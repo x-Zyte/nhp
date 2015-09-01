@@ -28,12 +28,23 @@ Route::post('password/email', 'Auth\PasswordController@postEmail');
 Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
 Route::post('password/reset', 'Auth\PasswordController@postReset');
 
+//Amphur
+Route::get('amphur/read/{provinceid}', 'SystemDatas\AmphurController@read');
+//District
+Route::get('district/read/{amphurid}', 'SystemDatas\DistrictController@read');
+//Zipcode
+Route::get('zipcode/read/{districtid}', 'SystemDatas\ZipcodeController@read');
+
 //Employee
 Route::get('employee', 'EmployeeController@index');
 Route::get('employee/read', 'EmployeeController@read');
 Route::post('employee/update', 'EmployeeController@update');
 Route::post('employee/check_username', 'EmployeeController@check_username');
 Route::post('employee/check_email', 'EmployeeController@check_email');
+
+//EmployeePermission
+Route::get('employeepermission/read', 'EmployeePermissionController@read');
+Route::post('employeepermission/update', 'EmployeePermissionController@update');
 
 //Branch
 Route::get('branch', 'Settings\BranchController@index');
@@ -79,6 +90,15 @@ Route::post('insurancecompany/update', 'Settings\InsuranceCompanyController@upda
 Route::get('customer', 'CustomerController@index');
 Route::get('customer/read', 'CustomerController@read');
 Route::post('customer/update', 'CustomerController@update');
+
+//CustomerExpectation
+Route::get('customerexpectation/read', 'CustomerExpectationController@read');
+Route::post('customerexpectation/update', 'CustomerExpectationController@update');
+
+//Car
+Route::get('car', 'CarController@index');
+Route::get('car/read', 'CarController@read');
+Route::post('car/update', 'CarController@update');
 
 //Pricelist
 Route::get('pricelist', 'Settings\PricelistController@index');

@@ -50,6 +50,6 @@ class Department extends Model {
 
     public function employees()
     {
-        return $this->hasMany('App\Employee', 'departmentid', 'id');
+        return $this->hasMany('App\Models\Employee', 'departmentid', 'id');
     }
 }

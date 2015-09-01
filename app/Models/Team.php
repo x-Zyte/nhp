@@ -50,6 +50,6 @@ class Team extends Model {
 
     public function employees()
     {
-        return $this->hasMany('App\Employee', 'teamid', 'id');
+        return $this->hasMany('App\Models\Employee', 'teamid', 'id');
     }
 }

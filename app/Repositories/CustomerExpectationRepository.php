@@ -8,16 +8,16 @@
 
 namespace App\Repositories;
 
-use App\Models\CarType;
+use App\Models\CustomerExpectation;
 
-class CarTypeRepository extends EloquentRepositoryAbstract
+class CustomerExpectationRepository extends EloquentRepositoryAbstract
 {
     public function __construct()
     {
-        $this->Database = new CarType;
+        $this->Database = new CustomerExpectation;
         $this->orderBy = array(array('id', 'asc'));
-        $this->crudFields = array('oper', 'id', 'name', 'detail');
-        $this->uniqueKeySingles = array(array('field'=>'name','label'=>'ชื่อประเภท'));
+        $this->crudFields = array('oper', 'id', 'customerid', 'date', 'details');
+        $this->uniqueKeySingles = array();
         $this->uniqueKeyMultiples = array();
         $this->hasBranch = false;
     }
