@@ -42,6 +42,10 @@ Route::post('employee/update', 'EmployeeController@update');
 Route::post('employee/check_username', 'EmployeeController@check_username');
 Route::post('employee/check_email', 'EmployeeController@check_email');
 
+//EmployeePermission
+Route::get('employeepermission/read', 'EmployeePermissionController@read');
+Route::post('employeepermission/update', 'EmployeePermissionController@update');
+
 //Branch
 Route::get('branch', 'Settings\BranchController@index');
 Route::get('branch/read', 'Settings\BranchController@read');
