@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Branch;
+use App\Models\Car;
 use App\Models\CarModel;
 use App\Models\CarSubModel;
 use App\Facades\GridEncoder;
@@ -26,21 +27,22 @@ class CarController extends Controller {
 
     public function index()
     {
-        $branchs = Branch::all(['id','name']);
+        $branchs = Branch::orderBy('name', 'asc')->get(['id', 'name']);
         $branchselectlist = array();
         array_push($branchselectlist,':เลือกสาขา');
         foreach($branchs as $item){
             array_push($branchselectlist,$item->id.':'.$item->name);
         }
 
-        $carmodels = CarModel::all(['id','name']);
+        $carmodels = CarModel::orderBy('name', 'asc')->get(['id', 'name']);
         $carmodelselectlist = array();
         array_push($carmodelselectlist,':เลือกแบบ');
         foreach($carmodels as $item){
             array_push($carmodelselectlist,$item->id.':'.$item->name);
         }
 
-        $carsubmodels = CarSubModel::all(['id','name']);
+        $carsubmodelids = Car::distinct()->lists('carsubmodelid');
+        $carsubmodels = CarSubModel::whereIn('id', $carsubmodelids)->orderBy('name', 'asc')->get(['id', 'name']);
         $carsubmodelselectlist = array();
         array_push($carsubmodelselectlist,':เลือกรุ่น');
         foreach($carsubmodels as $item){

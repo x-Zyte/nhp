@@ -411,7 +411,7 @@
                     searchicon : 'ace-icon fa fa-search orange',
                     refresh: true,
                     refreshicon : 'ace-icon fa fa-refresh green',
-                    view: false,
+                    view: true,
                     viewicon : 'ace-icon fa fa-search-plus grey'
                 },
                 {

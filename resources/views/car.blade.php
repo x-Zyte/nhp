@@ -38,7 +38,19 @@
                 colNames:['สาขา','แบบ','รุ่น','คันที่', 'วันที่ออก Do', 'วันที่รับรถเข้า', 'เลขเครื่อง', 'เลขตัวถัง', 'กุญแจ', 'สี', 'รถสำหรับ', 'ประเภทรับรถเข้า', 'ขายแล้ว', 'จดทะเบียนแล้ว', 'ส่งมอบแล้ว','ใบรับรถเข้า', 'ใบส่งรถให้ลูกค้า'],
                 colModel:[
                     {name:'branchid',index:'branchid', width:80, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$branchselectlist}}"}},
-                    {name:'carmodelid',index:'carmodelid', width:80, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$carmodelselectlist}}"}},
+                    {name:'carmodelid',index:'carmodelid', width:80, editable: true,edittype:"select",formatter:'select',editrules:{required:true},align:'left',
+                        editoptions:{value: "{{$carmodelselectlist}}",
+                            dataEvents :[{type: 'change', fn: function(e){
+                                var thisval = $(e.target).val();
+                                $.get('carsubmodel/read/'+thisval, function(data){
+                                    $('#carsubmodelid').children('option:not(:first)').remove();
+                                    $.each(data, function(i, option) {
+                                        $('#carsubmodelid').append($('<option/>').attr("value", option.id).text(option.name));
+                                    });
+                                });
+                            }}]
+                        }
+                    },
                     {name:'carsubmodelid',index:'carsubmodelid', width:80, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$carsubmodelselectlist}}"}},
                     {name:'no',index:'no', width:50,editable: true,editoptions:{size:"5"},editrules:{required:true},align:'left'},
                     {name:'dodate',index:'dodate',width:80, editable:true, sorttype:"date", formatter: "date", unformat: pickDate, editoptions:{size:"10",dataInit:function(elem){$(elem).datepicker({format:'dd-mm-yyyy', autoclose:true});}}, editrules:{required:true}, align:'center'},
