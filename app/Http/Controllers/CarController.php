@@ -62,8 +62,8 @@ class CarController extends Controller {
 
     public function update(Request $request)
     {
-        $input = $request->only('receivecarfilepath','deliverycarfilepath');
-        return $input;
+        //$input = $request->only('receivecarfilepath','deliverycarfilepath');
+        //return $input;
         GridEncoder::encodeRequestedData(new CarRepository(), $request);
     }
 }

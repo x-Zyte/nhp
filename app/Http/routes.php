@@ -75,7 +75,7 @@ Route::post('carmodel/update', 'Settings\CarModelController@update');
 Route::get('carsubmodel', 'Settings\CarSubModelController@index');
 Route::get('carsubmodel/read', 'Settings\CarSubModelController@read');
 Route::post('carsubmodel/update', 'Settings\CarSubModelController@update');
-Route::get('carsubmodel/read/{}', 'Settings\CarSubModelController@read');
+Route::get('carsubmodel/read2/{carmodelid}', 'Settings\CarSubModelController@read2');
 
 //Bank
 Route::get('bank', 'Settings\BankController@index');

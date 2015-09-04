@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Settings;
 use App\Models\CarModel;
 use App\Facades\GridEncoder;
 use App\Http\Controllers\Controller;
+use App\Models\CarSubModel;
 use App\Repositories\CarSubModelRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -25,6 +26,12 @@ class CarSubModelController extends Controller {
         }
 
         return view('settings.carsubmodel', ['carmodelselectlist' => implode(";",$carmodelselectlist)]);
+    }
+
+    public function read2($carmodelid)
+    {
+        $carsubmodels = CarSubModel::where('carmodelid',$carmodelid)->orderBy('name', 'asc')->get(['id', 'name']);
+        return $carsubmodels;
     }
 
     public function read(Request $request)

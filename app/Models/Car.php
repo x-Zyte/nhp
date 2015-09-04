@@ -21,6 +21,8 @@ class Car extends Model {
 
         static::creating(function($model)
         {
+            $model->dodate = date('Y-m-d', strtotime($model->dodate));
+            $model->receiveddate = date('Y-m-d', strtotime($model->receiveddate));
             $model->createdby = Auth::user()->id;
             $model->createddate = date("Y-m-d H:i:s");
             $model->modifiedby = Auth::user()->id;
@@ -34,6 +36,8 @@ class Car extends Model {
 
         static::updating(function($model)
         {
+            $model->dodate = date('Y-m-d', strtotime($model->dodate));
+            $model->receiveddate = date('Y-m-d', strtotime($model->receiveddate));
             $model->modifiedby = Auth::user()->id;
             $model->modifieddate = date("Y-m-d H:i:s");
         });
