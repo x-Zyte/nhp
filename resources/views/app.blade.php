@@ -72,8 +72,44 @@
         if('ontouchstart' in document.documentElement) document.write("<script src='../resources/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
     </script>
 
+    <link rel="stylesheet" href="../resources/assets/css/lightbox.css">
+
 </head>
-<body class="skin-2"> 
+<body class="skin-2">
+
+<div id="modal">
+<img src="../resources/assets/img/ajax-loader.gif" id="loading-indicator"/>
+</div>
+<style type="text/css">
+    #loading-indicator {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+    }
+    #modal {
+        z-index: 9999;
+        display: none;
+        position:absolute;
+        top: 0%;
+        left: 0%;
+        width: 100%;
+        height: 100%;
+        background-color: black;
+        z-index: 9999;
+        -moz-opacity: 0.8;
+        opacity: 0.8;
+        filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
+    }
+</style>
+<script type="text/javascript">
+    $(document).ajaxStart(function(event, request, settings) {
+        $('#modal').show();
+    });
+    $(document).ajaxComplete(function(event, request, settings) {
+        $('#modal').hide();
+    });
+</script>
+
 <div id="navbar" class="navbar navbar-default">
     <script type="text/javascript">
         try{ace.settings.check('navbar' , 'fixed')}catch(e){}
@@ -475,6 +511,11 @@
 <!-- ace scripts -->
 <script src="../resources/assets/js/ace-elements.min.js"></script>
 <script src="../resources/assets/js/ace.min.js"></script>
+
+<script src="../resources/assets/js/sharefunctions.js"></script>
+<script src="../resources/assets/js/lightbox.min.js"></script>
+<!-- ajax file upload -->
+<script src="../resources/assets/js/ajaxfileupload.js"></script>
 
 </body>
 </html>
