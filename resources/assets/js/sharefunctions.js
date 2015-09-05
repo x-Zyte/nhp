@@ -171,3 +171,25 @@ function centerGridForm(dlgDiv) {
     dlgDiv[0].style.top = (($(window).height() - dlgDiv.height())/2) + "px";
     dlgDiv[0].style.left = (($(window).width() - dlgDiv.width())/2) + "px";
 }
+
+function resizeGrid(){
+    if($('#grid-table').width() < $(".page-content").width()){
+        $('#grid-table').jqGrid( 'setGridWidth', $(".page-content").width());
+    }
+    else{
+        $('.ui-jqgrid' + ' .ui-jqgrid-view').css('overflow','auto');
+        $('.ui-jqgrid' + " .ui-jqgrid-view").css("max-width",($(".page-content").width())+"px");
+        $('.ui-jqgrid' + " .ui-jqgrid-pager").css("max-width",($(".page-content").width())+"px");
+    }
+}
+
+function resizeSubGrid(subgrid_table_id){
+    if($("#"+subgrid_table_id).width() < 600){
+        $("#"+subgrid_table_id).jqGrid( 'setGridWidth', 600);
+    }
+    else if($("#"+subgrid_table_id).width() > ($('#grid-table').width() - 55)){
+        $('.ui-subgrid' + ' .ui-jqgrid-view').css('overflow','auto');
+        $('.ui-subgrid' + " .ui-jqgrid-view").css("max-width",($('#grid-table').width() - 55)+"px");
+        $('.ui-subgrid' + " .ui-jqgrid-pager").css("max-width",($('#grid-table').width() - 55)+"px");
+    }
+}

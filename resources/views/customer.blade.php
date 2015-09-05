@@ -22,7 +22,7 @@
 
             //resize to fit page size
             $(window).on('resize.jqGrid', function () {
-                $(grid_selector).jqGrid( 'setGridWidth', $(".page-content").width() );
+                resizeGrid();
             })
             //resize on sidebar collapse/expand
             var parent_column = $(grid_selector).closest('[class*="col-"]');
@@ -44,12 +44,12 @@
                 datatype: "json",
                 colNames:['สาขา', 'คำนำหน้า', 'ชื่อจริง', 'นามสกุล', 'ที่อยู่', 'จังหวัด', 'เขต/อำเภอ', 'แขวง/ตำบล', 'รหัสไปรษณีย์', 'อีเมล์', 'โทรศัพท์'],
                 colModel:[
-                    {name:'branchid',index:'branchid', width:70, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$branchselectlist}}", defaultValue:defaultBranch},editrules:{required:true},hidden:hiddenBranch},
-                    {name:'title',index:'title', width:50, editable: true,edittype:"select",formatter:'select',editoptions:{value: "นาย:นาย;นาง:นาง;นางสาว:นางสาว"},align:'left'},
+                    {name:'branchid',index:'branchid', width:150, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$branchselectlist}}", defaultValue:defaultBranch},editrules:{required:true},hidden:hiddenBranch},
+                    {name:'title',index:'title', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "นาย:นาย;นาง:นาง;นางสาว:นางสาว"},align:'left'},
                     {name:'firstname',index:'firstname', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
                     {name:'lastname',index:'lastname', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
-                    {name:'address',index:'address', width:100,editable: true,editoptions:{size:"50",maxlength:"200"},align:'left'},
-                    {name:'provinceid',index:'provinceid', width:80, editable: true,edittype:"select",formatter:'select',align:'left',
+                    {name:'address',index:'address', width:150,editable: true,editoptions:{size:"50",maxlength:"200"},align:'left'},
+                    {name:'provinceid',index:'provinceid', width:100, editable: true,edittype:"select",formatter:'select',align:'left',
                         editoptions:{value: "{{$provinceselectlist}}",
                             dataEvents :[{type: 'change', fn: function(e){
                                 var thisval = $(e.target).val();
@@ -65,7 +65,7 @@
                             }}]
                         }
                     },
-                    {name:'amphurid',index:'amphurid', width:80, editable: true,edittype:"select",formatter:'select',align:'left',
+                    {name:'amphurid',index:'amphurid', width:100, editable: true,edittype:"select",formatter:'select',align:'left',
                         editoptions:{value: "{{$amphurselectlist}}",
                             dataEvents :[{type: 'change', fn: function(e){
                                 var thisval = $(e.target).val();
@@ -80,7 +80,7 @@
                             }}]
                         }
                     },
-                    {name:'districtid',index:'districtid', width:80, editable: true,edittype:"select",formatter:'select',align:'left',
+                    {name:'districtid',index:'districtid', width:100, editable: true,edittype:"select",formatter:'select',align:'left',
                         editoptions:{value: "{{$districtselectlist}}",
                             dataEvents :[{type: 'change', fn: function(e){
                                 var thisval = $(e.target).val();
@@ -94,9 +94,9 @@
                             }}]
                         }
                     },
-                    {name:'zipcode',index:'zipcode', width:60,editable: true,editoptions:{size:"5",maxlength:"5"},align:'left'},
-                    {name:'email',index:'email', width:100,editable: true,editoptions:{size:"40",maxlength:"50"},align:'left'},
-                    {name:'phone',index:'phone', width:70,editable: true,editoptions:{size:"20",maxlength:"20"},align:'left'}
+                    {name:'zipcode',index:'zipcode', width:100,editable: true,editoptions:{size:"5",maxlength:"5"},align:'left'},
+                    {name:'email',index:'email', width:150,editable: true,editoptions:{size:"40",maxlength:"50"},align:'left'},
+                    {name:'phone',index:'phone', width:100,editable: true,editoptions:{size:"20",maxlength:"20"},align:'left'}
                 ],
                 viewrecords : true,
                 rowNum:10,
@@ -133,7 +133,7 @@
 
                     //resize to fit page size
                     $(window).on('resize.jqGridSubGrid', function () {
-                        $("#"+subgrid_table_id).jqGrid( 'setGridWidth', $(grid_selector).width() - 55);
+                        resizeSubGrid(subgrid_table_id);
                     })
                     //resize on sidebar collapse/expand
                     var parent_column = $("#"+subgrid_table_id).closest('[class*="col-"]');
@@ -143,16 +143,14 @@
                         }
                     })
 
-                    //desired_width = $(grid_selector).width();
-                    //desired_width -= 55;
                     $("#"+subgrid_id).html("<table id='"+subgrid_table_id+"' class='scroll'></table><div id='"+pager_id+"' class='scroll'></div>");
                     jQuery("#"+subgrid_table_id).jqGrid({
                         url:'customerexpectation/read?customerid='+row_id,
                         datatype: "json",
                         colNames:['วันที่', 'รายละเอียด'],
                         colModel:[
-                            {name:'date',index:'date',width:90, editable:true, sorttype:"date", formatter: "date", unformat: pickDate, editoptions:{dataInit:function(elem){$(elem).datepicker({format:'dd-mm-yyyy', autoclose:true});}}, editrules:{required:true}, align:'center'},
-                            {name:'details',index:'details', width:300,editable: true,edittype:'textarea',editoptions:{rows:"2",cols:"40"},editrules:{required:true},align:'left'}
+                            {name:'date',index:'date',width:100, editable:true, sorttype:"date", formatter: "date", unformat: pickDate, editoptions:{dataInit:function(elem){$(elem).datepicker({format:'dd-mm-yyyy', autoclose:true});}}, editrules:{required:true}, align:'center'},
+                            {name:'details',index:'details', width:500,editable: true,edittype:'textarea',editoptions:{rows:"2",cols:"40"},editrules:{required:true},align:'left'}
                         ],
                         viewrecords : true,
                         rowNum:10,
@@ -176,7 +174,6 @@
                         editurl: "customerexpectation/update",
                         caption: "ความคาดหวัง",
                         height:'100%'
-                        //width:desired_width
                     });
 
                     $(window).triggerHandler('resize.jqGridSubGrid');

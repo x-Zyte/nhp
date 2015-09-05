@@ -22,7 +22,7 @@
 
             //resize to fit page size
             $(window).on('resize.jqGrid', function () {
-                $(grid_selector).jqGrid( 'setGridWidth', $(".page-content").width() );
+                resizeGrid();
             })
             //resize on sidebar collapse/expand
             var parent_column = $(grid_selector).closest('[class*="col-"]');
@@ -49,8 +49,8 @@
                     {name:'title',index:'title', width:60, editable: true,edittype:"select",formatter:'select',editoptions:{value: "นาย:นาย;นาง:นาง;นางสาว:นางสาว"},align:'left'},
                     {name:'firstname',index:'firstname', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
                     {name:'lastname',index:'lastname', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
-                    {name:'username',index:'username', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true, custom: false, custom_func: check_username},align:'left'},
-                    {name:'email',index:'email', width:120,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true,email:true, custom: false, custom_func: check_email},align:'left'},
+                    {name:'username',index:'username', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
+                    {name:'email',index:'email', width:120,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true,email:true},align:'left'},
                     {name:'phone',index:'phone', width:100,editable: true,editoptions:{size:"20",maxlength:"20"},editrules:{},align:'left'},
                     {name:'isadmin',index:'isadmin', width:60, editable: true,edittype:"checkbox",editoptions: {value:"1:0"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'},
                     {name:'branchid',index:'branchid', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$branchselectlist}}"},formoptions:{elmsuffix:'(เป็นผู้ดูแลไม่ต้องเลือก)'}},
@@ -93,7 +93,7 @@
 
                     //resize to fit page size
                     $(window).on('resize.jqGridSubGrid', function () {
-                        $("#"+subgrid_table_id).jqGrid( 'setGridWidth', $(grid_selector).width() - 55);
+                        resizeSubGrid(subgrid_table_id);
                     })
                     //resize on sidebar collapse/expand
                     var parent_column = $("#"+subgrid_table_id).closest('[class*="col-"]');
@@ -103,15 +103,13 @@
                         }
                     })
 
-                    //desired_width = $(grid_selector).width();
-                    //desired_width -= 55;
                     $("#"+subgrid_id).html("<table id='"+subgrid_table_id+"' class='scroll'></table><div id='"+pager_id+"' class='scroll'></div>");
                     jQuery("#"+subgrid_table_id).jqGrid({
                         url:'employeepermission/read?employeeid='+row_id,
                         datatype: "json",
                         colNames:['เมนูที่สามารถเข้าถึง'],
                         colModel:[
-                            {name:'menu',index:'menu', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "รถ:รถ;ลูกค้า:ลูกค้า;พนักงาน:พนักงาน;การตั้งค่า:การตั้งค่า"},align:'left'}
+                            {name:'menu',index:'menu', width:150, editable: true,edittype:"select",formatter:'select',editoptions:{value: "รถ:รถ;ลูกค้า:ลูกค้า;พนักงาน:พนักงาน;การตั้งค่า:การตั้งค่า"},align:'left'}
                         ],
                         viewrecords : true,
                         rowNum:10,

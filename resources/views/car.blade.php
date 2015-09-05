@@ -22,10 +22,7 @@
 
             //resize to fit page size
             $(window).on('resize.jqGrid', function () {
-                $('.ui-jqgrid-view').css('overflow','auto');
-                $(grid_selector).css("min-width",($(".page-content").width())+"px");
-                $(".ui-jqgrid-view").css("max-width",($(".page-content").width())+"px");
-                $(".ui-jqgrid-pager").css("max-width",($(".page-content").width())+"px");
+                resizeGrid();
             })
             //resize on sidebar collapse/expand
             var parent_column = $(grid_selector).closest('[class*="col-"]');
@@ -38,7 +35,7 @@
             $(grid_selector).jqGrid({
                 url:'car/read',
                 datatype: "json",
-                colNames:['สาขา','แบบ','รุ่น','คันที่', 'วันที่ออก Do', 'วันที่รับรถเข้า', 'เลขเครื่อง', 'เลขตัวถัง', 'กุญแจ', 'สี', 'รถสำหรับ', 'ประเภทรับรถเข้า', 'ขายแล้ว', 'จดทะเบียนแล้ว', 'ส่งมอบแล้ว','ใบรับรถเข้า', 'ใบส่งรถให้ลูกค้า'],
+                colNames:['สาขา','แบบ','รุ่น','คันที่', 'วันที่ออก Do', 'วันที่รับรถเข้า', 'เลขเครื่อง', 'เลขตัวถัง', 'กุญแจ', 'สี', 'รถสำหรับ', 'การรับรถเข้า', 'ขายแล้ว', 'จดทะเบียนแล้ว', 'ส่งมอบแล้ว','ใบรับรถเข้า', 'ใบส่งรถให้ลูกค้า'],
                 colModel:[
                     {name:'branchid',index:'branchid', width:150, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$branchselectlist}}"}},
                     {name:'carmodelid',index:'carmodelid', width:100, editable: true,edittype:"select",formatter:'select',editrules:{required:true},align:'left',
@@ -85,7 +82,7 @@
 
                         updateActionIcons(table);
                         updatePagerIcons(table);
-                        enableTooltips(table);
+                        enableTooltips(table);;
                     }, 0);
                 },
 
