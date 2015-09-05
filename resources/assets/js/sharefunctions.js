@@ -48,19 +48,23 @@ function style_edit_form(form) {
     var buttons = form.next().find('.EditButton .fm-button');
     buttons.addClass('btn btn-sm').find('[class*="-icon"]').hide();//ui-icon, s-icon
     buttons.eq(0).addClass('btn-primary').prepend('<i class="ace-icon fa fa-check"></i>');
-    buttons.eq(1).prepend('<i class="ace-icon fa fa-times"></i>')
+    buttons.eq(1).prepend('<i class="ace-icon fa fa-times"></i>');
 
     buttons = form.next().find('.navButton a');
     buttons.find('.ui-icon').hide();
     buttons.eq(0).append('<i class="ace-icon fa fa-chevron-left"></i>');
     buttons.eq(1).append('<i class="ace-icon fa fa-chevron-right"></i>');
+
+    form.css("max-height",($(window).height() - 250)+"px");
 }
 
 function style_delete_form(form) {
     var buttons = form.next().find('.EditButton .fm-button');
     buttons.addClass('btn btn-sm btn-white btn-round').find('[class*="-icon"]').hide();//ui-icon, s-icon
     buttons.eq(0).addClass('btn-danger').prepend('<i class="ace-icon fa fa-trash-o"></i>');
-    buttons.eq(1).addClass('btn-default').prepend('<i class="ace-icon fa fa-times"></i>')
+    buttons.eq(1).addClass('btn-default').prepend('<i class="ace-icon fa fa-times"></i>');
+
+    form.css("max-height",($(window).height() - 250)+"px");
 }
 
 function style_search_filters(form) {
@@ -68,6 +72,8 @@ function style_search_filters(form) {
     form.find('.add-rule').addClass('btn btn-xs btn-primary');
     form.find('.add-group').addClass('btn btn-xs btn-success');
     form.find('.delete-group').addClass('btn btn-xs btn-danger');
+
+    form.css("max-height",($(window).height() - 250)+"px");
 }
 function style_search_form(form) {
     var dialog = form.closest('.ui-jqdialog');
@@ -75,6 +81,8 @@ function style_search_form(form) {
     buttons.find('.EditButton a[id*="_reset"]').addClass('btn btn-sm btn-info').find('.ui-icon').attr('class', 'ace-icon fa fa-retweet');
     buttons.find('.EditButton a[id*="_query"]').addClass('btn btn-sm btn-inverse').find('.ui-icon').attr('class', 'ace-icon fa fa-comment-o');
     buttons.find('.EditButton a[id*="_search"]').addClass('btn btn-sm btn-purple').find('.ui-icon').attr('class', 'ace-icon fa fa-search');
+
+    form.css("max-height",($(window).height() - 250)+"px");
 }
 
 function beforeDeleteCallback(e) {
@@ -151,13 +159,15 @@ function enableTooltips(table) {
 }
 
 function centerGridForm(dlgDiv) {
-    var parentDiv = dlgDiv.parent(); // div#gbox_list
-    var dlgWidth = dlgDiv.width();
-    var parentWidth = parentDiv.width();
-    //var dlgHeight = dlgDiv.height();
-    //var parentHeight = parentDiv.height();
-    //var parentTop = parentDiv.offset().top;
-    var parentLeft = parentDiv.offset().left;
-    //dlgDiv[0].style.top =  Math.round(  (parentTop+160)  + (parentHeight-dlgHeight)/2  ) + "px";
-    dlgDiv[0].style.left = Math.round(  parentLeft + (parentWidth-dlgWidth  )/2 )  + "px";
+    //var parentDiv = dlgDiv.parent(); // div#gbox_list
+    //var dlgWidth = dlgDiv.width();
+    //var parentWidth = parentDiv.width();
+    ////var dlgHeight = dlgDiv.height();
+    ////var parentHeight = parentDiv.height();
+    ////var parentTop = parentDiv.offset().top;
+    //var parentLeft = parentDiv.offset().left;
+    ////dlgDiv[0].style.top =  Math.round(  (parentTop+160)  + (parentHeight-dlgHeight)/2  ) + "px";
+    //dlgDiv[0].style.left = Math.round(  parentLeft + (parentWidth-dlgWidth  )/2 )  + "px";
+    dlgDiv[0].style.top = (($(window).height() - dlgDiv.height())/2) + "px";
+    dlgDiv[0].style.left = (($(window).width() - dlgDiv.width())/2) + "px";
 }

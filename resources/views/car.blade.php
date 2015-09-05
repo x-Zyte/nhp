@@ -22,7 +22,10 @@
 
             //resize to fit page size
             $(window).on('resize.jqGrid', function () {
-                $(grid_selector).jqGrid( 'setGridWidth', $(".page-content").width() );
+                $('.ui-jqgrid-view').css('overflow','auto');
+                $(grid_selector).css("min-width",($(".page-content").width())+"px");
+                $(".ui-jqgrid-view").css("max-width",($(".page-content").width())+"px");
+                $(".ui-jqgrid-pager").css("max-width",($(".page-content").width())+"px");
             })
             //resize on sidebar collapse/expand
             var parent_column = $(grid_selector).closest('[class*="col-"]');
@@ -37,8 +40,8 @@
                 datatype: "json",
                 colNames:['สาขา','แบบ','รุ่น','คันที่', 'วันที่ออก Do', 'วันที่รับรถเข้า', 'เลขเครื่อง', 'เลขตัวถัง', 'กุญแจ', 'สี', 'รถสำหรับ', 'ประเภทรับรถเข้า', 'ขายแล้ว', 'จดทะเบียนแล้ว', 'ส่งมอบแล้ว','ใบรับรถเข้า', 'ใบส่งรถให้ลูกค้า'],
                 colModel:[
-                    {name:'branchid',index:'branchid', width:80, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$branchselectlist}}"}},
-                    {name:'carmodelid',index:'carmodelid', width:80, editable: true,edittype:"select",formatter:'select',editrules:{required:true},align:'left',
+                    {name:'branchid',index:'branchid', width:150, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$branchselectlist}}"}},
+                    {name:'carmodelid',index:'carmodelid', width:100, editable: true,edittype:"select",formatter:'select',editrules:{required:true},align:'left',
                         editoptions:{value: "{{$carmodelselectlist}}",
                             dataEvents :[{type: 'change', fn: function(e){
                                 var thisval = $(e.target).val();
@@ -51,19 +54,19 @@
                             }}]
                         }
                     },
-                    {name:'carsubmodelid',index:'carsubmodelid', width:80, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$carsubmodelselectlist}}"}},
+                    {name:'carsubmodelid',index:'carsubmodelid', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$carsubmodelselectlist}}"}},
                     {name:'no',index:'no', width:50,editable: true,editoptions:{size:"5"},editrules:{required:true},align:'left'},
-                    {name:'dodate',index:'dodate',width:80, editable:true, sorttype:"date", formatter: "date", unformat: pickDate, editoptions:{size:"10",dataInit:function(elem){$(elem).datepicker({format:'dd-mm-yyyy', autoclose:true});}}, editrules:{required:true}, align:'center'},
-                    {name:'receiveddate',index:'receiveddate',width:80, editable:true, sorttype:"date", formatter: "date", unformat: pickDate, editoptions:{size:"10",dataInit:function(elem){$(elem).datepicker({format:'dd-mm-yyyy', autoclose:true});}}, editrules:{required:true}, align:'center'},
-                    {name:'engineno',index:'engineno', width:80,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
-                    {name:'chassisno',index:'chassisno', width:80,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
+                    {name:'dodate',index:'dodate',width:100, editable:true, sorttype:"date", formatter: "date", unformat: pickDate, editoptions:{size:"10",dataInit:function(elem){$(elem).datepicker({format:'dd-mm-yyyy', autoclose:true});}}, editrules:{required:true}, align:'center'},
+                    {name:'receiveddate',index:'receiveddate',width:100, editable:true, sorttype:"date", formatter: "date", unformat: pickDate, editoptions:{size:"10",dataInit:function(elem){$(elem).datepicker({format:'dd-mm-yyyy', autoclose:true});}}, editrules:{required:true}, align:'center'},
+                    {name:'engineno',index:'engineno', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
+                    {name:'chassisno',index:'chassisno', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
                     {name:'keyno',index:'keyno', width:50,editable: true,editoptions:{size:"5"},editrules:{required:true, number:true},align:'center'},
-                    {name:'colour',index:'colour', width:50,editable: true,editoptions:{size:"10",maxlength:"10"},editrules:{required:true},align:'left'},
-                    {name:'objective',index:'objective', width:50, editable: true,edittype:"select",formatter:'select',editoptions:{value: "0:ขาย;1:ใช้งาน;2:ทดสอบ"},align:'left'},
-                    {name:'receivetype',index:'receivetype', width:50, editable: true,edittype:"select",formatter:'select',editoptions:{value: "0:ปกติ;1:ประมูล"},align:'left'},
-                    {name:'issold',index:'issold', width:50, editable: true,edittype:"checkbox",editoptions: {value:"1:0", defaultValue:"0"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'},
-                    {name:'isregistered',index:'isregistered', width:50, editable: true,edittype:"checkbox",editoptions: {value:"1:0", defaultValue:"0"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'},
-                    {name:'isdelivered',index:'isdelivered', width:50, editable: true,edittype:"checkbox",editoptions: {value:"1:0", defaultValue:"0"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'},
+                    {name:'colour',index:'colour', width:100,editable: true,editoptions:{size:"10",maxlength:"10"},editrules:{required:true},align:'left'},
+                    {name:'objective',index:'objective', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "0:ขาย;1:ใช้งาน;2:ทดสอบ"},align:'left'},
+                    {name:'receivetype',index:'receivetype', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "0:ปกติ;1:ประมูล"},align:'left'},
+                    {name:'issold',index:'issold', width:100, editable: true,edittype:"checkbox",editoptions: {value:"1:0", defaultValue:"0"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'},
+                    {name:'isregistered',index:'isregistered', width:100, editable: true,edittype:"checkbox",editoptions: {value:"1:0", defaultValue:"0"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'},
+                    {name:'isdelivered',index:'isdelivered', width:100, editable: true,edittype:"checkbox",editoptions: {value:"1:0", defaultValue:"0"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'},
                     {name:'receivecarfilepath',index:'receivecarfilepath',width:100,editable: true,edittype:'file',editoptions:{enctype:"multipart/form-data"},formatter:imageLinkFormatter,search:false,align:'center'},
                     {name:'deliverycarfilepath',index:'receivecarfilepath',width:100,editable: true,edittype:'file',editoptions:{enctype:"multipart/form-data"},formatter:imageLinkFormatter,search:false,align:'center'}
                 ],
@@ -129,8 +132,15 @@
                     {
                         //UploadImage(response, postdata);
                         if(response.responseText == "ok"){
+                            var engineno = $('#engineno').val();
+                            alert(engineno);
+                            var receivecarfilepath = $( "#receivecarfilepath" ).val();
+                            alert(receivecarfilepath);
+                            var deliverycarfilepath = $( "#deliverycarfilepath" ).val();
+                            alert(deliverycarfilepath);
+
                             //alert("Succefully")
-                            //return [true,""];
+                            return [true,""];
                         }else{
                             return [false,response.responseText];
                         }
