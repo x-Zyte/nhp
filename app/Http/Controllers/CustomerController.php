@@ -75,4 +75,25 @@ class CustomerController extends Controller {
     {
         GridEncoder::encodeRequestedData(new CustomerRepository(), $request);
     }
+
+    public function readSelectlistForDisplayInGrid()
+    {
+        $amphurids = Customer::distinct()->lists('amphurid');
+        $amphurs = Amphur::whereIn('id', $amphurids)->orderBy('name', 'asc')->get(['id', 'name']);
+        $amphurselectlist = array();
+        array_push($amphurselectlist,':เลือกเขต/อำเภอ');
+        foreach($amphurs as $item){
+            array_push($amphurselectlist,$item->id.':'.$item->name);
+        }
+
+        $districtids = Customer::distinct()->lists('districtid');
+        $districts = District::whereIn('id', $districtids)->orderBy('name', 'asc')->get(['id', 'name']);
+        $districtselectlist = array();
+        array_push($districtselectlist,':เลือกตำบล/แขวง');
+        foreach($districts as $item){
+            array_push($districtselectlist,$item->id.':'.$item->name);
+        }
+
+        return ['amphurselectlist'=>implode(";",$amphurselectlist),'districtselectlist'=>implode(";",$districtselectlist)];
+    }
 }

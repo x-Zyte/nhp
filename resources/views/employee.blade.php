@@ -168,7 +168,7 @@
                                 },
                                 editData: {
                                     _token: "{{ csrf_token() }}",
-                                    customerid: row_id
+                                    employeeid: row_id
                                 },
                                 afterSubmit : function(response, postdata)
                                 {
@@ -198,7 +198,7 @@
                                 },
                                 editData: {
                                     _token: "{{ csrf_token() }}",
-                                    customerid: row_id
+                                    employeeid: row_id
                                 },
                                 afterSubmit : function(response, postdata)
                                 {

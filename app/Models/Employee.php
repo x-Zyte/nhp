@@ -85,4 +85,9 @@ class Employee extends User {
     {
         return $this->belongsTo('App\Models\Team', 'teamid', 'id');
     }
+
+    public function employeePermissions()
+    {
+        return $this->hasMany('App\Models\EmployeePermission', 'employeeid', 'id');
+    }
 }
