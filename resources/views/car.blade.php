@@ -32,12 +32,19 @@
                 }
             });
 
+            var defaultBranch = '';
+            var hiddenBranch = false;
+            if('{{Auth::user()->isadmin}}' == '0'){
+                defaultBranch = '{{Auth::user()->branchid}}';
+                hiddenBranch = true;
+            }
+
             $(grid_selector).jqGrid({
                 url:'car/read',
                 datatype: "json",
                 colNames:['สาขา','แบบ','รุ่น','คันที่', 'วันที่ออก Do', 'วันที่รับรถเข้า', 'เลขเครื่อง', 'เลขตัวถัง', 'กุญแจ', 'สี', 'รถสำหรับ', 'การรับรถเข้า', 'ขายแล้ว', 'จดทะเบียนแล้ว', 'ส่งมอบแล้ว','ใบรับรถเข้า', 'ใบส่งรถให้ลูกค้า'],
                 colModel:[
-                    {name:'branchid',index:'branchid', width:150, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$branchselectlist}}"}},
+                    {name:'branchid',index:'branchid', width:150, editable: true,edittype:"select",formatter:'select',editrules:{required:true},editoptions:{value: "{{$branchselectlist}}", defaultValue:defaultBranch},hidden:hiddenBranch},
                     {name:'carmodelid',index:'carmodelid', width:100, editable: true,edittype:"select",formatter:'select',editrules:{required:true},align:'left',
                         editoptions:{value: "{{$carmodelselectlist}}",
                             dataEvents :[{type: 'change', fn: function(e){
