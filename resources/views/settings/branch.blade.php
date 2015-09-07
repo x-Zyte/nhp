@@ -98,7 +98,6 @@
                 altRows: true,
                 multiselect: true,
                 multiboxonly: true,
-
                 loadComplete : function() {
                     var table = this;
                     setTimeout(function(){
@@ -203,6 +202,10 @@
                     afterSubmit : function(response, postdata)
                     {
                         if(response.responseText == "ok"){
+                            $.get('branch/readSelectlistForDisplayInGrid', function(data){
+                                $(grid_selector).setColProp('amphurid', { editoptions: { value: data.amphurselectlist } });
+                                $(grid_selector).setColProp('districtid', { editoptions: { value: data.districtselectlist } });
+                            });
                             alert("Succefully")
                             return [true,""];
                         }else{

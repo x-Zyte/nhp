@@ -412,7 +412,11 @@
                     afterSubmit : function(response, postdata)
                     {
                         if(response.responseText == "ok"){
-                            alert("Succefully")
+                            $.get('customer/readSelectlistForDisplayInGrid', function(data){
+                                $(grid_selector).setColProp('amphurid', { editoptions: { value: data.amphurselectlist } });
+                                $(grid_selector).setColProp('districtid', { editoptions: { value: data.districtselectlist } });
+                            });
+                            alert("Succefully");
                             return [true,""];
                         }else{
                             return [false,response.responseText];

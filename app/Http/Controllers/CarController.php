@@ -66,4 +66,50 @@ class CarController extends Controller {
         //return $input;
         GridEncoder::encodeRequestedData(new CarRepository(), $request);
     }
+
+    public function upload()
+    {
+        $error = false;
+        $uploaddir = base_path().'/uploads/images/';
+        $engineno = Input::get('engineno');
+
+        $car = Car::where('engineno', $engineno)->first();
+
+        if(Input::hasFile('receivecarfile') && Input::file('receivecarfile')->isValid()){
+            $extension = Input::file('receivecarfile')->getClientOriginalExtension();
+            $fileName = $engineno.'_received'.'.'.$extension;
+            $upload_success = Input::file('receivecarfile')->move($uploaddir, $fileName);
+            if($upload_success)
+                $car->receivecarfilepath = '/uploads/images/'.$fileName;
+            else
+                $error = true;
+        }
+        if(Input::hasFile('deliverycarfile') && Input::file('deliverycarfile')->isValid()){
+            $extension = Input::file('deliverycarfile')->getClientOriginalExtension();
+            $fileName = $engineno.'_delivered'.'.'.$extension;
+            $upload_success = Input::file('deliverycarfile')->move($uploaddir, $fileName);
+            if($upload_success)
+                $car->deliverycarfilepath = '/uploads/images/'.$fileName;
+            else
+                $error = true;
+        }
+
+        $car->save();
+
+        $data = ($error) ? array('error' => 'เกิดข้อผิดพลาดในการอัพโหลดไฟล์') : array('success' => 'อัพโหลดไฟล์สำเร็จ');
+        echo json_encode($data);
+    }
+
+    public function readSelectlistForDisplayInGrid()
+    {
+        $carsubmodelids = Car::distinct()->lists('carsubmodelid');
+        $carsubmodels = CarSubModel::whereIn('id', $carsubmodelids)->orderBy('name', 'asc')->get(['id', 'name']);
+        $carsubmodelselectlist = array();
+        array_push($carsubmodelselectlist,':เลือกเขต/อำเภอ');
+        foreach($carsubmodels as $item){
+            array_push($carsubmodelselectlist,$item->id.':'.$item->name);
+        }
+
+        return ['carsubmodelselectlist'=>implode(";",$carsubmodelselectlist)];
+    }
 }
