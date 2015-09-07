@@ -23,21 +23,28 @@
             //resize to fit page size
             $(window).on('resize.jqGrid', function () {
                 resizeGrid();
-            })
+            });
             //resize on sidebar collapse/expand
             var parent_column = $(grid_selector).closest('[class*="col-"]');
             $(document).on('settings.ace.jqGrid' , function(ev, event_name, collapsed) {
                 if( event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed' ) {
                     $(grid_selector).jqGrid( 'setGridWidth', parent_column.width() );
                 }
-            })
+            });
+
+            var defaultBranch = '';
+            var hiddenBranch = false;
+            if('{{Auth::user()->isadmin}}' == '0'){
+                defaultBranch = '{{Auth::user()->branchid}}';
+                hiddenBranch = true;
+            }
 
             $(grid_selector).jqGrid({
                 url:'car/read',
                 datatype: "json",
                 colNames:['สาขา','แบบ','รุ่น','คันที่', 'วันที่ออก Do', 'วันที่รับรถเข้า', 'เลขเครื่อง', 'เลขตัวถัง', 'กุญแจ', 'สี', 'รถสำหรับ', 'การรับรถเข้า', 'ขายแล้ว', 'จดทะเบียนแล้ว', 'ส่งมอบแล้ว','ใบรับรถเข้า', 'ใบส่งรถให้ลูกค้า'],
                 colModel:[
-                    {name:'branchid',index:'branchid', width:150, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$branchselectlist}}"}},
+                    {name:'branchid',index:'branchid', width:150, editable: true,edittype:"select",formatter:'select',editrules:{required:true},editoptions:{value: "{{$branchselectlist}}", defaultValue:defaultBranch},hidden:hiddenBranch},
                     {name:'carmodelid',index:'carmodelid', width:100, editable: true,edittype:"select",formatter:'select',editrules:{required:true},align:'left',
                         editoptions:{value: "{{$carmodelselectlist}}",
                             dataEvents :[{type: 'change', fn: function(e){
@@ -65,7 +72,7 @@
                     {name:'isregistered',index:'isregistered', width:100, editable: true,edittype:"checkbox",editoptions: {value:"1:0", defaultValue:"0"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'},
                     {name:'isdelivered',index:'isdelivered', width:100, editable: true,edittype:"checkbox",editoptions: {value:"1:0", defaultValue:"0"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'},
                     {name:'receivecarfilepath',index:'receivecarfilepath',width:100,editable: true,edittype:'file',editoptions:{enctype:"multipart/form-data"},formatter:imageLinkFormatter,search:false,align:'center'},
-                    {name:'deliverycarfilepath',index:'receivecarfilepath',width:100,editable: true,edittype:'file',editoptions:{enctype:"multipart/form-data"},formatter:imageLinkFormatter,search:false,align:'center'}
+                    {name:'deliverycarfilepath',index:'deliverycarfilepath',width:100,editable: true,edittype:'file',editoptions:{enctype:"multipart/form-data"},formatter:imageLinkFormatter,search:false,align:'center'}
                 ],
                 viewrecords : true,
                 rowNum:10,
@@ -82,7 +89,7 @@
 
                         updateActionIcons(table);
                         updatePagerIcons(table);
-                        enableTooltips(table);;
+                        enableTooltips(table);
                     }, 0);
                 },
 
@@ -92,6 +99,45 @@
             });
 
             $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
+
+            function uploadfiles(){
+                var receivecarfilepath = $("#receivecarfilepath");
+                var deliverycarfilepath = $("#deliverycarfilepath");
+                if(receivecarfilepath.val() != '' || deliverycarfilepath.val() != ''){
+                    var data = new FormData();
+                    data.append('_token','{{ csrf_token() }}');
+                    data.append('engineno',$('#engineno').val());
+                    if(receivecarfilepath.val() != ''){
+                        data.append('receivecarfile', receivecarfilepath.prop('files')[0]);
+                    }
+                    if(deliverycarfilepath.val() != ''){
+                        data.append('deliverycarfile', deliverycarfilepath.prop('files')[0]);
+                    }
+
+                    return $.ajax({
+                        url: 'car/upload',
+                        type: 'POST',
+                        data: data,
+                        cache: false,
+                        dataType: 'json',
+                        processData: false, // Don't process the files
+                        contentType: false, // Set content type to false as jQuery will tell the server its a query string request
+                        success: function(data, textStatus, jqXHR){
+                            alert("Succefully");
+                            return [true,""];
+                        },
+                        error: function(jqXHR, textStatus, errorThrown)
+                        {
+                            alert(textStatus);
+                            return [false,textStatus];
+                        }
+                    });
+                }
+                else{
+                    alert("Succefully");
+                    return [true,""];
+                }
+            }
 
             //navButtons
             jQuery(grid_selector).jqGrid('navGrid',pager_selector,
@@ -119,6 +165,17 @@
                         form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
                         style_edit_form(form);
 
+                        var carmodelid = $('#carmodelid').val();
+                        var carsubmodelid = $('#carsubmodelid').val();
+
+                        $.get('carsubmodel/read/'+carmodelid, function(data){
+                            $('#carsubmodelid').children('option:not(:first)').remove();
+                            $.each(data, function(i, option) {
+                                $('#carsubmodelid').append($('<option/>').attr("value", option.id).text(option.name));
+                            });
+                            $('#carsubmodelid').val(carsubmodelid);
+                        });
+
                         var dlgDiv = $("#editmod" + jQuery(grid_selector)[0].id);
                         centerGridForm(dlgDiv);
                     },
@@ -127,17 +184,8 @@
                     },
                     afterSubmit : function(response, postdata)
                     {
-                        //UploadImage(response, postdata);
                         if(response.responseText == "ok"){
-                            var engineno = $('#engineno').val();
-                            alert(engineno);
-                            var receivecarfilepath = $( "#receivecarfilepath" ).val();
-                            alert(receivecarfilepath);
-                            var deliverycarfilepath = $( "#deliverycarfilepath" ).val();
-                            alert(deliverycarfilepath);
-
-                            //alert("Succefully")
-                            return [true,""];
+                            return uploadfiles();
                         }else{
                             return [false,response.responseText];
                         }
@@ -156,23 +204,21 @@
                                 .wrapInner('<div class="widget-header" />')
                         style_edit_form(form);
 
+                        $('#carsubmodelid').children('option:not(:first)').remove();
+
                         var dlgDiv = $("#editmod" + jQuery(grid_selector)[0].id);
                         centerGridForm(dlgDiv);
                     },
                     editData: {
                         _token: "{{ csrf_token() }}"
                     },
-                    /*beforeSubmit : function(postdata, formid) {
-                        var filename = $( "#receivecarfilepath" ).val();
-                        alert(filename);
-                        alert(postdata);
-                        alert(formid);
-                    },*/
                     afterSubmit : function(response, postdata)
                     {
                         if(response.responseText == "ok"){
-                            alert("Succefully")
-                            return [true,""];
+                            $.get('car/readSelectlistForDisplayInGrid', function(data){
+                                $(grid_selector).setColProp('carsubmodelid', { editoptions: { value: data.carsubmodelselectlist } });
+                            });
+                            return uploadfiles();
                         }else{
                             return [false,response.responseText];
                         }

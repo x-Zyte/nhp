@@ -50,6 +50,11 @@ class Car extends Model {
         static::deleted(function($model)
         {
             Log::create(['employeeid' => Auth::user()->id,'operation' => 'Delete','date' => date("Y-m-d H:i:s"),'model' => class_basename(get_class($model)),'detail' => $model->toJson()]);
+
+            if($model->receivecarfilepath != '')
+                File::delete(public_path().$model->receivecarfilepath);
+            if($model->deliverycarfilepath != '')
+                File::delete(public_path().$model->deliverycarfilepath);
         });
     }
 

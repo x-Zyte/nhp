@@ -50,6 +50,7 @@ Route::post('employeepermission/update', 'EmployeePermissionController@update');
 Route::get('branch', 'Settings\BranchController@index');
 Route::get('branch/read', 'Settings\BranchController@read');
 Route::post('branch/update', 'Settings\BranchController@update');
+Route::get('branch/readSelectlistForDisplayInGrid', 'Settings\BranchController@readSelectlistForDisplayInGrid');
 
 //Department
 Route::get('department', 'Settings\DepartmentController@index');
@@ -91,6 +92,7 @@ Route::post('insurancecompany/update', 'Settings\InsuranceCompanyController@upda
 Route::get('customer', 'CustomerController@index');
 Route::get('customer/read', 'CustomerController@read');
 Route::post('customer/update', 'CustomerController@update');
+Route::get('customer/readSelectlistForDisplayInGrid', 'CustomerController@readSelectlistForDisplayInGrid');
 
 //CustomerExpectation
 Route::get('customerexpectation/read', 'CustomerExpectationController@read');
@@ -100,6 +102,8 @@ Route::post('customerexpectation/update', 'CustomerExpectationController@update'
 Route::get('car', 'CarController@index');
 Route::get('car/read', 'CarController@read');
 Route::post('car/update', 'CarController@update');
+Route::post('car/upload', 'CarController@upload');
+Route::get('car/readSelectlistForDisplayInGrid', 'CarController@readSelectlistForDisplayInGrid');
 
 //Pricelist
 Route::get('pricelist', 'Settings\PricelistController@index');

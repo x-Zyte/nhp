@@ -77,6 +77,8 @@
 </head>
 <body class="skin-2">
 
+@if ($employeeMenus = Auth::user()->employeePermissions()->lists('menu')) @endif
+
 <div id="modal">
 <img src="../resources/assets/img/ajax-loader.gif" id="loading-indicator"/>
 </div>
@@ -185,7 +187,7 @@
                 <b class="arrow"></b>
             </li>
 
-            <li class="@yield('menu-stock-class')" style="display: none">
+            <li class="@yield('menu-stock-class')"  style="display: none">
                 <a href="javascript:void(0)">
                     <i class="menu-icon fa fa-archive"></i>
                     <span class="menu-text"> การคลัง </span>
@@ -212,7 +214,7 @@
                 <b class="arrow"></b>
             </li>
 
-            <li class="@yield('menu-car-class')">
+            <li class="@yield('menu-car-class')" @if(!Auth::user()->isadmin && !in_array("รถ", $employeeMenus)) style="display: none" @endif>
                 <a href="{{ url('/car') }}">
                     <i class="menu-icon fa fa-car"></i>
                     <span class="menu-text"> รถ </span>
@@ -221,7 +223,7 @@
                 <b class="arrow"></b>
             </li>
 
-            <li class="@yield('menu-customer-class')">
+            <li class="@yield('menu-customer-class')" @if(!Auth::user()->isadmin && !in_array("ลูกค้า", $employeeMenus)) style="display: none" @endif>
                 <a href="{{ url('/customer') }}">
                     <i class="menu-icon fa fa-users"></i>
                     <span class="menu-text"> ลูกค้า </span>
@@ -230,7 +232,7 @@
                 <b class="arrow"></b>
             </li>
 
-            <li class="@yield('menu-employee-class')">
+            <li class="@yield('menu-employee-class')" @if(!Auth::user()->isadmin && !in_array("พนักงาน", $employeeMenus)) style="display: none" @endif>
                 <a href="{{ url('/employee') }}">
                     <i class="menu-icon fa fa-male"></i>
                     <span class="menu-text"> พนักงาน </span>
@@ -239,7 +241,7 @@
                 <b class="arrow"></b>
             </li>
 
-            <li class="@yield('menu-settings-class')">
+            <li class="@yield('menu-settings-class')" @if(!Auth::user()->isadmin && !in_array("การตั้งค่า", $employeeMenus)) style="display: none" @endif>
                 <a href="javascript:void(0)" class="dropdown-toggle">
                     <i class="menu-icon fa fa-cogs"></i>
                     <span class="menu-text"> การตั้งค่า </span>
@@ -514,8 +516,6 @@
 
 <script src="../resources/assets/js/sharefunctions.js"></script>
 <script src="../resources/assets/js/lightbox.min.js"></script>
-<!-- ajax file upload -->
-<script src="../resources/assets/js/ajaxfileupload.js"></script>
 
 </body>
 </html>
