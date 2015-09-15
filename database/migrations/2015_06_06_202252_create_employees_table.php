@@ -18,6 +18,8 @@ class CreateEmployeesTable extends Migration {
             $table->string('title',10);
             $table->string('firstname',50);
             $table->string('lastname',50);
+            $table->string('code',50);
+            $table->unique('code');
             $table->string('username',50);
             $table->unique('username');
             $table->string('password',100);

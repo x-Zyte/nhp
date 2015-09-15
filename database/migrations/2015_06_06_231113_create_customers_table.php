@@ -15,21 +15,26 @@ class CreateCustomersTable extends Migration {
 		Schema::create('customers', function(Blueprint $table)
 		{
             $table->increments('id');
+            $table->integer('provinceid')->unsigned();
+            $table->foreign('provinceid')->references('id')->on('provinces');
             $table->string('title',10);
             $table->string('firstname',50);
             $table->string('lastname',50)->nullable();
+            $table->string('phone1',20);
+            $table->string('phone2',20)->nullable();
+            $table->integer('occupationid')->unsigned()->nullable();
+            $table->foreign('occupationid')->references('id')->on('occupations');
             $table->text('address')->nullable();
             $table->integer('districtid')->unsigned()->nullable();
             $table->foreign('districtid')->references('id')->on('districts');
             $table->integer('amphurid')->unsigned()->nullable();
             $table->foreign('amphurid')->references('id')->on('amphurs');
-            $table->integer('provinceid')->unsigned()->nullable();
-            $table->foreign('provinceid')->references('id')->on('provinces');
+            $table->integer('addprovinceid')->unsigned()->nullable();
+            $table->foreign('addprovinceid')->references('id')->on('provinces');
             $table->string('zipcode',5)->nullable();
             $table->string('email',100)->nullable();
-            $table->string('phone',20)->nullable();
-            $table->integer('branchid')->unsigned();
-            $table->foreign('branchid')->references('id')->on('branchs');
+
+
 
             $table->integer('createdby')->unsigned();
             $table->foreign('createdby')->references('id')->on('employees');

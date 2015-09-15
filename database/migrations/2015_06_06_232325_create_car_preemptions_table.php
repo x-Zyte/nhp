@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCarsTable extends Migration {
+class CreateCarPreemptionsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,17 +12,22 @@ class CreateCarsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('cars', function(Blueprint $table)
+		Schema::create('car_preemptions', function(Blueprint $table)
 		{
             $table->increments('id');
 
-            $table->integer('provinceid')->unsigned();
-            $table->foreign('provinceid')->references('id')->on('provinces');
+            $table->integer('bookno');
+            $table->integer('no');
+            $table->dateTime('date');
+            $table->integer('customerid')->unsigned();
+            $table->foreign('customerid')->references('id')->on('customers');
+
+
+            /*$table->foreign('branchid')->references('id')->on('branchs');
             $table->integer('carmodelid')->unsigned();
             $table->foreign('carmodelid')->references('id')->on('car_models');
             $table->integer('carsubmodelid')->unsigned();
             $table->foreign('carsubmodelid')->references('id')->on('car_submodels');
-            $table->integer('buyfrom')->comment('0:ศูนย์ใหญ่, 1:ดีลเลอร์อื่น');
             $table->string('no',10);
             $table->dateTime('dodate');
             $table->dateTime('receiveddate');
@@ -38,7 +43,7 @@ class CreateCarsTable extends Migration {
             $table->string('deliverycarfilepath',2083)->nullable();
             $table->boolean('issold')->default(false);
             $table->boolean('isregistered')->default(false);
-            $table->boolean('isdelivered')->default(false);
+            $table->boolean('isdelivered')->default(false);*/
 
             $table->integer('createdby')->unsigned();
             $table->foreign('createdby')->references('id')->on('employees');
@@ -58,7 +63,7 @@ class CreateCarsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('cars');
+		Schema::drop('car_preemptions');
 	}
 
 }

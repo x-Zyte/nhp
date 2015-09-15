@@ -8,19 +8,18 @@
 
 namespace App\Repositories;
 
-use App\Models\CarSubModel;
+use App\Models\CarModelColor;
 
-class CarSubModelRepository extends EloquentRepositoryAbstract
+class CarModelColorRepository extends EloquentRepositoryAbstract
 {
     public function __construct()
     {
-        $this->Database = new CarSubModel;
+        $this->Database = new CarModelColor;
         $this->orderBy = array(array('id', 'asc'));
-        $this->crudFields = array('oper', 'id', 'carmodelid','code', 'name', 'detail');
+        $this->crudFields = array('oper', 'id', 'carmodelid','colorid');
         $this->uniqueKeySingles = array();
         $this->uniqueKeyMultiples = array(array('field'=>'carmodelid','showInMsg'=>false,'label'=>'แบบรถ'),
-            array('field'=>'code','showInMsg'=>true,'label'=>'แบบรถนี้ รหัส'),
-            array('field'=>'name','showInMsg'=>true,'label'=>'รุ่น'));
+            array('field'=>'colorid','showInMsg'=>true,'label'=>'แบบรถนี้ รหัสสี'));
         $this->hasBranch = false;
         $this->hasProvince = false;
     }

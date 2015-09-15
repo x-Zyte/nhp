@@ -105,7 +105,7 @@
                     afterSubmit : function(response, postdata)
                     {
                         if(response.responseText == "ok"){
-                            alert("Succefully")
+                            alert("ดำเนินการสำเร็จ")
                             return [true,""];
                         }else{
                             return [false,response.responseText];
@@ -133,7 +133,7 @@
                     afterSubmit : function(response, postdata)
                     {
                         if(response.responseText == "ok"){
-                            alert("Succefully")
+                            alert("ดำเนินการสำเร็จ")
                             return [true,""];
                         }else{
                             return [false,response.responseText];
@@ -164,7 +164,7 @@
                     afterSubmit : function(response, postdata)
                     {
                         if(response.responseText == "ok"){
-                            alert("Succefully")
+                            alert("ดำเนินการสำเร็จ")
                             return [true,""];
                         }else{
                             return [false,response.responseText];

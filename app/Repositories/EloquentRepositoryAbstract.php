@@ -44,6 +44,7 @@ abstract class EloquentRepositoryAbstract implements RepositoryInterface{
     protected $uniqueKeySingles;
     protected $uniqueKeyMultiples;
     protected $hasBranch;
+    protected $hasProvince;
 
     /**
      * Calculate the number of rows. It's used for paging the result.
@@ -63,6 +64,9 @@ abstract class EloquentRepositoryAbstract implements RepositoryInterface{
         {
             if($this->hasBranch && !Auth::user()->isadmin){
                 $query->where('branchid', Auth::user()->branchid);
+            }
+            if($this->hasProvince && !Auth::user()->isadmin){
+                $query->where('provinceid', Auth::user()->province()->provinceid);
             }
 
             foreach ($filters as $filter)
@@ -172,6 +176,9 @@ abstract class EloquentRepositoryAbstract implements RepositoryInterface{
         {
             if($this->hasBranch && !Auth::user()->isadmin){
                 $query->where('branchid', Auth::user()->branchid);
+            }
+            if($this->hasProvince && !Auth::user()->isadmin){
+                $query->where('provinceid', Auth::user()->province()->provinceid);
             }
 
             foreach ($filters as $filter)

@@ -17,7 +17,15 @@ class CreateCustomerExpectationsTable extends Migration {
             $table->increments('id');
             $table->integer('customerid')->unsigned();
             $table->foreign('customerid')->references('id')->on('customers');
+            $table->integer('employeeid')->unsigned();
+            $table->foreign('employeeid')->references('id')->on('employees');
             $table->dateTime('date');
+            $table->integer('carmodelid1')->unsigned()->nullable();
+            $table->foreign('carmodelid1')->references('id')->on('car_models');
+            $table->integer('carmodelid2')->unsigned()->nullable();
+            $table->foreign('carmodelid2')->references('id')->on('car_models');
+            $table->integer('carmodelid3')->unsigned()->nullable();
+            $table->foreign('carmodelid3')->references('id')->on('car_models');
             $table->text('details');
 
             $table->integer('createdby')->unsigned();

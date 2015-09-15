@@ -8,16 +8,16 @@
 
 namespace App\Repositories;
 
-use App\Models\Bank;
+use App\Models\Giveaway;
 
-class BankRepository extends EloquentRepositoryAbstract
+class GiveawayRepository extends EloquentRepositoryAbstract
 {
     public function __construct()
     {
-        $this->Database = new Bank;
+        $this->Database = new Giveaway;
         $this->orderBy = array(array('id', 'asc'));
-        $this->crudFields = array('oper', 'id', 'name', 'detail');
-        $this->uniqueKeySingles = array(array('field'=>'name','label'=>'ชื่อธนาคาร-บัญชี'));
+        $this->crudFields = array('oper', 'id', 'name','price');
+        $this->uniqueKeySingles = array(array('field'=>'name','label'=>'ชื่อของแถม'));
         $this->uniqueKeyMultiples = array();
         $this->hasBranch = false;
         $this->hasProvince = false;

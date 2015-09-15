@@ -3,15 +3,15 @@
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-class CarSubModel extends Model {
+class CarModelColor extends Model {
 
-    protected $table = 'car_submodels';
+    protected $table = 'car_model_colors';
 
     public $timestamps = false;
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['code','name', 'carmodelid', 'detail', 'active',
+    protected $fillable = ['carmodelid','colorid', 'active',
         'createdby', 'createddate', 'modifiedby', 'modifieddate'];
 
     public static function boot()
@@ -51,5 +51,10 @@ class CarSubModel extends Model {
     public function carmodel()
     {
         return $this->belongsTo('App\Models\CarModel', 'carmodelid', 'id');
+    }
+
+    public function color()
+    {
+        return $this->belongsTo('App\Models\Color', 'colorid', 'id');
     }
 }

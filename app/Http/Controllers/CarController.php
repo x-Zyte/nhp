@@ -9,13 +9,14 @@
 namespace App\Http\Controllers;
 
 
-use App\Models\Branch;
+use App\Models\systemdatas\Province;
 use App\Models\Car;
 use App\Models\CarModel;
 use App\Models\CarSubModel;
 use App\Facades\GridEncoder;
 use App\Repositories\CarRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 
 class CarController extends Controller {
@@ -27,11 +28,11 @@ class CarController extends Controller {
 
     public function index()
     {
-        $branchs = Branch::orderBy('name', 'asc')->get(['id', 'name']);
-        $branchselectlist = array();
-        array_push($branchselectlist,':เลือกสาขา');
-        foreach($branchs as $item){
-            array_push($branchselectlist,$item->id.':'.$item->name);
+        $provinces = Province::orderBy('name', 'asc')->get(['id', 'name']);
+        $provinceselectlist = array();
+        array_push($provinceselectlist,':เลือกจังหวัด');
+        foreach($provinces as $item){
+            array_push($provinceselectlist,$item->id.':'.$item->name);
         }
 
         $carmodels = CarModel::orderBy('name', 'asc')->get(['id', 'name']);
@@ -49,10 +50,16 @@ class CarController extends Controller {
             array_push($carsubmodelselectlist,$item->id.':'.$item->name);
         }
 
+        $defaultProvince = '';
+        if(Auth::user()->isadmin == false){
+            $defaultProvince = (Auth::user()->branchid == null ? '' : Auth::user()->branch->provinceid);
+        }
+
         return view('car',
-            ['branchselectlist' => implode(";",$branchselectlist),
+            ['provinceselectlist' => implode(";",$provinceselectlist),
             'carmodelselectlist' => implode(";",$carmodelselectlist),
-            'carsubmodelselectlist' => implode(";",$carsubmodelselectlist)]);
+            'carsubmodelselectlist' => implode(";",$carsubmodelselectlist),
+            'defaultProvince'=>$defaultProvince]);
     }
 
     public function read()

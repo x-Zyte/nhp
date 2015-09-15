@@ -11,8 +11,8 @@ class Customer extends Model {
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['title', 'firstname', 'lastname', 'address', 'districtid', 'amphurid', 'provinceid', 'zipcode',
-        'email', 'phone', 'branchid',
+    protected $fillable = ['title', 'firstname', 'lastname', 'phone1', 'phone2','occupationid', 'address', 'districtid', 'amphurid', 'addprovinceid', 'zipcode',
+        'email', 'provinceid',
         'createdby', 'createddate', 'modifiedby', 'modifieddate'];
 
     public static function boot()
@@ -21,6 +21,11 @@ class Customer extends Model {
 
         static::creating(function($model)
         {
+            if($model->occupationid == '') $model->occupationid = null;
+            if($model->districtid == '') $model->districtid = null;
+            if($model->amphurid == '') $model->amphurid = null;
+            if($model->addprovinceid == '') $model->addprovinceid = null;
+
             $model->createdby = Auth::user()->id;
             $model->createddate = date("Y-m-d H:i:s");
             $model->modifiedby = Auth::user()->id;
@@ -34,6 +39,11 @@ class Customer extends Model {
 
         static::updating(function($model)
         {
+            if($model->occupationid == '') $model->occupationid = null;
+            if($model->districtid == '') $model->districtid = null;
+            if($model->amphurid == '') $model->amphurid = null;
+            if($model->addprovinceid == '') $model->addprovinceid = null;
+
             $model->modifiedby = Auth::user()->id;
             $model->modifieddate = date("Y-m-d H:i:s");
         });
@@ -49,9 +59,9 @@ class Customer extends Model {
         });
     }
 
-    public function branch()
+    public function province()
     {
-        return $this->belongsTo('App\Models\Branch', 'branchid', 'id');
+        return $this->belongsTo('App\Models\Province', 'branchprovinceid', 'id');
     }
 
     public function customerExpectations()

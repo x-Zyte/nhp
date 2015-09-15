@@ -32,24 +32,28 @@
                 }
             })
 
-            var defaultBranch = '';
-            var hiddenBranch = false;
+            var defaultProvince = '';
+            var hiddenProvince = false;
             if('{{Auth::user()->isadmin}}' == '0'){
-                defaultBranch = '{{Auth::user()->branchid}}';
-                hiddenBranch = true;
+                defaultProvince = '{{$defaultProvince}}';
+                hiddenProvince = true;
             }
 
             $(grid_selector).jqGrid({
                 url:'{{ url('/customer/read') }}',
                 datatype: "json",
-                colNames:['สาขา', 'คำนำหน้า', 'ชื่อจริง', 'นามสกุล', 'ที่อยู่', 'จังหวัด', 'เขต/อำเภอ', 'แขวง/ตำบล', 'รหัสไปรษณีย์', 'อีเมล์', 'โทรศัพท์'],
+                colNames:['จังหวัด', 'คำนำหน้า', 'ชื่อจริง', 'นามสกุล', 'เบอร์โทร1', 'เบอร์โทร2', 'อีเมล์', 'อาชีพ', 'ที่อยู่', 'จังหวัด', 'เขต/อำเภอ', 'แขวง/ตำบล', 'รหัสไปรษณีย์'],
                 colModel:[
-                    {name:'branchid',index:'branchid', width:150, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$branchselectlist}}", defaultValue:defaultBranch},editrules:{required:true},hidden:hiddenBranch},
-                    {name:'title',index:'title', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "นาย:นาย;นาง:นาง;นางสาว:นางสาว"},align:'left'},
+                    {name:'provinceid',index:'provinceid', width:100, editable: true,edittype:"select",formatter:'select',editrules:{required:true},editoptions:{value: "{{$provinceselectlist}}", defaultValue:defaultProvince},hidden:hiddenProvince},
+                    {name:'title',index:'title', width:70, editable: true,edittype:"select",formatter:'select',editoptions:{value: "นาย:นาย;นาง:นาง;นางสาว:นางสาว"},align:'left'},
                     {name:'firstname',index:'firstname', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
                     {name:'lastname',index:'lastname', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
+                    {name:'phone1',index:'phone1', width:100,editable: true,editrules:{required:true},editoptions:{size:"20",maxlength:"20"},align:'left'},
+                    {name:'phone2',index:'phone2', width:100,editable: true,editoptions:{size:"20",maxlength:"20"},align:'left'},
+                    {name:'email',index:'email', width:200,editable: true,editoptions:{size:"40",maxlength:"50"},align:'left'},
+                    {name:'occupationid',index:'occupationid', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$occupationselectlist}}"}},
                     {name:'address',index:'address', width:150,editable: true,editoptions:{size:"50",maxlength:"200"},align:'left'},
-                    {name:'provinceid',index:'provinceid', width:100, editable: true,edittype:"select",formatter:'select',align:'left',
+                    {name:'addprovinceid',index:'addprovinceid', width:100, editable: true,edittype:"select",formatter:'select',align:'left',
                         editoptions:{value: "{{$provinceselectlist}}",
                             dataEvents :[{type: 'change', fn: function(e){
                                 var thisval = $(e.target).val();
@@ -94,9 +98,7 @@
                             }}]
                         }
                     },
-                    {name:'zipcode',index:'zipcode', width:100,editable: true,editoptions:{size:"5",maxlength:"5"},align:'left'},
-                    {name:'email',index:'email', width:150,editable: true,editoptions:{size:"40",maxlength:"50"},align:'left'},
-                    {name:'phone',index:'phone', width:100,editable: true,editoptions:{size:"20",maxlength:"20"},align:'left'}
+                    {name:'zipcode',index:'zipcode', width:100,editable: true,editoptions:{size:"5",maxlength:"5"},align:'left'}
                 ],
                 viewrecords : true,
                 rowNum:10,
@@ -147,9 +149,13 @@
                     jQuery("#"+subgrid_table_id).jqGrid({
                         url:'customerexpectation/read?customerid='+row_id,
                         datatype: "json",
-                        colNames:['วันที่', 'รายละเอียด'],
+                        colNames:['พนักงานที่ติดตาม','วันที่','แบบที่สนใจ1','แบบที่สนใจ2','แบบที่สนใจ3', 'รายละเอียด'],
                         colModel:[
+                            {name:'employeeid',index:'employeeid', width:150, editable: true,edittype:"select",formatter:'select',editrules:{required:true},editoptions:{value:"{{$employeeselectlist}}"},align:'left'},
                             {name:'date',index:'date',width:100, editable:true, sorttype:"date", formatter: "date", unformat: pickDate, editoptions:{dataInit:function(elem){$(elem).datepicker({format:'dd-mm-yyyy', autoclose:true});}}, editrules:{required:true}, align:'center'},
+                            {name:'carmodelid1',index:'carmodelid1', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value:"{{$carmodelselectlist}}"},align:'left'},
+                            {name:'carmodelid2',index:'carmodelid2', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value:"{{$carmodelselectlist}}"},align:'left'},
+                            {name:'carmodelid3',index:'carmodelid3', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value:"{{$carmodelselectlist}}"},align:'left'},
                             {name:'details',index:'details', width:500,editable: true,edittype:'textarea',editoptions:{rows:"2",cols:"40"},editrules:{required:true},align:'left'}
                         ],
                         viewrecords : true,
@@ -213,7 +219,7 @@
                                 afterSubmit : function(response, postdata)
                                 {
                                     if(response.responseText == "ok"){
-                                        alert("Succefully")
+                                        alert("ดำเนินการสำเร็จ")
                                         return [true,""];
                                     }else{
                                         return [false,response.responseText];
@@ -243,7 +249,7 @@
                                 afterSubmit : function(response, postdata)
                                 {
                                     if(response.responseText == "ok"){
-                                        alert("Succefully")
+                                        alert("ดำเนินการสำเร็จ")
                                         return [true,""];
                                     }else{
                                         return [false,response.responseText];
@@ -262,7 +268,7 @@
 
                                     form.data('styled', true);
 
-                                    var dlgDiv = $("#delmod" + jQuery(grid_selector)[0].id);
+                                    var dlgDiv = $("#delmod" + jQuery("#"+subgrid_table_id)[0].id);
                                     centerGridForm(dlgDiv);
                                 },
                                 onClick : function(e) {
@@ -274,7 +280,7 @@
                                 afterSubmit : function(response, postdata)
                                 {
                                     if(response.responseText == "ok"){
-                                        alert("Succefully")
+                                        alert("ดำเนินการสำเร็จ")
                                         return [true,""];
                                     }else{
                                         return [false,response.responseText];
@@ -289,7 +295,7 @@
                                     form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
                                     style_search_form(form);
 
-                                    var dlgDiv = $("#searchmodfbox_" + jQuery(grid_selector)[0].id);
+                                    var dlgDiv = $("#searchmodfbox_" + jQuery("#"+subgrid_table_id)[0].id);
                                     centerGridForm(dlgDiv);
                                 },
                                 afterRedraw: function(){
@@ -312,7 +318,7 @@
                                     var form = $(e[0]);
                                     form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
 
-                                    var dlgDiv = $("#viewmod" + jQuery(grid_selector)[0].id);
+                                    var dlgDiv = $("#viewmod" + jQuery("#"+subgrid_table_id)[0].id);
                                     centerGridForm(dlgDiv);
                                 },
                                 editData: {
@@ -380,7 +386,7 @@
                     afterSubmit : function(response, postdata)
                     {
                         if(response.responseText == "ok"){
-                            alert("Succefully")
+                            alert("ดำเนินการสำเร็จ")
                             return [true,""];
                         }else{
                             return [false,response.responseText];
@@ -416,7 +422,7 @@
                                 $(grid_selector).setColProp('amphurid', { editoptions: { value: data.amphurselectlist } });
                                 $(grid_selector).setColProp('districtid', { editoptions: { value: data.districtselectlist } });
                             });
-                            alert("Succefully");
+                            alert("ดำเนินการสำเร็จ");
                             return [true,""];
                         }else{
                             return [false,response.responseText];
@@ -447,7 +453,7 @@
                     afterSubmit : function(response, postdata)
                     {
                         if(response.responseText == "ok"){
-                            alert("Succefully")
+                            alert("ดำเนินการสำเร็จ")
                             return [true,""];
                         }else{
                             return [false,response.responseText];

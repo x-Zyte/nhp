@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCarModelsTable extends Migration {
+class CreateGiveawaysTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,14 +12,11 @@ class CreateCarModelsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('car_models', function(Blueprint $table)
+		Schema::create('giveaways', function(Blueprint $table)
 		{
             $table->increments('id');
-            $table->integer('cartypeid')->unsigned();
-            $table->foreign('cartypeid')->references('id')->on('car_types');
             $table->string('name',50);
-            $table->decimal('registercost', 10, 2);
-            $table->text('detail')->nullable();
+            $table->decimal('price', 10, 2);
             $table->boolean('active')->default(true);
 
             $table->integer('createdby')->unsigned();
@@ -40,7 +37,7 @@ class CreateCarModelsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('car_models');
+		Schema::drop('giveaways');
 	}
 
 }

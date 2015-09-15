@@ -11,7 +11,7 @@ class Car extends Model {
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['branchid', 'carmodelid', 'carsubmodelid', 'no', 'dodate', 'receiveddate', 'engineno', 'chassisno', 'keyno',
+    protected $fillable = ['provinceid', 'carmodelid', 'carsubmodelid','buyfrom', 'no', 'dodate', 'receiveddate', 'engineno', 'chassisno', 'keyno',
         'colour', 'objective', 'receivetype', 'receivecarfilepath', 'deliverycarfilepath', 'issold', 'isregistered', 'isdelivered',
         'createdby', 'createddate', 'modifiedby', 'modifieddate'];
 
@@ -68,8 +68,8 @@ class Car extends Model {
         return $this->belongsTo('App\Models\CarSubModel', 'carsubmodelid', 'id');
     }
 
-    public function branch()
+    public function province()
     {
-        return $this->belongsTo('App\Models\Branch', 'branchid', 'id');
+        return $this->belongsTo('App\Models\systemdatas\Province', 'provinceid', 'id');
     }
 }

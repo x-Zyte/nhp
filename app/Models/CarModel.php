@@ -11,7 +11,7 @@ class CarModel extends Model {
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['name', 'cartypeid', 'detail', 'active',
+    protected $fillable = ['name', 'cartypeid','registercost', 'detail', 'active',
         'createdby', 'createddate', 'modifiedby', 'modifieddate'];
 
     public static function boot()

@@ -35,7 +35,7 @@
             $(grid_selector).jqGrid({
                 url:'employee/read',
                 datatype: "json",
-                colNames:['คำนำหน้า', 'ชื่อจริง', 'นามสกุล', 'ชื่อเข้าใช้ระบบ', 'อีเมล์', 'โทรศัพท์', 'เป็นผู้ดูแล', 'สาขา', 'แผนก','ทีม', 'เปิดใช้งาน'],
+                colNames:['รหัส','คำนำหน้า', 'ชื่อจริง', 'นามสกุล', 'ชื่อเข้าใช้ระบบ', 'อีเมล์', 'โทรศัพท์', 'เป็นผู้ดูแล', 'สาขา', 'แผนก','ทีม', 'เปิดใช้งาน'],
                 colModel:[
                     /*{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
                         formatter:'actions',
@@ -46,6 +46,7 @@
                         }
                     },*/
                     //{hidden: true},
+                    {name:'code',index:'code', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
                     {name:'title',index:'title', width:60, editable: true,edittype:"select",formatter:'select',editoptions:{value: "นาย:นาย;นาง:นาง;นางสาว:นางสาว"},align:'left'},
                     {name:'firstname',index:'firstname', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
                     {name:'lastname',index:'lastname', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
@@ -173,7 +174,7 @@
                                 afterSubmit : function(response, postdata)
                                 {
                                     if(response.responseText == "ok"){
-                                        alert("Succefully")
+                                        alert("ดำเนินการสำเร็จ")
                                         return [true,""];
                                     }else{
                                         return [false,response.responseText];
@@ -203,7 +204,7 @@
                                 afterSubmit : function(response, postdata)
                                 {
                                     if(response.responseText == "ok"){
-                                        alert("Succefully")
+                                        alert("ดำเนินการสำเร็จ")
                                         return [true,""];
                                     }else{
                                         return [false,response.responseText];
@@ -222,7 +223,7 @@
 
                                     form.data('styled', true);
 
-                                    var dlgDiv = $("#delmod" + jQuery(grid_selector)[0].id);
+                                    var dlgDiv = $("#delmod" + jQuery("#"+subgrid_table_id)[0].id);
                                     centerGridForm(dlgDiv);
                                 },
                                 onClick : function(e) {
@@ -234,7 +235,7 @@
                                 afterSubmit : function(response, postdata)
                                 {
                                     if(response.responseText == "ok"){
-                                        alert("Succefully")
+                                        alert("ดำเนินการสำเร็จ")
                                         return [true,""];
                                     }else{
                                         return [false,response.responseText];
@@ -249,7 +250,7 @@
                                     form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
                                     style_search_form(form);
 
-                                    var dlgDiv = $("#searchmodfbox_" + jQuery(grid_selector)[0].id);
+                                    var dlgDiv = $("#searchmodfbox_" + jQuery("#"+subgrid_table_id)[0].id);
                                     centerGridForm(dlgDiv);
                                 },
                                 afterRedraw: function(){
@@ -272,7 +273,7 @@
                                     var form = $(e[0]);
                                     form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
 
-                                    var dlgDiv = $("#viewmod" + jQuery(grid_selector)[0].id);
+                                    var dlgDiv = $("#viewmod" + jQuery("#"+subgrid_table_id)[0].id);
                                     centerGridForm(dlgDiv);
                                 },
                                 editData: {
@@ -320,7 +321,7 @@
                     afterSubmit : function(response, postdata)
                     {
                         if(response.responseText == "ok"){
-                            alert("Succefully")
+                            alert("ดำเนินการสำเร็จ")
                             return [true,""];
                         }else{
                             return [false,response.responseText];
@@ -349,7 +350,7 @@
                     afterSubmit : function(response, postdata)
                     {
                         if(response.responseText == "ok"){
-                            alert("Succefully")
+                            alert("ดำเนินการสำเร็จ")
                             return [true,""];
                         }else{
                             return [false,response.responseText];
@@ -380,7 +381,7 @@
                     afterSubmit : function(response, postdata)
                     {
                         if(response.responseText == "ok"){
-                            alert("Succefully")
+                            alert("ดำเนินการสำเร็จ")
                             return [true,""];
                         }else{
                             return [false,response.responseText];

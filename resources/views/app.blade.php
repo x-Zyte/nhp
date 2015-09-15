@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
-    <title>@yield('title', 'Nissan Hippo Power')</title>
+    <title>@yield('title', 'Nissan Hippro Power')</title>
 
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
@@ -104,6 +104,8 @@
     }
 </style>
 <script type="text/javascript">
+    $("body").css("overflow", "hidden");
+
     $(document).ajaxStart(function(event, request, settings) {
         $('#modal').show();
     });
@@ -132,7 +134,7 @@
             <a href="{{ url('/') }}" class="navbar-brand">
                 <small>
                     <i class="fa fa-car"></i>
-                    Nissan Hippo Power
+                    Nissan Hippro Power
                 </small>
             </a>
         </div>
@@ -299,10 +301,19 @@
                                 <b class="arrow"></b>
                             </li>
 
+                            <li class="@yield('menu-settingcolor-class')">
+                                <a href="{{ url('/color') }}">
+                                    <i class="menu-icon fa fa-minus"></i>
+                                    สีรถ
+                                </a>
+
+                                <b class="arrow"></b>
+                            </li>
+
                             <li class="@yield('menu-settingcarmodel-class')">
                                 <a href="{{ url('/carmodel') }}">
                                     <i class="menu-icon fa fa-minus"></i>
-                                    แบบรถ
+                                    แบบรถ/สีรถของแบบ
                                 </a>
 
                                 <b class="arrow"></b>
@@ -476,7 +487,7 @@
         <div class="footer-inner">
             <div class="footer-content">
 						<span class="bigger-120">
-							<span class="blue bolder">Nissan Hippo Power</span>
+							<span class="blue bolder">Nissan Hippro Power</span>
 							<!-- &copy; 2013-2014 -->
 						</span>
 

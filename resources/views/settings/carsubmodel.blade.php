@@ -39,9 +39,10 @@
             $(grid_selector).jqGrid({
                 url:'{{ url('/carsubmodel/read') }}',
                 datatype: "json",
-                colNames:['แบบรถ', 'ชื่อรุ่น', 'รายละเอียด'],
+                colNames:['แบบรถ','รหัส', 'ชื่อรุ่น', 'รายละเอียด'],
                 colModel:[
-                    {name:'carmodelid',index:'carmodelid', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value:"{{$carmodelselectlist}}"},align:'left'},
+                    {name:'carmodelid',index:'carmodelid', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value:"{{$carmodelselectlist}}"},editrules:{required:true},align:'left'},
+                    {name:'code',index:'code', width:150,editable: true,editoptions:{size:"30",maxlength:"50"},editrules:{required:true},align:'left'},
                     {name:'name',index:'name', width:150,editable: true,editoptions:{size:"30",maxlength:"50"},editrules:{required:true},align:'left'},
                     {name:'detail',index:'detail', width:300,editable: true,edittype:'textarea',editoptions:{rows:"2",cols:"40"},editrules:{},align:'left'}
                 ],
@@ -106,7 +107,7 @@
                     afterSubmit : function(response, postdata)
                     {
                         if(response.responseText == "ok"){
-                            alert("Succefully")
+                            alert("ดำเนินการสำเร็จ")
                             return [true,""];
                         }else{
                             return [false,response.responseText];
@@ -134,7 +135,7 @@
                     afterSubmit : function(response, postdata)
                     {
                         if(response.responseText == "ok"){
-                            alert("Succefully")
+                            alert("ดำเนินการสำเร็จ")
                             return [true,""];
                         }else{
                             return [false,response.responseText];
@@ -165,7 +166,7 @@
                     afterSubmit : function(response, postdata)
                     {
                         if(response.responseText == "ok"){
-                            alert("Succefully")
+                            alert("ดำเนินการสำเร็จ")
                             return [true,""];
                         }else{
                             return [false,response.responseText];

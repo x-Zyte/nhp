@@ -39,7 +39,7 @@
             $(grid_selector).jqGrid({
                 url:'{{ url('/branch/read') }}',
                 datatype: "json",
-                colNames:['ชื่อสาขา', 'ที่อยู่', 'จังหวัด', 'เขต/อำเภอ', 'แขวง/ตำบล', 'รหัสไปรษณีย์'],
+                colNames:['ชื่อสาขา', 'ที่อยู่', 'จังหวัด', 'เขต/อำเภอ', 'แขวง/ตำบล', 'รหัสไปรษณีย์','สำนักงานใหญ่'],
                 colModel:[
                     {name:'name',index:'name', width:150,editable: true,editoptions:{size:"30",maxlength:"50"},editrules:{required:true},align:'left'},
                     {name:'address',index:'address', width:200,editable: true,editoptions:{size:"50",maxlength:"200"},editrules:{required:true},align:'left'},
@@ -88,7 +88,8 @@
                             }}]
                         }
                     },
-                    {name:'zipcode',index:'zipcode', width:100,editable: true,editoptions:{size:"5",maxlength:"5"},editrules:{required:true},align:'left'}
+                    {name:'zipcode',index:'zipcode', width:100,editable: true,editoptions:{size:"5",maxlength:"5"},editrules:{required:true, number:true},align:'left'},
+                    {name:'isheadquarter',index:'isheadquarter', width:80, editable: true,edittype:"checkbox",editoptions: {value:"1:0"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'}
                     //{name:'zipcodeid',index:'zipcodeid', width:50, editable: true,edittype:"select",formatter:'select',editoptions:{value: ":เลือกรหัสไปรษณีย์"}}
                 ],
                 viewrecords : true,
@@ -171,7 +172,7 @@
                     afterSubmit : function(response, postdata)
                     {
                         if(response.responseText == "ok"){
-                            alert("Succefully")
+                            alert("ดำเนินการสำเร็จ")
                             return [true,""];
                         }else{
                             return [false,response.responseText];
@@ -206,7 +207,7 @@
                                 $(grid_selector).setColProp('amphurid', { editoptions: { value: data.amphurselectlist } });
                                 $(grid_selector).setColProp('districtid', { editoptions: { value: data.districtselectlist } });
                             });
-                            alert("Succefully")
+                            alert("ดำเนินการสำเร็จ")
                             return [true,""];
                         }else{
                             return [false,response.responseText];
@@ -237,7 +238,7 @@
                     afterSubmit : function(response, postdata)
                     {
                         if(response.responseText == "ok"){
-                            alert("Succefully")
+                            alert("ดำเนินการสำเร็จ")
                             return [true,""];
                         }else{
                             return [false,response.responseText];

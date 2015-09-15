@@ -16,12 +16,13 @@ class CarRepository extends EloquentRepositoryAbstract
     {
         $this->Database = new Car;
         $this->orderBy = array(array('id', 'asc'));
-        $this->crudFields = array('oper', 'id', 'branchid', 'carmodelid', 'carsubmodelid', 'no', 'dodate', 'receiveddate',
+        $this->crudFields = array('oper', 'id', 'provinceid', 'carmodelid', 'carsubmodelid','buyfrom', 'no', 'dodate', 'receiveddate',
             'engineno', 'chassisno', 'keyno', 'colour', 'objective', 'receivetype',
             'issold', 'isregistered', 'isdelivered');
         $this->uniqueKeySingles = array(array('field'=>'engineno','label'=>'เลขเครื่องยนต์'),
             array('field'=>'chassisno','label'=>'เลขตัวถัง'));
         $this->uniqueKeyMultiples = array();
-        $this->hasBranch = true;
+        $this->hasBranch = false;
+        $this->hasProvince = true;
     }
 }

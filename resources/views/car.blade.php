@@ -32,19 +32,19 @@
                 }
             });
 
-            var defaultBranch = '';
-            var hiddenBranch = false;
+            var defaultProvince = '';
+            var hiddenProvince = false;
             if('{{Auth::user()->isadmin}}' == '0'){
-                defaultBranch = '{{Auth::user()->branchid}}';
-                hiddenBranch = true;
+                defaultProvince = '{{$defaultProvince}}';
+                hiddenProvince = true;
             }
 
             $(grid_selector).jqGrid({
                 url:'car/read',
                 datatype: "json",
-                colNames:['สาขา','แบบ','รุ่น','คันที่', 'วันที่ออก Do', 'วันที่รับรถเข้า', 'เลขเครื่อง', 'เลขตัวถัง', 'กุญแจ', 'สี', 'รถสำหรับ', 'การรับรถเข้า', 'ขายแล้ว', 'จดทะเบียนแล้ว', 'ส่งมอบแล้ว','ใบรับรถเข้า', 'ใบส่งรถให้ลูกค้า'],
+                colNames:['จังหวัด','แบบ','รุ่น','ซื้อจาก','คันที่', 'วันที่ออก Do', 'วันที่รับรถเข้า', 'เลขเครื่อง', 'เลขตัวถัง', 'กุญแจ', 'สี', 'รถสำหรับ', 'การรับรถเข้า', 'ขายแล้ว', 'จดทะเบียนแล้ว', 'ส่งมอบแล้ว','ใบรับรถเข้า', 'ใบส่งรถให้ลูกค้า'],
                 colModel:[
-                    {name:'branchid',index:'branchid', width:150, editable: true,edittype:"select",formatter:'select',editrules:{required:true},editoptions:{value: "{{$branchselectlist}}", defaultValue:defaultBranch},hidden:hiddenBranch},
+                    {name:'provinceid',index:'provinceid', width:150, editable: true,edittype:"select",formatter:'select',editrules:{required:true},editoptions:{value: "{{$provinceselectlist}}", defaultValue:defaultProvince},hidden:hiddenProvince},
                     {name:'carmodelid',index:'carmodelid', width:100, editable: true,edittype:"select",formatter:'select',editrules:{required:true},align:'left',
                         editoptions:{value: "{{$carmodelselectlist}}",
                             dataEvents :[{type: 'change', fn: function(e){
@@ -59,6 +59,7 @@
                         }
                     },
                     {name:'carsubmodelid',index:'carsubmodelid', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$carsubmodelselectlist}}"}},
+                    {name:'buyfrom',index:'buyfrom', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "0:ศูนย์ใหญ่;1:ดีลเลอร์อื่น"},align:'left'},
                     {name:'no',index:'no', width:50,editable: true,editoptions:{size:"5"},editrules:{required:true},align:'left'},
                     {name:'dodate',index:'dodate',width:100, editable:true, sorttype:"date", formatter: "date", unformat: pickDate, editoptions:{size:"10",dataInit:function(elem){$(elem).datepicker({format:'dd-mm-yyyy', autoclose:true});}}, editrules:{required:true}, align:'center'},
                     {name:'receiveddate',index:'receiveddate',width:100, editable:true, sorttype:"date", formatter: "date", unformat: pickDate, editoptions:{size:"10",dataInit:function(elem){$(elem).datepicker({format:'dd-mm-yyyy', autoclose:true});}}, editrules:{required:true}, align:'center'},
@@ -123,7 +124,7 @@
                         processData: false, // Don't process the files
                         contentType: false, // Set content type to false as jQuery will tell the server its a query string request
                         success: function(data, textStatus, jqXHR){
-                            alert("Succefully");
+                            alert("ดำเนินการสำเร็จ");
                             return [true,""];
                         },
                         error: function(jqXHR, textStatus, errorThrown)
@@ -134,7 +135,7 @@
                     });
                 }
                 else{
-                    alert("Succefully");
+                    alert("ดำเนินการสำเร็จ");
                     return [true,""];
                 }
             }
@@ -176,6 +177,9 @@
                             $('#carsubmodelid').val(carsubmodelid);
                         });
 
+                        $('#tr_no', form).hide();
+                        $('#tr_keyno', form).hide();
+
                         var dlgDiv = $("#editmod" + jQuery(grid_selector)[0].id);
                         centerGridForm(dlgDiv);
                     },
@@ -205,6 +209,9 @@
                         style_edit_form(form);
 
                         $('#carsubmodelid').children('option:not(:first)').remove();
+
+                        $('#tr_no', form).hide();
+                        $('#tr_keyno', form).hide();
 
                         var dlgDiv = $("#editmod" + jQuery(grid_selector)[0].id);
                         centerGridForm(dlgDiv);
@@ -248,7 +255,7 @@
                     afterSubmit : function(response, postdata)
                     {
                         if(response.responseText == "ok"){
-                            alert("Succefully")
+                            alert("ดำเนินการสำเร็จ")
                             return [true,""];
                         }else{
                             return [false,response.responseText];

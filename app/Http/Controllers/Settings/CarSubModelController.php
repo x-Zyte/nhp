@@ -21,6 +21,7 @@ class CarSubModelController extends Controller {
     {
         $carmodels = CarModel::all(['id','name']);
         $carmodelselectlist = array();
+        array_push($carmodelselectlist,':เลือกแบบรถ');
         foreach($carmodels as $cm){
             array_push($carmodelselectlist,$cm->id.':'.$cm->name);
         }

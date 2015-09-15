@@ -12,7 +12,7 @@ class CustomerExpectation extends Model {
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['customerid', 'date', 'details',
+    protected $fillable = ['customerid','employeeid', 'date','carmodelid1','carmodelid2','carmodelid3', 'details',
         'createdby', 'createddate', 'modifiedby', 'modifieddate'];
 
     public static function boot()
@@ -21,6 +21,10 @@ class CustomerExpectation extends Model {
 
         static::creating(function($model)
         {
+            if($model->carmodelid1 == '') $model->carmodelid1 = null;
+            if($model->carmodelid2 == '') $model->carmodelid2 = null;
+            if($model->carmodelid3 == '') $model->carmodelid3 = null;
+
             $model->date = date('Y-m-d', strtotime($model->date));
             $model->createdby = Auth::user()->id;
             $model->createddate = date("Y-m-d H:i:s");
@@ -35,6 +39,10 @@ class CustomerExpectation extends Model {
 
         static::updating(function($model)
         {
+            if($model->carmodelid1 == '') $model->carmodelid1 = null;
+            if($model->carmodelid2 == '') $model->carmodelid2 = null;
+            if($model->carmodelid3 == '') $model->carmodelid3 = null;
+
             $model->date = date('Y-m-d', strtotime($model->date));
             $model->modifiedby = Auth::user()->id;
             $model->modifieddate = date("Y-m-d H:i:s");

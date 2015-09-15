@@ -16,6 +16,7 @@ class CreateCarTypesTable extends Migration {
 		{
             $table->increments('id');
             $table->string('name',50);
+            $table->decimal('actcost', 10, 2);
             $table->text('detail')->nullable();
             $table->boolean('active')->default(true);
 

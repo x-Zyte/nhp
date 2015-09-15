@@ -21,5 +21,6 @@ class EmployeePermissionRepository extends EloquentRepositoryAbstract
         $this->uniqueKeyMultiples = array(array('field'=>'employeeid','showInMsg'=>false,'label'=>'พนักงาน'),
             array('field'=>'menu','showInMsg'=>true,'label'=>'พนักงานคนนี้  สิทธิ์การเข้าถึงเมนู'));
         $this->hasBranch = false;
+        $this->hasProvince = false;
     }
 }

@@ -4,11 +4,11 @@
 @section('menu-settingcore-class','active hsub open')
 @section('menu-subsettingcore-class','nav-show')
 @section('menu-subsettingcore-style','display: block;')
-@section('menu-settingdepartment-class','active')
+@section('menu-settingcolor-class','active')
 
 @section('content')
 
-    <h3 class="header smaller lighter blue"><i class="ace-icon fa fa-sitemap"></i> แผนกพนักงาน</h3>
+    <h3 class="header smaller lighter blue"><i class="ace-icon fa fa-bank"></i> สี</h3>
 
     <table id="grid-table"></table>
 
@@ -37,12 +37,12 @@
             })
 
             $(grid_selector).jqGrid({
-                url:'{{ url('/department/read') }}',
+                url:'{{ url('color/read') }}',
                 datatype: "json",
-                colNames:['ชื่อแผนก', 'รายละเอียด'],
+                colNames:['รหัส', 'ชื่อสี'],
                 colModel:[
-                    {name:'name',index:'name', width:150,editable: true,editoptions:{size:"30",maxlength:"50"},editrules:{required:true},align:'left'},
-                    {name:'detail',index:'detail', width:300,editable: true,edittype:'textarea',editoptions:{rows:"2",cols:"40"},editrules:{},align:'left'}
+                    {name:'code',index:'code', width:100,editable: true,editoptions:{size:"30",maxlength:"50"},editrules:{required:true},align:'left'},
+                    {name:'name',index:'name', width:100,editable: true,editoptions:{size:"30",maxlength:"50"},editrules:{required:true},align:'left'}
                 ],
                 viewrecords : true,
                 rowNum:10,
@@ -63,7 +63,7 @@
                     }, 0);
                 },
 
-                editurl: "department/update",
+                editurl: "color/update",
                 caption: "",
                 height:'100%'
             });

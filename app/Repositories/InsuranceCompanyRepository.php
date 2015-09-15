@@ -20,5 +20,6 @@ class InsuranceCompanyRepository extends EloquentRepositoryAbstract
         $this->uniqueKeySingles = array(array('field'=>'name','label'=>'ชื่อบริษัทประกัน'));
         $this->uniqueKeyMultiples = array();
         $this->hasBranch = false;
+        $this->hasProvince = false;
     }
 }

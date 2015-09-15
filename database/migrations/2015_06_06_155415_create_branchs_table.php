@@ -25,6 +25,7 @@ class CreateBranchsTable extends Migration {
             $table->integer('provinceid')->unsigned();
             $table->foreign('provinceid')->references('id')->on('provinces');
             $table->string('zipcode',5);
+            $table->boolean('isheadquarter')->default(false);
             $table->boolean('active')->default(true);
 
             $table->integer('createdby')->unsigned();

@@ -16,9 +16,10 @@ class BranchRepository extends EloquentRepositoryAbstract
     {
         $this->Database = new Branch;
         $this->orderBy = array(array('id', 'asc'));
-        $this->crudFields = array('oper', 'id', 'name', 'address', 'districtid', 'amphurid', 'provinceid', 'zipcode');
+        $this->crudFields = array('oper', 'id', 'name', 'address', 'districtid', 'amphurid', 'provinceid', 'zipcode','isheadquarter');
         $this->uniqueKeySingles = array(array('field'=>'name','label'=>'ชื่อสาขา'));
         $this->uniqueKeyMultiples = array();
         $this->hasBranch = false;
+        $this->hasProvince = true;
     }
 }

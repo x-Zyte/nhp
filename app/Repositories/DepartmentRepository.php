@@ -20,5 +20,6 @@ class DepartmentRepository extends EloquentRepositoryAbstract
         $this->uniqueKeySingles = array(array('field'=>'name','label'=>'ชื่อแผนก'));
         $this->uniqueKeyMultiples = array();
         $this->hasBranch = false;
+        $this->hasProvince = false;
     }
 }

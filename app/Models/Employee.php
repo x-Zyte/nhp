@@ -10,7 +10,7 @@ class Employee extends User {
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['title', 'firstname', 'lastname', 'username', 'password', 'email', 'phone', 'isadmin', 'branchid',
+    protected $fillable = ['title', 'firstname', 'lastname','code', 'username', 'password', 'email', 'phone', 'isadmin', 'branchid',
         'departmentid', 'teamid', 'active', 'remember_token',
         'createdby', 'createddate', 'modifiedby', 'modifieddate'];
 
@@ -32,7 +32,7 @@ class Employee extends User {
                 if($model->departmentid == '') $model->departmentid = null;
                 if($model->teamid == '') $model->teamid = null;
             }
-            $model->password = bcrypt("nissanhippo");
+            $model->password = bcrypt("nissanhippro");
             $model->createdby = Auth::user()->id;
             $model->createddate = date("Y-m-d H:i:s");
             $model->modifiedby = Auth::user()->id;

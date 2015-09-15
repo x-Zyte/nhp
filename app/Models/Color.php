@@ -3,15 +3,15 @@
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-class CarSubModel extends Model {
+class Color extends Model {
 
-    protected $table = 'car_submodels';
+    protected $table = 'colors';
 
     public $timestamps = false;
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['code','name', 'carmodelid', 'detail', 'active',
+    protected $fillable = ['code','name', 'active',
         'createdby', 'createddate', 'modifiedby', 'modifieddate'];
 
     public static function boot()
@@ -46,10 +46,5 @@ class CarSubModel extends Model {
         {
             Log::create(['employeeid' => Auth::user()->id,'operation' => 'Delete','date' => date("Y-m-d H:i:s"),'model' => class_basename(get_class($model)),'detail' => $model->toJson()]);
         });
-    }
-
-    public function carmodel()
-    {
-        return $this->belongsTo('App\Models\CarModel', 'carmodelid', 'id');
     }
 }

@@ -17,6 +17,7 @@ class CreateCarSubModelsTable extends Migration {
             $table->increments('id');
             $table->integer('carmodelid')->unsigned();
             $table->foreign('carmodelid')->references('id')->on('car_models');
+            $table->string('code',50);
             $table->string('name',50);
             $table->text('detail')->nullable();
             $table->boolean('active')->default(true);
