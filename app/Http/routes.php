@@ -73,10 +73,9 @@ Route::get('carmodel/read', 'Settings\CarModelController@read');
 Route::post('carmodel/update', 'Settings\CarModelController@update');
 
 //Carsubmodel
-Route::get('carsubmodel', 'Settings\CarSubModelController@index');
 Route::get('carsubmodel/read', 'Settings\CarSubModelController@read');
 Route::post('carsubmodel/update', 'Settings\CarSubModelController@update');
-Route::get('carsubmodel/read2/{carmodelid}', 'Settings\CarSubModelController@read2');
+Route::get('carsubmodel/readSelectlist/{carmodelid}', 'Settings\CarSubModelController@readSelectlist');
 
 //Color
 Route::get('color', 'Settings\ColorController@index');
@@ -86,6 +85,7 @@ Route::post('color/update', 'Settings\ColorController@update');
 //CarmodelColor
 Route::get('carmodelcolor/read', 'Settings\CarModelColorController@read');
 Route::post('carmodelcolor/update', 'Settings\CarModelColorController@update');
+Route::get('carmodelcolor/readSelectlist/{carmodelid}', 'Settings\CarModelColorController@readSelectlist');
 
 //Bank
 Route::get('bank', 'Settings\BankController@index');

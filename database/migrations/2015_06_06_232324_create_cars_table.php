@@ -30,8 +30,9 @@ class CreateCarsTable extends Migration {
             $table->unique('engineno');
             $table->string('chassisno',50);
             $table->unique('chassisno');
-            $table->integer('keyno')->unsigned();
-            $table->string('colour',10);
+            $table->integer('keyno');
+            $table->integer('colorid')->unsigned();
+            $table->foreign('colorid')->references('id')->on('car_submodels');
             $table->integer('objective')->comment('0:ขาย, 1:ใช้งาน, 2:ทดสอบ');
             $table->integer('receivetype')->comment('0:ปกติ, 1:ประมูล');;
             $table->string('receivecarfilepath',2083)->nullable();

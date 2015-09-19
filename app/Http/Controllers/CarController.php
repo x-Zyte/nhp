@@ -9,6 +9,8 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\Branch;
+use App\Models\Color;
 use App\Models\systemdatas\Province;
 use App\Models\Car;
 use App\Models\CarModel;
@@ -28,7 +30,8 @@ class CarController extends Controller {
 
     public function index()
     {
-        $provinces = Province::orderBy('name', 'asc')->get(['id', 'name']);
+        $provinceids = Branch::distinct()->lists('provinceid');
+        $provinces = Province::whereIn('id', $provinceids)->orderBy('name', 'asc')->get(['id', 'name']);
         $provinceselectlist = array();
         array_push($provinceselectlist,':เลือกจังหวัด');
         foreach($provinces as $item){
@@ -50,6 +53,14 @@ class CarController extends Controller {
             array_push($carsubmodelselectlist,$item->id.':'.$item->name);
         }
 
+        $colorids = Car::distinct()->lists('colorid');
+        $colors = Color::whereIn('id', $colorids)->orderBy('code', 'asc')->get(['id', 'code', 'name']);
+        $colorselectlist = array();
+        array_push($colorselectlist,':เลือกสี');
+        foreach($colors as $item){
+            array_push($colorselectlist,$item->id.':'.$item->code.' - '.$item->name);
+        }
+
         $defaultProvince = '';
         if(Auth::user()->isadmin == false){
             $defaultProvince = (Auth::user()->branchid == null ? '' : Auth::user()->branch->provinceid);
@@ -59,6 +70,7 @@ class CarController extends Controller {
             ['provinceselectlist' => implode(";",$provinceselectlist),
             'carmodelselectlist' => implode(";",$carmodelselectlist),
             'carsubmodelselectlist' => implode(";",$carsubmodelselectlist),
+            'colorselectlist' => implode(";",$colorselectlist),
             'defaultProvince'=>$defaultProvince]);
     }
 
@@ -112,11 +124,20 @@ class CarController extends Controller {
         $carsubmodelids = Car::distinct()->lists('carsubmodelid');
         $carsubmodels = CarSubModel::whereIn('id', $carsubmodelids)->orderBy('name', 'asc')->get(['id', 'name']);
         $carsubmodelselectlist = array();
-        array_push($carsubmodelselectlist,':เลือกเขต/อำเภอ');
+        array_push($carsubmodelselectlist,':เลือกรุ่น');
         foreach($carsubmodels as $item){
             array_push($carsubmodelselectlist,$item->id.':'.$item->name);
         }
 
-        return ['carsubmodelselectlist'=>implode(";",$carsubmodelselectlist)];
+        $colorids = Car::distinct()->lists('colorid');
+        $colors = Color::whereIn('id', $colorids)->orderBy('code', 'asc')->get(['id', 'code', 'name']);
+        $colorselectlist = array();
+        array_push($colorselectlist,':เลือกสี');
+        foreach($colors as $item){
+            array_push($colorselectlist,$item->id.':'.$item->code.' - '.$item->name);
+        }
+
+        return ['carsubmodelselectlist'=>implode(";",$carsubmodelselectlist),
+            'colorselectlist'=>implode(";",$colorselectlist)];
     }
 }

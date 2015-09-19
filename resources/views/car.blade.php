@@ -49,26 +49,33 @@
                         editoptions:{value: "{{$carmodelselectlist}}",
                             dataEvents :[{type: 'change', fn: function(e){
                                 var thisval = $(e.target).val();
-                                $.get('carsubmodel/read2/'+thisval, function(data){
+                                $.get('carsubmodel/readSelectlist/'+thisval, function(data){
                                     $('#carsubmodelid').children('option:not(:first)').remove();
                                     $.each(data, function(i, option) {
                                         $('#carsubmodelid').append($('<option/>').attr("value", option.id).text(option.name));
                                     });
                                 });
+
+                                $.get('carmodelcolor/readSelectlist/'+thisval, function(data){
+                                    $('#colorid').children('option:not(:first)').remove();
+                                    $.each(data, function(i, option) {
+                                        $('#colorid').append($('<option/>').attr("value", option.id).text(option.code + ' - ' + option.name));
+                                    });
+                                });
                             }}]
                         }
                     },
-                    {name:'carsubmodelid',index:'carsubmodelid', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "{{$carsubmodelselectlist}}"}},
+                    {name:'carsubmodelid',index:'carsubmodelid', width:100, editable: true,edittype:"select",formatter:'select',editrules:{required:true},editoptions:{value: "{{$carsubmodelselectlist}}"}},
                     {name:'buyfrom',index:'buyfrom', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "0:ศูนย์ใหญ่;1:ดีลเลอร์อื่น"},align:'left'},
-                    {name:'no',index:'no', width:50,editable: true,editoptions:{size:"5"},editrules:{required:true},align:'left'},
+                    {name:'no',index:'no', width:50,editable: true,editoptions:{size:"5"},align:'center'},
                     {name:'dodate',index:'dodate',width:100, editable:true, sorttype:"date", formatter: "date", unformat: pickDate, editoptions:{size:"10",dataInit:function(elem){$(elem).datepicker({format:'dd-mm-yyyy', autoclose:true});}}, editrules:{required:true}, align:'center'},
                     {name:'receiveddate',index:'receiveddate',width:100, editable:true, sorttype:"date", formatter: "date", unformat: pickDate, editoptions:{size:"10",dataInit:function(elem){$(elem).datepicker({format:'dd-mm-yyyy', autoclose:true});}}, editrules:{required:true}, align:'center'},
                     {name:'engineno',index:'engineno', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
                     {name:'chassisno',index:'chassisno', width:100,editable: true,editoptions:{size:"20",maxlength:"50"},editrules:{required:true},align:'left'},
-                    {name:'keyno',index:'keyno', width:50,editable: true,editoptions:{size:"5"},editrules:{required:true, number:true},align:'center'},
-                    {name:'colour',index:'colour', width:100,editable: true,editoptions:{size:"10",maxlength:"10"},editrules:{required:true},align:'left'},
-                    {name:'objective',index:'objective', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "0:ขาย;1:ใช้งาน;2:ทดสอบ"},align:'left'},
-                    {name:'receivetype',index:'receivetype', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "0:ปกติ;1:ประมูล"},align:'left'},
+                    {name:'keyno',index:'keyno', width:50,editable: true,editoptions:{size:"5"},editrules:{number:true},align:'center'},
+                    {name:'colorid',index:'colorid', width:180, editable: true,edittype:"select",formatter:'select',editrules:{required:true},editoptions:{value: "{{$colorselectlist}}"}},
+                    {name:'objective',index:'objective', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "0:ขาย;1:ใช้งาน;2:ทดสอบ"},align:'center'},
+                    {name:'receivetype',index:'receivetype', width:100, editable: true,edittype:"select",formatter:'select',editoptions:{value: "0:ปกติ;1:ประมูล"},align:'center'},
                     {name:'issold',index:'issold', width:100, editable: true,edittype:"checkbox",editoptions: {value:"1:0", defaultValue:"0"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'},
                     {name:'isregistered',index:'isregistered', width:100, editable: true,edittype:"checkbox",editoptions: {value:"1:0", defaultValue:"0"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'},
                     {name:'isdelivered',index:'isdelivered', width:100, editable: true,edittype:"checkbox",editoptions: {value:"1:0", defaultValue:"0"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'},
@@ -168,13 +175,22 @@
 
                         var carmodelid = $('#carmodelid').val();
                         var carsubmodelid = $('#carsubmodelid').val();
+                        var colorid = $('#colorid').val();
 
-                        $.get('carsubmodel/read/'+carmodelid, function(data){
+                        $.get('carsubmodel/readSelectlist/'+carmodelid, function(data){
                             $('#carsubmodelid').children('option:not(:first)').remove();
                             $.each(data, function(i, option) {
                                 $('#carsubmodelid').append($('<option/>').attr("value", option.id).text(option.name));
                             });
                             $('#carsubmodelid').val(carsubmodelid);
+                        });
+
+                        $.get('carmodelcolor/readSelectlist/'+carmodelid, function(data){
+                            $('#colorid').children('option:not(:first)').remove();
+                            $.each(data, function(i, option) {
+                                $('#colorid').append($('<option/>').attr("value", option.id).text(option.code + ' - ' + option.name));
+                            });
+                            $('#colorid').val(colorid);
                         });
 
                         $('#tr_no', form).hide();
@@ -209,6 +225,7 @@
                         style_edit_form(form);
 
                         $('#carsubmodelid').children('option:not(:first)').remove();
+                        $('#colorid').children('option:not(:first)').remove();
 
                         $('#tr_no', form).hide();
                         $('#tr_keyno', form).hide();
@@ -224,6 +241,7 @@
                         if(response.responseText == "ok"){
                             $.get('car/readSelectlistForDisplayInGrid', function(data){
                                 $(grid_selector).setColProp('carsubmodelid', { editoptions: { value: data.carsubmodelselectlist } });
+                                $(grid_selector).setColProp('colorid', { editoptions: { value: data.colorselectlist } });
                             });
                             return uploadfiles();
                         }else{
@@ -301,50 +319,6 @@
                     }
                 }
             )
-
-            function UploadImage(response, postdata) {
-
-                var data = $.parseJSON(response.responseText);
-
-                if (data.success == true) {
-                    if ($("#fileToUpload").val() != "") {
-                        ajaxFileUpload(data.id);
-                    }
-                }
-
-                return [data.success, data.message, data.id];
-
-            }
-            function ajaxFileUpload(id)
-            {
-
-                $.ajaxFileUpload
-                (
-                        {
-                            url: '@Url.Action("UploadImage")',
-                            secureuri: false,
-                            fileElementId: 'fileToUpload',
-                            dataType: 'json',
-                            data: { id: id },
-                            success: function (data, status) {
-
-                                if (typeof (data.success) != 'undefined') {
-                                    if (data.success == true) {
-                                        return;
-                                    } else {
-                                        alert(data.message);
-                                    }
-                                }
-                                else {
-                                    return alert('Failed to upload logo!');
-                                }
-                            },
-                            error: function (data, status, e) {
-                                return alert('Failed to upload logo!');
-                            }
-                        }
-                )
-            }
         })
     </script>
 @endsection

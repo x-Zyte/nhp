@@ -8,7 +8,7 @@
 
 @section('content')
 
-    <h3 class="header smaller lighter blue"><i class="ace-icon fa fa-bank"></i> สี</h3>
+    <h3 class="header smaller lighter blue"><i class="ace-icon fa fa-sun-o"></i> สี</h3>
 
     <table id="grid-table"></table>
 

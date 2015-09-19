@@ -17,7 +17,7 @@ class CarSubModelController extends Controller {
         $this->middleware('auth');
     }
 
-    public function index()
+    /*public function index()
     {
         $carmodels = CarModel::all(['id','name']);
         $carmodelselectlist = array();
@@ -27,17 +27,27 @@ class CarSubModelController extends Controller {
         }
 
         return view('settings.carsubmodel', ['carmodelselectlist' => implode(";",$carmodelselectlist)]);
-    }
+    }*/
 
-    public function read2($carmodelid)
+    public function readSelectlist($carmodelid)
     {
         $carsubmodels = CarSubModel::where('carmodelid',$carmodelid)->orderBy('name', 'asc')->get(['id', 'name']);
         return $carsubmodels;
     }
 
-    public function read(Request $request)
+    public function read()
     {
-        GridEncoder::encodeRequestedData(new CarSubModelRepository(), Input::all());
+        $input = Input::all();
+        if(in_array("filters", $input)){
+            $input = Input::all();
+            $filters = json_decode(str_replace('\'','"',$input['filters']), true);
+            array_push($filters['rules'],array("field"=>"carmodelid","op"=>"eq","data"=>$input['carmodelid']));
+            $input['filters'] = json_encode($filters);
+        }
+        else{
+            $input = array_add($input,'filters',json_encode(array("groupOp"=>"AND","rules"=>array(array("field"=>"carmodelid","op"=>"eq","data"=>$input['carmodelid'])))));
+        }
+        GridEncoder::encodeRequestedData(new CarSubModelRepository(), $input);
     }
 
     public function update(Request $request)

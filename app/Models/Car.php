@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Car extends Model {
 
@@ -12,7 +13,7 @@ class Car extends Model {
     protected $guarded = ['id'];
 
     protected $fillable = ['provinceid', 'carmodelid', 'carsubmodelid','buyfrom', 'no', 'dodate', 'receiveddate', 'engineno', 'chassisno', 'keyno',
-        'colour', 'objective', 'receivetype', 'receivecarfilepath', 'deliverycarfilepath', 'issold', 'isregistered', 'isdelivered',
+        'colorid', 'objective', 'receivetype', 'receivecarfilepath', 'deliverycarfilepath', 'issold', 'isregistered', 'isdelivered',
         'createdby', 'createddate', 'modifiedby', 'modifieddate'];
 
     public static function boot()
@@ -32,6 +33,9 @@ class Car extends Model {
         static::created(function($model)
         {
             Log::create(['employeeid' => Auth::user()->id,'operation' => 'Add','date' => date("Y-m-d H:i:s"),'model' => class_basename(get_class($model)),'detail' => $model->toJson()]);
+            $rs = DB::select('call running_number("'.$model->provinceid.date("Y").'","'.$model->buyfrom.'")');
+            $model->no = $rs[0]->no;
+            $model->save();
         });
 
         static::updating(function($model)

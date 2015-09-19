@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Settings;
 
 use App\Facades\GridEncoder;
 use App\Http\Controllers\Controller;
+use App\Models\CarModelColor;
+use App\Models\Color;
 use App\Repositories\CarModelColorRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -33,5 +35,12 @@ class CarModelColorController extends Controller {
     public function update(Request $request)
     {
         GridEncoder::encodeRequestedData(new CarModelColorRepository(), $request);
+    }
+
+    public function readSelectlist($carmodelid)
+    {
+        $colorids = CarModelColor::where('carmodelid',$carmodelid)->lists('colorid');
+        $colors = Color::whereIn('id', $colorids)->orderBy('code', 'asc')->get(['id', 'code', 'name']);
+        return $colors;
     }
 }

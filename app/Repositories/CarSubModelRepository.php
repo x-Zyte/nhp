@@ -19,8 +19,7 @@ class CarSubModelRepository extends EloquentRepositoryAbstract
         $this->crudFields = array('oper', 'id', 'carmodelid','code', 'name', 'detail');
         $this->uniqueKeySingles = array();
         $this->uniqueKeyMultiples = array(array('field'=>'carmodelid','showInMsg'=>false,'label'=>'แบบรถ'),
-            array('field'=>'code','showInMsg'=>true,'label'=>'แบบรถนี้ รหัส'),
-            array('field'=>'name','showInMsg'=>true,'label'=>'รุ่น'));
+            array('field'=>'code','showInMsg'=>true,'label'=>'แบบรถนี้ รหัสรุ่น'));
         $this->hasBranch = false;
         $this->hasProvince = false;
     }

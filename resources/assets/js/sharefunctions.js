@@ -188,10 +188,16 @@ function resizeGrid(){
 function resizeSubGrid(subgrid_table_id){
     if($("#"+subgrid_table_id).width() < 600){
         $("#"+subgrid_table_id).jqGrid( 'setGridWidth', 600);
+        $('.ui-subgrid' + ' .ui-jqgrid-view').css('overflow-y','auto');
+        $('.ui-subgrid' + ' .ui-jqgrid-view').css('overflow-x','hidden');
     }
     else if($("#"+subgrid_table_id).width() > ($('#grid-table').width() - 55)){
         $('.ui-subgrid' + ' .ui-jqgrid-view').css('overflow','auto');
         $('.ui-subgrid' + " .ui-jqgrid-view").css("max-width",($('#grid-table').width() - 55)+"px");
         $('.ui-subgrid' + " .ui-jqgrid-pager").css("max-width",($('#grid-table').width() - 55)+"px");
+    }
+    else{
+        $('.ui-subgrid' + ' .ui-jqgrid-view').css('overflow-y','auto');
+        $('.ui-subgrid' + ' .ui-jqgrid-view').css('overflow-x','hidden');
     }
 }

@@ -104,7 +104,7 @@
     }
 </style>
 <script type="text/javascript">
-    $("body").css("overflow", "hidden");
+    $("body").css("overflow-x", "hidden");
 
     $(document).ajaxStart(function(event, request, settings) {
         $('#modal').show();
@@ -313,16 +313,7 @@
                             <li class="@yield('menu-settingcarmodel-class')">
                                 <a href="{{ url('/carmodel') }}">
                                     <i class="menu-icon fa fa-minus"></i>
-                                    แบบรถ/สีรถของแบบ
-                                </a>
-
-                                <b class="arrow"></b>
-                            </li>
-
-                            <li class="@yield('menu-settingcarsubmodel-class')">
-                                <a href="{{ url('/carsubmodel') }}">
-                                    <i class="menu-icon fa fa-minus"></i>
-                                    รุ่นรถ
+                                    แบบรถ/สีและรุ่น
                                 </a>
 
                                 <b class="arrow"></b>
