@@ -15,7 +15,6 @@ class CreateBranchsTable extends Migration {
 		Schema::create('branchs', function(Blueprint $table)
 		{
             $table->increments('id');
-
             $table->string('name',50);
             $table->text('address');
             $table->integer('districtid')->unsigned();
@@ -26,6 +25,7 @@ class CreateBranchsTable extends Migration {
             $table->foreign('provinceid')->references('id')->on('provinces');
             $table->string('zipcode',5);
             $table->boolean('isheadquarter')->default(false);
+            $table->integer('keyslot')->default(0);
             $table->boolean('active')->default(true);
 
             $table->integer('createdby')->unsigned();

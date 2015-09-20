@@ -38,7 +38,16 @@ class AuthController extends Controller {
 
     public function getLogin()
     {
-        return view('auth.login');
+        if (getenv('HTTP_X_FORWARDED_FOR'))
+            $ip=getenv('HTTP_X_FORWARDED_FOR');
+        else
+            $ip=getenv('REMOTE_ADDR');
+
+        $host = gethostbyaddr($ip);
+
+        $ipAddress = 'Address : '.$ip.' Host : '.$host;
+
+        return view('auth.login',['ipAddress' => $ipAddress]);
     }
 
     public function postLogin(Request $request)

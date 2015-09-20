@@ -39,7 +39,7 @@
             $(grid_selector).jqGrid({
                 url:'{{ url('/branch/read') }}',
                 datatype: "json",
-                colNames:['ชื่อสาขา', 'ที่อยู่', 'จังหวัด', 'เขต/อำเภอ', 'แขวง/ตำบล', 'รหัสไปรษณีย์','สำนักงานใหญ่'],
+                colNames:['ชื่อสาขา', 'ที่อยู่', 'จังหวัด', 'เขต/อำเภอ', 'แขวง/ตำบล', 'รหัสไปรษณีย์','สำนักงานใหญ่','ช่องกุญแจ'],
                 colModel:[
                     {name:'name',index:'name', width:150,editable: true,editoptions:{size:"30",maxlength:"50"},editrules:{required:true},align:'left'},
                     {name:'address',index:'address', width:200,editable: true,editoptions:{size:"50",maxlength:"200"},editrules:{required:true},align:'left'},
@@ -89,8 +89,10 @@
                         }
                     },
                     {name:'zipcode',index:'zipcode', width:100,editable: true,editoptions:{size:"5",maxlength:"5"},editrules:{required:true, number:true},align:'left'},
-                    {name:'isheadquarter',index:'isheadquarter', width:80, editable: true,edittype:"checkbox",editoptions: {value:"1:0"},formatter: booleanFormatter,unformat: aceSwitch,align:'center'}
-                    //{name:'zipcodeid',index:'zipcodeid', width:50, editable: true,edittype:"select",formatter:'select',editoptions:{value: ":เลือกรหัสไปรษณีย์"}}
+                    {name:'isheadquarter',index:'isheadquarter', width:80, editable: true,edittype:"checkbox",editoptions: {value:"1:0"},
+                        editrules:{custom: true, custom_func: check_headquarter},formatter: booleanFormatter,unformat: aceSwitch,align:'center'},
+                    {name:'keyslot',index:'keyslot', width:50,editable: true,editoptions:{size:"3"},
+                        editrules:{number:true,custom: true, custom_func: check_keyslot},align:'center'}
                 ],
                 viewrecords : true,
                 rowNum:10,
@@ -116,6 +118,41 @@
             });
 
             $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
+
+            function check_headquarter(value, colname) {
+                if(value == 0) return [true, ""];
+                var selRowId = $(grid_selector).jqGrid ('getGridParam', 'selrow');
+                var provinceid = $('#provinceid').val();
+                if(selRowId == null) selRowId = 0;
+                $.ajax({
+                    url: 'branch/check_headquarter',
+                    data: { id:selRowId,provinceid:provinceid, _token: "{{ csrf_token() }}" },
+                    type: 'POST',
+                    async: false,
+                    datatype: 'text',
+                    success: function (data) {
+                        if (!data) result = [true, ""];
+                        else result = [false,"จังหวัดนี้มีสาขาสำนักงานใหญ่แล้ว"];
+                    }
+                })
+                return result;
+            }
+
+            function check_keyslot(value, colname) {
+                var provinceid = $('#provinceid').val();
+                $.ajax({
+                    url: 'branch/check_keyslot',
+                    data: { provinceid:provinceid,keyslot:value, _token: "{{ csrf_token() }}" },
+                    type: 'POST',
+                    async: false,
+                    datatype: 'text',
+                    success: function (data) {
+                        if (!data) result = [true, ""];
+                        else result = [false,"จำนวนช่องกุญแจ ต้องไม่น้อยกว่าหมายเลขกุญแจที่มากที่สุด ที่รถใน stock ใช้งานอยู่"];
+                    }
+                })
+                return result;
+            }
 
             //navButtons
             jQuery(grid_selector).jqGrid('navGrid',pager_selector,

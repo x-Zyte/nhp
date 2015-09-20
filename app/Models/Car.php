@@ -12,7 +12,7 @@ class Car extends Model {
 
     protected $guarded = ['id'];
 
-    protected $fillable = ['provinceid', 'carmodelid', 'carsubmodelid','buyfrom', 'no', 'dodate', 'receiveddate', 'engineno', 'chassisno', 'keyno',
+    protected $fillable = ['provinceid', 'carmodelid', 'carsubmodelid', 'no', 'dodate', 'receiveddate', 'engineno', 'chassisno', 'keyno',
         'colorid', 'objective', 'receivetype', 'receivecarfilepath', 'deliverycarfilepath', 'issold', 'isregistered', 'isdelivered',
         'createdby', 'createddate', 'modifiedby', 'modifieddate'];
 
@@ -22,6 +22,10 @@ class Car extends Model {
 
         static::creating(function($model)
         {
+            $model->issold = false;
+            $model->isregistered = false;
+            $model->isdelivered = false;
+
             $model->dodate = date('Y-m-d', strtotime($model->dodate));
             $model->receiveddate = date('Y-m-d', strtotime($model->receiveddate));
             $model->createdby = Auth::user()->id;
@@ -33,9 +37,20 @@ class Car extends Model {
         static::created(function($model)
         {
             Log::create(['employeeid' => Auth::user()->id,'operation' => 'Add','date' => date("Y-m-d H:i:s"),'model' => class_basename(get_class($model)),'detail' => $model->toJson()]);
-            $rs = DB::select('call running_number("'.$model->provinceid.date("Y").'","'.$model->buyfrom.'")');
+            $rs = DB::select('call running_number("'.$model->provinceid.date("Y").'","'.$model->receivetype.'")');
             $model->no = $rs[0]->no;
+            $min = KeySlot::where('provinceid', $model->provinceid)->where('active',true)->min('no');
+            if($min == null){
+                $branch = Branch::where('provinceid', $model->provinceid)->where('isheadquarter', true)->first();
+                $branch->keyslot = $branch->keyslot+1;
+                $branch->save();
+                $model->keyno = $branch->keyslot;
+            }
+            else{
+                $model->keyno = $min;
+            }
             $model->save();
+            KeySlot::where('provinceid', $model->provinceid)->where('no',$model->keyno)->update(['active' => false]);
         });
 
         static::updating(function($model)
@@ -59,6 +74,8 @@ class Car extends Model {
                 File::delete(public_path().$model->receivecarfilepath);
             if($model->deliverycarfilepath != '')
                 File::delete(public_path().$model->deliverycarfilepath);
+
+            KeySlot::where('provinceid', $model->provinceid)->where('no',$model->keyno)->update(['active' => true]);
         });
     }
 

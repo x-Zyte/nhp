@@ -16,7 +16,7 @@ class CarRepository extends EloquentRepositoryAbstract
     {
         $this->Database = new Car;
         $this->orderBy = array(array('id', 'asc'));
-        $this->crudFields = array('oper', 'id', 'provinceid', 'carmodelid', 'carsubmodelid','buyfrom', 'no', 'dodate', 'receiveddate',
+        $this->crudFields = array('oper', 'id', 'provinceid', 'carmodelid', 'carsubmodelid', 'no', 'dodate', 'receiveddate',
             'engineno', 'chassisno', 'keyno', 'colorid', 'objective', 'receivetype',
             'issold', 'isregistered', 'isdelivered');
         $this->uniqueKeySingles = array(array('field'=>'engineno','label'=>'เลขเครื่องยนต์'),

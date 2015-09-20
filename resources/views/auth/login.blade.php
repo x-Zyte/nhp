@@ -38,7 +38,6 @@
     <script src="../../resources/assets/js/respond.min.js"></script>
     <![endif]-->
 </head>
-
 <body class="login-layout light-login">
 <div class="main-container">
     <div class="main-content">
@@ -133,6 +132,10 @@
         </div><!-- /.row -->
     </div><!-- /.main-content -->
 </div><!-- /.main-container -->
+
+<div style="bottom: 0;right: 0;position: fixed; padding-right: 5px;">
+    {{$ipAddress}}
+</div>
 
 <!-- basic scripts -->
 

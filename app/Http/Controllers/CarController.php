@@ -30,7 +30,7 @@ class CarController extends Controller {
 
     public function index()
     {
-        $provinceids = Branch::distinct()->lists('provinceid');
+        $provinceids = Branch::where('isheadquarter',true)->distinct()->lists('provinceid');
         $provinces = Province::whereIn('id', $provinceids)->orderBy('name', 'asc')->get(['id', 'name']);
         $provinceselectlist = array();
         array_push($provinceselectlist,':เลือกจังหวัด');

@@ -51,6 +51,8 @@ Route::get('branch', 'Settings\BranchController@index');
 Route::get('branch/read', 'Settings\BranchController@read');
 Route::post('branch/update', 'Settings\BranchController@update');
 Route::get('branch/readSelectlistForDisplayInGrid', 'Settings\BranchController@readSelectlistForDisplayInGrid');
+Route::post('branch/check_headquarter', 'Settings\BranchController@check_headquarter');
+Route::post('branch/check_keyslot', 'Settings\BranchController@check_keyslot');
 
 //Department
 Route::get('department', 'Settings\DepartmentController@index');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Settings;
 use App\Facades\GridEncoder;
 use App\Http\Controllers\Controller;
 use App\Models\Branch;
+use App\Models\Car;
 use App\Models\SystemDatas\Amphur;
 use App\Models\SystemDatas\District;
 use App\Models\SystemDatas\Province;
@@ -78,5 +79,25 @@ class BranchController extends Controller {
         }
 
         return ['amphurselectlist'=>implode(";",$amphurselectlist),'districtselectlist'=>implode(";",$districtselectlist)];
+    }
+
+    public function check_headquarter(Request $request)
+    {
+        $input = $request->only('id','provinceid');
+        $count = Branch::where('id','!=', $input['id'])
+            ->where('provinceid', $input['provinceid'])
+            ->where('isheadquarter', true)->count();
+        if($count > 0){
+            return "true";
+        }
+    }
+
+    public function check_keyslot(Request $request)
+    {
+        $input = $request->only('provinceid','keyslot');
+        $maxKeyNo = Car::where('provinceid', $input['provinceid'])->where('issold', false)->max('keyno');
+        if($maxKeyNo != null && $input['keyslot'] < $maxKeyNo){
+            return "true";
+        }
     }
 }
